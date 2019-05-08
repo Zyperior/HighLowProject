@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
     Question.find()
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.staus(200).json(foundquestions))
+        .then(foundquestions => res.status(200).json(foundquestions))
         .catch(error => res.status(500).json({message: error.toString()}))
 
 });
@@ -53,10 +53,17 @@ router.post("/", (req, res) => {
     });
 
     question.save()
-        .then(savedQuestion => res.status(201).json({message: "Created product successfully"}))
+        .then(savedQuestion => res.status(201).json({message: "Created question successfully"}))
         .catch(error => res.status(500).json({message: error.toString()}))
 
 });
+
+router.delete("/:id", (req, res) => {
+    Question.remove({_id: req.params.id})
+        .exec()
+        .then(deletedQuestion => res.status(200).json({message: "Deleted question successfully"}))
+        .catch(error => res.status(500).json({message: error.toString()}))
+})
 
 
 module.exports = router;
