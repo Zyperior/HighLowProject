@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 const questionsRouter = require("./api/routes/questions.js");
 app.use("/questions", questionsRouter);
 
-
+const statsRouter = require("./api/routes/generalStats.js");
+app.use("/stats", statsRouter);
 
 
 const PORT = process.env.PORT || 5000;

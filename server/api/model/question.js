@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 let Schema = mongoose.Schema;
 
-let questionShema = new Schema({
+let questionSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     question: String,
     answer: Number,
@@ -11,4 +11,4 @@ let questionShema = new Schema({
     category: Number
 });
 
-module.exports = mongoose.model("Question", questionShema);
+module.exports = mongoose.model("Question", questionSchema);
