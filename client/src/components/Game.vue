@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>
-
+            This is the game page
         </p>
         <input type="text" name="" placeholder="Enter your answer">
     </div>
@@ -9,8 +9,8 @@
 
 <script>
     export default {
-        name: 'game',
-        components,
+        name: 'Game',
+        
         methods: {
             getQuestions() {
                 return this.$store.getters.getQuestions
