@@ -11,9 +11,15 @@ export default new Vuex.Store({
   state: {
     bots,
     interval: {
-        lowestGuess: 50,
+        lowestGuess: 0,
         highestGuess: 150,
-        correctAnswer: 100
+        correctAnswer: 100,
+        isInInterval: function() {
+          return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
+        },
+        isHigherThanGuess: function() {
+          return (this.lowestGuess > this.highestGuess)
+        }
     }
   },
   getters: {
@@ -29,6 +35,7 @@ export default new Vuex.Store({
   },
   mutations: {
       updateGuess(state, guess){
+        console.log('Inside updateGuess')
           if(guess === state.interval.correctAnswer){
               console.log("Correct")
           }else if(guess > state.interval.correctAnswer && guess < state.interval.highestGuess){
