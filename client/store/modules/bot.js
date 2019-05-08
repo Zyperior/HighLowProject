@@ -4,7 +4,7 @@ const bot1 = {
         return interval.lowGuess + 1;
     },
     timing: 2,
-    isPlaying: false
+    isPlaying: true
 }
 
 const bot2 = {
@@ -13,7 +13,7 @@ const bot2 = {
         return interval.lowGuess + 1;
     },
     timing: 2,
-    isPlaying: false
+    isPlaying: true
 }
 
 const bot3 = {
@@ -26,7 +26,7 @@ const bot3 = {
 }
 
 const bot4 = {
-    name: 'Olle',
+    name: 'Bo',
     guess: function(interval){
         return interval.lowGuess + 1;
     },
@@ -34,4 +34,4 @@ const bot4 = {
     isPlaying: false
 }
 
-export default [bot1, bot2, bot3, bo4];
+export default [bot1, bot2, bot3, bot4];

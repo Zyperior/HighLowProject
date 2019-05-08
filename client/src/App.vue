@@ -1,13 +1,24 @@
 <template>
   <div id="app">
     <div id="nav">
+      <p @click="this.$store.commit('botGuesses', interval)">{{interval}}</p>
+
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
   </div>
 </template>
-
+<script>
+  import { mapGetters } from 'vuex'
+  export default {
+      computed: {
+          ...mapGetters([
+              'interval'
+          ])
+      }
+  }
+</script>
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
