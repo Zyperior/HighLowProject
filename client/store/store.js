@@ -31,10 +31,10 @@ export default new Vuex.Store({
       updateGuess(state, guess){
           if(guess === state.interval.correctAnswer){
               console.log("Correct")
-          }else if(guess > state.interval.correctAnswer && guess < interval.highestGuess){
+          }else if(guess > state.interval.correctAnswer && guess < state.interval.highestGuess){
               state.interval.highestGuess = guess;
               console.log("New highest "+guess)
-          }else if(guess < state.interval.correctAnswer && guess > interval.lowestGuess){
+          }else if(guess < state.interval.correctAnswer && guess > state.interval.lowestGuess){
               state.interval.lowestGuess = guess;
               console.log("New lowest "+guess)
           }

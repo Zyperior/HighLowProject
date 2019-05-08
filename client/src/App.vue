@@ -23,6 +23,7 @@
               console.log("woooo")
               this.playingBots.forEach(bot => {
                   this.$store.commit('updateGuess', bot.guess(this.interval));
+                  bot.guess(this.interval);
               })
           },
       }
