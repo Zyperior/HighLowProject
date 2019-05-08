@@ -6,13 +6,29 @@ const router = express.Router();
 let Question = require("../model/question");
 
 router.get("/", (req, res) => {
-    res.send("hello");
+    Question.find()
+        .select("question answer")
+        .exec()
+        .then(foundquestions => console.log(foundquestions))
+        .catch(error => console.log(error))
+
+});
+
+router.get("/:amount", (req, res) => {
+
+    Question.find()
+        .limit(parseInt(req.params.amount))
+        .select("question answer")
+        .exec()
+        .then(foundquestions => console.log(foundquestions))
+        .catch(error => console.log(error))
+
 });
 
 
 router.post("/", (req, res) => {
     let question = new Question({
-        id: new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         question: req.body.question,
         answer: req.body.answer
     });
@@ -21,7 +37,8 @@ router.post("/", (req, res) => {
         .then(savedQuestion => {
             res.status(201).json({
                 message: "Created product successfully"
-        })
+        }).catch(error => console.log(error))
+
     })
 
 
