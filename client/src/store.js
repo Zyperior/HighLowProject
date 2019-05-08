@@ -30,12 +30,15 @@ export default new Vuex.Store({
     answeredQuestions: [{
 
     }],
-    lowAnswers:[{
+    lowAnswers:[
 
-    }],
-    highAnswers:[{
+    ],
+    highAnswers:[
 
-    }]
+    ],
+    answers:[
+      
+    ]
   },
   getters: {
     getQuestions: state => {
