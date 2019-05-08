@@ -3,7 +3,7 @@ const bot1 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (isHigher) {
+        } else if (interval.isHigher) {
             return this.guessAbove(interval);
         } else {
             return this.guessBelow(interval);
@@ -28,7 +28,7 @@ const bot2 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (isHigher) {
+        } else if (interval.isHigher) {
             return this.guessAbove(interval);
         } else {
             return this.guessBelow(interval);
@@ -38,8 +38,10 @@ const bot2 = {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
         if (intervalSize > 10) {
             return interval.lowestGuess + Math.floor(intervalSize * 0.5);
+        } else if (intervalSize <= 3) {
+            return interval.lowestGuess + 1;
         }
-        return Math.floor(Math.random() * 10 + 1) + interval.lowestGuess;
+        return Math.floor(Math.random() * intervalSize) + interval.lowestGuess;
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 250;
@@ -55,16 +57,17 @@ const bot2 = {
 const bot3 = {
     name: 'The La Bossen',
     guess: function(interval){
-        let bossLow = Math.floor(interval.correctAnswer * 0.9);
-        let bossHigh = Math.floor(interval.correctAnswer * 1.1);
-        if (bossHigh < interval.highestGuess && bossLow > interval.lowestGuess) {
-            return Math.floor(Math.random() * bossHigh + bossLow)
+        let bossLow = interval.correctAnswer * 0.9;
+        let bossHigh = interval.correctAnswer * 1.1;
+        if ((bossHigh < interval.highestGuess) && (bossLow > interval.lowestGuess)) {
+            console.log(bossHigh + ' ' + bossLow);
+            return Math.floor(Math.random() * (bossHigh - bossLow)) + bossLow;
         } else if (bossLow < interval.lowestGuess && bossHigh < interval.highestGuess) {
-            return Math.floor(Math.random() * bossHigh + interval.lowestGuess)
+            return Math.floor(Math.random() * (bossHigh - interval.lowestGuess) + interval.lowestGuess)
         } else if (bossHigh < interval.highestGuess && bossLow > interval.lowestGuess) {
-            return Math.floor(Math.random() * interval.highestGuess + bossLow)
+            return Math.floor(Math.random() * (interval.highestGuess - bossLow) + bossLow)
         } else {
-            return Math.floor(Math.random() * interval.highestGuess + interval.lowestGuess)
+            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess)
         }
     },
     timing: 2,
@@ -77,14 +80,14 @@ const bot4 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (isHigher) {
+        } else if (interval.isHigher) {
             return this.guessAbove(interval);
         } else {
             return this.guessBelow(interval);
         }
     },
     inIntervalGuess: function(interval) {
-        return Math.floor(Math.random() * interval.highestGuess + interval.lowestGuess)
+        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess)
     },
     guessAbove: function(interval) {
         return interval.lowestGuess * 2;
@@ -98,9 +101,96 @@ const bot4 = {
 }
 
 const bot5 = {
-    name: 'Brotinski',
+    name: 'Botinski',
     guess: function(interval){
-        return Math.floor(Math.random() * 5000 + 1);
+        var guess = Math.floor(Math.random() * 5000 + 1);
+        if(Math.floor(Math.random() * 100 + 1) == 100) {
+            return interval.correctAnswer;
+        }else
+            return guess;
+    },
+    timing: 2,
+    isPlaying: true
+}
+
+const bot6 =  {
+    name: 'Das Boot',
+    guess: function(interval){
+        if(interval.isInInterval()) {
+            return this.inIntervalGuess(interval);
+        } else if (interval.isHigher) {
+            return this.guessAbove(interval);
+        } else {
+            return this.guessBelow(interval);
+        }
+    },
+    inIntervalGuess: function(interval) {
+        return Math.floor(interval.lowestGuess * 1.33); // TODO: Kan gå utanför intervallet, kan inte nå correct answer
+    },
+    guessAbove: function(interval) {
+        return interval.lowestGuess + 1981;
+    },
+    guessBelow: function(interval) {
+        return interval.highestGuess - 1981;
+    },
+    timing: 2,
+    isPlaying: true
+}
+
+const bot7 = { //TODO: Inte klar
+    name: 'Segelbot',
+    lastGuess: 0,
+    guess: function(interval){
+        if(interval.isInInterval()) {
+            return this.inIntervalGuess(interval);
+        } else if (interval.isHigher) {
+            return this.guessAbove(interval);
+        } else {
+            return this.guessBelow(interval);
+        }
+    },
+    inIntervalGuess: function(interval) {
+        var intervalSize = interval.highestGuess - interval.lowestGuess;
+        this.lastGuess = interval.lowestGuess + 30;
+        if(this.lastGuess >= interval.highestGuess) {
+            this.lastGuess = interval.highestGuess / 2;
+            return this.lastGuess;
+        }
+        else{
+            return this.lastGuess;
+        }
+    },
+    guessAbove: function(interval) {
+        return interval.lowestGuess + 486;
+    },
+    guessBelow: function(interval) {
+        return interval.highestGuess * -2;
+    },
+    timing: 2,
+    isPlaying: true
+}
+
+const bot8 = {
+    name: 'Anna',
+    lastGuess: 0,
+    guess: function(interval){
+        if(interval.isInInterval()) {
+            return this.inIntervalGuess(interval);
+        } else if (interval.isHigher) {
+            return this.guessAbove(interval);
+        } else {
+            return this.guessBelow(interval);
+        }
+    },
+    inIntervalGuess: function(interval) {
+        var lowerBound = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
+        return Math.floor(Math.random() * lowerBound + interval.lowestGuess);
+    },
+    guessAbove: function(interval) {
+        return interval.lowestGuess + 2006;
+    },
+    guessBelow: function(interval) {
+        return interval.highestGuess - 2006;
     },
     timing: 2,
     isPlaying: true
@@ -111,7 +201,7 @@ const bot9 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (isHigher) {
+        } else if (interval.isHigher) {
             return this.guessAbove(interval);
         } else {
             return this.guessBelow(interval);
@@ -119,7 +209,7 @@ const bot9 = {
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        return Math.floor(Math.random() * interval.highestGuess + (interval.lowestGuess + intervalSize * 0.5));
+        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + (interval.lowestGuess + intervalSize * 0.5));
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 777;
@@ -137,7 +227,7 @@ const bot10 = {
     guess: function(interval){
         let intervalSize = interval.highestGuess - interval.lowestGuess;
         if(intervalSize < 20) {
-            Math.floor(Math.random() * interval.highestGuess + interval.lowestGuess)
+            Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
         }
         return 0;
     },
@@ -151,7 +241,7 @@ const bot11 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (isHigher) {
+        } else if (interval.isHigher) {
             return this.guessAbove(interval);
         } else {
             return this.guessBelow(interval);
@@ -192,100 +282,4 @@ const bot12 = {
     behavior: "Wins on a D20"
 }
 
-const bot6 = {
-    name: 'Botinski',
-    guess: function(interval){
-        var guess = Math.floor(Math.random() * 5000 + 1);
-        if(Math.floor(Math.random() * 100 + 1) == 100) {
-            return interval.correctAnswer;
-        }else
-            return guess;
-    },
-    timing: 2,
-    isPlaying: false
-}
-
-const bot7 =  {
-    name: 'Das Boot',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return inIntervalGuess(interval);
-        } else if (isHigher) {
-            return this.guessAbove(interval);
-        } else {
-            return this.guessBelow(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        return interval.lowestGuess * 1.33;
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 1981;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 1981;
-    },
-    timing: 2,
-    isPlaying: false
-}
-
-const bot8 = {
-    name: 'Segelbot',
-    lastGuess: 0,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return inIntervalGuess(interval);
-        } else if (isHigher) {
-            return this.guessAbove(interval);
-        } else {
-            return this.guessBelow(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        var intervalSize = interval.highestGuess - interval.lowestGuess;
-        this.lastGuess = interval.lowestGuess + 30;
-        if(this.lastGuess >= interval.highestGuess) {
-            this.lastGuess = interval.highestGuess / 2;
-            return this.lastGuess;
-        }
-        else{
-            return this.lastGuess;
-        }
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 486;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess * -2;
-    },
-    timing: 2,
-    isPlaying: false
-}
-
-const bot8 = {
-    name: 'Anna',
-    lastGuess: 0,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return inIntervalGuess(interval);
-        } else if (isHigher) {
-            return this.guessAbove(interval);
-        } else {
-            return this.guessBelow(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        var lowerBound = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
-        return interval.lowestGuess + Math.floor(Math.random() * lowerBound + interval.lowestGuess);
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 2006;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 2006;
-    },
-    timing: 2,
-    isPlaying: false
-}
-
-export default [bot1, bot2, bot3, bot4, bot5, bot6, bot7, bot8, bot9, bot10, bot11, bot12];
+export default [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12];
