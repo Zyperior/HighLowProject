@@ -3,29 +3,44 @@
         <p>
             {{this.$store.state.questions[questionNumber].question}}
         </p>
-        <input type="text" name="" placeholder="Enter your answer">
+        <input v-model="answer" name='answer' placeholder="Enter your answer">
+        <button @click="enterAnswer">Submit answer</button>
     </div>
 </template>
 
 <script>
     export default {
         name: 'Game',
-        data(){
+        data() {
             return {
-                questionNumber: 1
+                questionNumber: 0,
+                answer: ''
             }
         },
         methods: {
             getQuestions() {
                 return this.$store.getters.getQuestions;
             },
-            nextQuestion: function(){
-                if(playerinput.answer === this.$store.state.questions[questionNumber].answer){
-                    questionNumber += 1;
+            enterAnswer: function () {
+                if(this.answer < this.$store.state.questions[this.questionNumber].answer){
+                    console.log('This answer is to low');
+                    this.$store.state.highAnswers.push(this.answer);
+                    console.log(this.$store.state.highAnswers);
                 }
-            },
+                if(this.answer > this.$store.state.questions[this.questionNumber].answer){
+                    console.log('This answer is to high')
+                    this.$store.state.lowAnswers.push(this.answer);
+                    this.$store.state.lowAnswers.sort()
+                    console.log(this.$store.state.lowAnswers);
+                }                
+                if (this.answer == this.$store.state.questions[this.questionNumber].answer) {
+                    console.log('Answer is correct');
+                    this.questionNumber += 1;
+                }
+                console.log(this.answer)
+                //this.$emit('answerQuestion', newAnswer)
+            }
         }
-
     }
 </script>
 

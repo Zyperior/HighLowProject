@@ -34,7 +34,10 @@ export default new Vuex.Store({
     }],
     highAnswers:[{
       
-    }]
+    }],
+    answers:[
+
+    ]
   },
   getters: {
     getQuestions: state => {
