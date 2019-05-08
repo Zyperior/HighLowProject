@@ -65,5 +65,23 @@ router.delete("/:id", (req, res) => {
         .catch(error => res.status(500).json({message: error.toString()}))
 })
 
+router.put("/:id", (req, res) => {
+
+    const updatedQuestion = {
+        question: req.body.question,
+        answer: req.body.answer,
+        source: req.body.source,
+        difficulty: req.body.difficulty,
+        category: req.body.category
+    };
+
+    Question.update({_id: req.params.id}, updatedQuestion)
+        .exec()
+        .then(result => res.status(200).json({message: "Updated question successfully"}))
+        .catch(error => res.status(500).json({message: error.toString()}))
+
+
+})
+
 
 module.exports = router;
