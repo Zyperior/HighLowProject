@@ -5,6 +5,9 @@ import bots from './modules/bot'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    bots
+  },
   state: {
     bots,
     interval: {
@@ -25,11 +28,6 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-      botGuesses(state, getters){
-        getters.playingBots.forEach(bot => {
-            store.commit('updateGuess', bot.guess(state.interval));
-        })
-      },
       updateGuess(state, guess){
           if(guess === state.interval.correctAnswer){
               console.log("Correct")
@@ -41,8 +39,6 @@ export default new Vuex.Store({
               console.log("New lowest "+guess)
           }
 
-
-          state.interval
       }
 
   },

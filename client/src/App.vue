@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <p @click="this.$store.commit('botGuesses', interval)">{{interval}}</p>
+      <p @click="botGuesses">{{interval}}</p>
 
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -10,12 +10,21 @@
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   export default {
       computed: {
           ...mapGetters([
-              'interval'
+              'interval',
+              'playingBots'
           ])
+      },
+      methods: {
+          botGuesses(){
+              console.log("woooo")
+              this.playingBots.forEach(bot => {
+                  this.$store.commit('updateGuess', bot.guess(this.interval));
+              })
+          },
       }
   }
 </script>
