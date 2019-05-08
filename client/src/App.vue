@@ -23,8 +23,10 @@
               this.playingBots.forEach(bot => {
                   let guess = bot.guess(this.interval);
                   this.$store.commit('updateGuess', guess);
-                  bot.guess(this.interval);
                   console.log(bot.name + ' ' + guess)
+                  if(guess > this.interval.highestGuess || guess < this.interval.lowestGuess) {
+                      console.log('Outside interval ' + bot.name + ' ' + guess)
+                  }
               })
           },
       }
