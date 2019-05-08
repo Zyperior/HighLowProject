@@ -20,10 +20,11 @@
       },
       methods: {
           botGuesses(){
-              console.log("woooo")
               this.playingBots.forEach(bot => {
-                  this.$store.commit('updateGuess', bot.guess(this.interval));
+                  let guess = bot.guess(this.interval);
+                  this.$store.commit('updateGuess', guess);
                   bot.guess(this.interval);
+                  console.log(bot.name + ' ' + guess)
               })
           },
       }
