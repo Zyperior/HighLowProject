@@ -1,4 +1,7 @@
 # highlow
+***
+<a href="https://github.com/Zyperior/HighLowProject/wiki">Project Wiki</a>
+***
 
 ## Project setup
 ```
