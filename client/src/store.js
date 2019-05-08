@@ -28,31 +28,23 @@ export default new Vuex.Store({
 
     answeredQuestions: [{
 
+    }],
+    lowAnswers:[{
+
+    }],
+    highAnswers:[{
+      
     }]
   },
   getters: {
     getQuestions: state => {
-
-      for (let i = 0; i < state.questions.length; i++) {
-        const element = state.questions[i];
-
-        return state.questions[i].question;
+        return state.questions;
       }
-
-    }
   },
 
   mutations: {
 
 
-    questionAnswered: function (state, index) {
-      if (state.questions[i].status)
-        state.answeredQuestions.push(state.questions[i])
-    },
-    correctQuestion: function (state) {
-      if ("userInput" === state.question[0].answer)
-        state.question[0].status = true;
-    }
   },
   actions: {
 
