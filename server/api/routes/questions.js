@@ -9,8 +9,8 @@ router.get("/", (req, res) => {
     Question.find()
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.status(200).json(foundquestions))
-        .catch(error => console.log(error))
+        .then(foundquestions => res.status(200).send(foundquestions))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
 
@@ -32,14 +32,12 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         query = {difficulty: difficulty}
     }
 
-
-
     Question.find(query)
         .limit(amount)
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.status(200).json(foundquestions))
-        .catch(error => console.log(error))
+        .then(foundquestions => res.status(200).send(foundquestions))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
 
@@ -55,15 +53,30 @@ router.post("/", (req, res) => {
     });
 
     question.save()
-        .then(savedQuestion => {
-            res.status(201).json({message: "Created product successfully"})
-
-
-    })
-        .catch(error => console.log(error))
-
+        .then(savedQuestion => res.status(201).send(savedQuestion))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
+
+
+
+router.delete("/:id", (req, res) => {
+    Question.remove({_id: req.params.id})
+        .exec()
+        .then(deletedQuestion => res.status(200).json({message: "Deleted question successfully"}))
+        .catch(error => res.status(500).json({message: error.toString()}))
+})
+
+
+
+router.put("/:id", (req, res) => {
+
+    Question.findOneAndUpdate({_id:req.params.id}, req.body, {new:true})
+        .exec()
+        .then(updatedQuestion => res.status(200).send(updatedQuestion))
+        .catch(error => res.status(500).json({message: error.toString()}))
+
+})
 
 
 module.exports = router;
