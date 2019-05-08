@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
     Question.find()
         .select("question answer")
         .exec()
-        .then(foundquestions => console.log(foundquestions))
+        .then(foundquestions => res.status(200).json(foundquestions))
         .catch(error => console.log(error))
 
 });
@@ -20,7 +20,7 @@ router.get("/:amount", (req, res) => {
         .limit(parseInt(req.params.amount))
         .select("question answer")
         .exec()
-        .then(foundquestions => console.log(foundquestions))
+        .then(foundquestions => res.status(200).json(foundquestions))
         .catch(error => console.log(error))
 
 });
@@ -37,7 +37,8 @@ router.post("/", (req, res) => {
         .then(savedQuestion => {
             res.status(201).json({
                 message: "Created product successfully"
-        }).catch(error => console.log(error))
+        })
+        .catch(error => console.log(error))
 
     })
 
