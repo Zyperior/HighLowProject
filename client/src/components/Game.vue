@@ -1,8 +1,8 @@
 <template>
     <div>
-        <p>
-            {{this.$store.state.questions[questionNumber].question}}
-        </p>
+        <div v-for="question in getActiveQuestion" :key="question.question">
+            <p>{{question.question}}</p>
+        </div>
         <input type="text" name="" placeholder="Enter your answer">
     </div>
 </template>
@@ -23,7 +23,12 @@
                 if(playerinput.answer === this.$store.state.questions[questionNumber].answer){
                     questionNumber += 1;
                 }
-            },
+            }
+        },
+        computed: {
+           getActiveQuestion() {
+               return this.$store.commit('getActiveQuestion');
+           }
         }
 
     }

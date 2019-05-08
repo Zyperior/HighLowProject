@@ -9,7 +9,7 @@ export default new Vuex.Store({
         id: 0,
         question: 'What year was Öyvin born',
         answer: 1984,
-        status: false
+        status: true
 
       },
       {
@@ -25,6 +25,7 @@ export default new Vuex.Store({
         status: false
       }
     ],
+    activeQuestion: [],
 
     answeredQuestions: [{
 
@@ -33,7 +34,7 @@ export default new Vuex.Store({
 
     }],
     highAnswers:[{
-      
+
     }]
   },
   getters: {
@@ -41,9 +42,7 @@ export default new Vuex.Store({
         return state.questions;
       }
   },
-
   mutations: {
-
 
   },
   actions: {
