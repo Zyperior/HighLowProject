@@ -9,11 +9,12 @@ router.get("/", (req, res) => {
     res.send("hello");
 });
 
+
 router.post("/", (req, res) => {
     let question = new Question({
         id: new mongoose.Types.ObjectId(),
-        question: "test",
-        answer: 5
+        question: req.body.question,
+        answer: req.body.answer
     });
 
     question.save()
