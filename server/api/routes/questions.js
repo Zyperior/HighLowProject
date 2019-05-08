@@ -9,8 +9,8 @@ router.get("/", (req, res) => {
     Question.find()
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.status(200).json(foundquestions))
-        .catch(error => console.log(error))
+        .then(foundquestions => res.staus(200).json(foundquestions))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
 
@@ -32,14 +32,12 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         query = {difficulty: difficulty}
     }
 
-
-
     Question.find(query)
         .limit(amount)
         .select("question answer difficulty category source")
         .exec()
         .then(foundquestions => res.status(200).json(foundquestions))
-        .catch(error => console.log(error))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
 
@@ -55,13 +53,8 @@ router.post("/", (req, res) => {
     });
 
     question.save()
-        .then(savedQuestion => {
-            res.status(201).json({message: "Created product successfully"})
-
-
-    })
-        .catch(error => console.log(error))
-
+        .then(savedQuestion => res.status(201).json({message: "Created product successfully"}))
+        .catch(error => res.status(500).json({message: error.toString()}))
 
 });
 
