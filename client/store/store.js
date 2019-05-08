@@ -19,7 +19,8 @@ export default new Vuex.Store({
         },
         isHigherThanGuess: function() {
           return (this.lowestGuess > this.highestGuess)
-        }
+        },
+        lastGuess: 0
     }
   },
   getters: {
