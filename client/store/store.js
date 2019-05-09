@@ -10,7 +10,7 @@ export default new Vuex.Store({
     interval: {
         lowestGuess: 0,
         highestGuess: 0,
-        correctAnswer: 1898,
+        correctAnswer: 100,
         isInInterval: function() {
           return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
         },
@@ -36,7 +36,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-      updateGuess(state, guess){
+      updateGuess(state, guess, player){
+          console.log(guess);
           state.interval.lastGuess = guess;
           if(guess === state.interval.correctAnswer){
               console.log("Correct")
@@ -46,7 +47,13 @@ export default new Vuex.Store({
           }else if(guess < state.interval.correctAnswer && guess > state.interval.lowestGuess){
               state.interval.lowestGuess = guess;
               console.log("New lowest "+guess)
+          }else{
+              // player.points -= 1;
+              console.log("Inside badguess");
           }
+
+      },
+      badGuess(state, player){
 
       }
 

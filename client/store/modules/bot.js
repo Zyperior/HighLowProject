@@ -13,6 +13,8 @@ const bot1 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 1;
     },
+    unfair: false,
+    difficulty: 'easy',
     timing: 2,
     isPlaying: false,
     behavior: "Lowest guess + 1"
@@ -39,6 +41,8 @@ const bot2 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 250;
     },
+    unfair: false,
+    difficulty: 'hard',
     timing: 2,
     isPlaying: false,
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess"
@@ -49,17 +53,21 @@ const bot3 = {
     guess: function(interval){
         let bossLow = interval.correctAnswer * 0.9;
         let bossHigh = interval.correctAnswer * 1.1;
+        console.log("high: "+bossHigh + ' ' + "low: "+bossLow);
         if ((bossHigh < interval.highestGuess) && (bossLow > interval.lowestGuess)) {
-            console.log(bossHigh + ' ' + bossLow);
             return Math.floor(Math.random() * (bossHigh - bossLow)) + bossLow;
         } else if (bossLow < interval.lowestGuess && bossHigh < interval.highestGuess) {
             return Math.floor(Math.random() * (bossHigh - interval.lowestGuess) + interval.lowestGuess)
-        } else if (bossHigh < interval.highestGuess && bossLow > interval.lowestGuess) {
+        } else if (bossHigh < interval.highestGuess && bossLow < interval.lowestGuess) {
             return Math.floor(Math.random() * (interval.highestGuess - bossLow) + bossLow)
         } else {
+            if(interval.highestGuess <= interval.lowestGuess)
+                 return Math.floor(Math.random() * (bossHigh - bossLow) + bossLow);
             return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess)
         }
     },
+    unfair: true,
+    difficulty: 'hard',
     timing: 2,
     isPlaying: false,
     behavior: "Guesses correctAnswer +- 10%, unless highest/lowest are closer"
@@ -80,6 +88,8 @@ const bot4 = {
     guessAbove: function(interval) {
         return interval.lowestGuess * 2;
     },
+    unfair: false,
+    difficulty: 'easy',
     timing: 2,
     isPlaying: false,
     description: "Guesses randomly between highest and lowest guess"
@@ -94,6 +104,8 @@ const bot5 = {
         }else
             return guess;
     },
+    unfair: true,
+    difficulty: 'easy',
     timing: 2,
     isPlaying: false
 }
@@ -113,6 +125,8 @@ const bot6 =  {
     guessAbove: function(interval) {
         return interval.lowestGuess + 1981;
     },
+    unfair: true,
+    difficulty: 'hard',
     timing: 2,
     isPlaying: false
 }
@@ -146,6 +160,8 @@ const bot7 = { //TODO: Inte klar
     guessAbove: function(interval) {
         return interval.lowestGuess + 486;
     },
+    unfair: false,
+    difficulty: 'medium',
     timing: 2,
     isPlaying: false
 }
@@ -170,6 +186,8 @@ const bot8 = {
         console.log("wowowowoowowow 2")
         return interval.lowestGuess + 2006;
     },
+    unfair: false,
+    difficulty: 'medium',
     timing: 2,
     isPlaying: false
 }
@@ -191,6 +209,8 @@ const bot9 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 777;
     },
+    unfair: false,
+    difficulty: 'medium',
     timing: 2,
     isPlaying: false,
     behavior: "Looks above for answers, answering in the top half of the interval"
@@ -205,6 +225,8 @@ const bot10 = {
         }
         return 0;
     },
+    unfair: false,
+    difficulty: 'medium',
     timing: 2,
     isPlaying: false,
     behavior: "Bides his time and refuses to answer, unless > 20% chance to win"
@@ -221,19 +243,22 @@ const bot11 = {
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30 && interval.isHigher) {
+        if (intervalSize > 30 && !interval.isHigher) {
             return interval.lastGuess + 10;
-        } else if(intervalSize > 30 && !interval.isHigher) {
+        } else if(intervalSize > 30 && interval.isHigher) {
             return interval.lastGuess - 10;
-        } else if (interval.isHigher) {
-            return interval.lastGuess + 2;
-        } else if(!interval.isHigher) {
-            return interval.lastGuess - 2;
+        } else if (!interval.isHigher) {
+            return interval.lastGuess + 1;
+        } else if(interval.isHigher) {
+            return interval.lastGuess - 1;
         }
     },
     guessAbove: function(interval) {
-        return interval.lowestGuess + 10;
+
+        return 10 + interval.lowestGuess;
     },
+    unfair: false,
+    difficulty: 'medium',
     timing: 2,
     isPlaying: false,
     behavior: "Copies player's guess and adds 10 or 2 depending on how close to answer"
@@ -246,6 +271,8 @@ const bot12 = {
             return interval.correctAnswer;
         } else return 0;
     },
+    unfair: true,
+    difficulty: 'hard',
     timing: 2,
     isPlaying: false,
     behavior: "Wins on a D20"
