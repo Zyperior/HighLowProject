@@ -5,7 +5,7 @@
         </header>
         <p id="question">
             {{this.$store.state.questions[questionNumber].question}}
-        </p><br>
+        </p>
         <p id="hiTracker">
             Highest Answer: {{this.$store.state.highAnswers[0]}}
         </p>
@@ -13,7 +13,7 @@
             Lowest Answer: {{this.$store.state.lowAnswers[0]}}
         </p>
 
-        <input v-model="answer" name='answer' placeholder="Enter your answer" id="answer">
+        <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name='answer' placeholder="Enter your answer" id="answer">
         <button @click="enterAnswer" id="submit">Submit answer</button>
     </div>
 </template>
