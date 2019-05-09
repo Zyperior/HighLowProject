@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <p @click="botGuesses">{{interval}}</p>
+        <p v-for="bot in bots" @click="bot.isPlaying = !bot.isPlaying">{{bot}}</p>
+
+        <p @click="botGuesses">{{interval}}</p>
+
 
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -15,6 +18,7 @@
       computed: {
           ...mapGetters([
               'interval',
+              'bots',
               'playingBots'
           ])
       },

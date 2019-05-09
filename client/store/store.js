@@ -5,19 +5,16 @@ import bots from './modules/bot'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    bots
-  },
   state: {
     bots,
     interval: {
         lowestGuess: 0,
-        highestGuess: 300,
-        correctAnswer: 102,
+        highestGuess: 0,
+        correctAnswer: -10,
         isInInterval: function() {
           return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
         },
-        isHigherThanGuess: function() {
+        isHigher: function() {
           return (this.lowestGuess > this.highestGuess)
         },
         lastGuess: 0
@@ -25,13 +22,17 @@ export default new Vuex.Store({
   },
   getters: {
     availableBots(state){
-      return bots.filter(bot => !bot.isPlaying)
+      return state.bots.filter(bot => !bot.isPlaying)
     },
     playingBots(state){
-      return bots.filter(bot => bot.isPlaying)
+      return state.bots.filter(bot => bot.isPlaying)
     },
     interval: state => {
         return state.interval;
+    },
+    bots(state){
+        console.log(bots)
+        return state.bots;
     }
   },
   mutations: {
