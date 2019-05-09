@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const state = {
-    questions: [{question: "this is a test question"}]
+    questions2: [{question: "this is a test question"}]
 }
 
 
@@ -17,7 +17,7 @@ const actions = {
 
 
 const mutations = {
-    setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions)
+    setQuestions: (state, loadedQuestions) => (state.questions2 = loadedQuestions)
 }
 
 

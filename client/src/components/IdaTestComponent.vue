@@ -2,7 +2,7 @@
     <div>
         <p>Test!</p>
         <button v-on:click="loadQuestionsFromApi">Load questions from API</button>
-        <p>{{this.$store.state.questions}}</p>
+        <p>{{this.$store.state.questions2}}</p>
     </div>
 </template>
 
