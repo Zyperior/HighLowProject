@@ -130,10 +130,13 @@ const bot7 = { //TODO: Inte klar
     },
     inIntervalGuess: function(interval) {
         var intervalSize = interval.highestGuess - interval.lowestGuess;
+        if (intervalSize < 20) {
+            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
+        }
         this.lastGuess *= doubler;
         this.lastGuess = interval.lowestGuess * this.doubler;
         if(this.lastGuess >= interval.highestGuess) {
-            this.lastGuess = interval.highestGuess / 2;
+            this.lastGuess = interval.highestGuess / this.doubler;
             return this.lastGuess;
         }
         else{
@@ -197,7 +200,7 @@ const bot10 = {
     name: 'Inbotstjuven',
     guess: function(interval){
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize < 20) {
+        if(intervalSize < 5) {
             return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
         }
         return 0;
@@ -250,4 +253,3 @@ const bot12 = {
 
 export default
  [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
-

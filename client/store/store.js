@@ -10,7 +10,7 @@ export default new Vuex.Store({
     interval: {
         lowestGuess: 0,
         highestGuess: 0,
-        correctAnswer: -10,
+        correctAnswer: 1898,
         isInInterval: function() {
           return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
         },
@@ -40,7 +40,7 @@ export default new Vuex.Store({
           state.interval.lastGuess = guess;
           if(guess === state.interval.correctAnswer){
               console.log("Correct")
-          }else if(guess > state.interval.correctAnswer && guess < state.interval.highestGuess){
+          }else if(guess > state.interval.correctAnswer && (guess < state.interval.highestGuess || state.interval.highestGuess == 0)){
               state.interval.highestGuess = guess;
               console.log("New highest "+guess)
           }else if(guess < state.interval.correctAnswer && guess > state.interval.lowestGuess){
