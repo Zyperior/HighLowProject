@@ -1,47 +1,61 @@
-import bots from "./bot";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import bots from './bot'
 
-const state = {
-     bots,
+
+export default {
+    state: {
+        bots,
         interval: {
-        lowestGuess: 50,
-            highestGuess: 150,
-            correctAnswer: 100
-    }
-}
-const getters = {
-    availableBots(){
-        return state.bots.filter(bot => !bot.isPlaying)
+            lowestGuess: 0,
+            highestGuess: 0,
+            correctAnswer: 100,
+            isInInterval: function() {
+                return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
+            },
+            isHigher: function() {
+                return (this.lowestGuess > this.highestGuess)
+            },
+            lastGuess: 0
+        }
     },
-    playingBots(){
-        return state.bots.filter(bot => bot.isPlaying)
+    getters: {
+        availableBots(state){
+            return state.bots.filter(bot => !bot.isPlaying)
+        },
+        playingBots(state){
+            return state.bots.filter(bot => bot.isPlaying)
+        },
+        interval: state => {
+            return state.interval;
+        },
+        bots(state){
+            return state.bots;
+        }
     },
-    interval: () => {
-        return state.interval;
-    }
-}
+    mutations: {
+        updateGuess(state, guess){
+            state.interval.lastGuess = guess;
+            if(guess === state.interval.correctAnswer){
+                console.log("Correct")
+            }else if(guess > state.interval.correctAnswer && (guess < state.interval.highestGuess || state.interval.highestGuess == 0)){
+                state.interval.highestGuess = guess;
+                console.log("New highest "+guess)
+            }else if(guess < state.interval.correctAnswer && guess > state.interval.lowestGuess){
+                state.interval.lowestGuess = guess;
+                console.log("New lowest "+guess)
+            }else{
+                // player.points -= 1;
+                console.log("Inside badguess");
+            }
 
-const mutations = {
-    botGuesses() {
-        getters.playingBots().forEach(bot => {
-            mutations.updateGuess(bot.guess(state.interval))
-           // store.commit('updateGuess', bot.guess(state.interval));
-        })
-    },
-    updateGuess(state, guess) {
-        if (guess === state.interval.correctAnswer) {
-            console.log("Correct")
-        } else if (state.interval.correctAnswer && guess < state.interval.highestGuess) {
-            state.interval.highestGuess = guess;
-            console.log("New highest " + guess)
-        } else if (guess < state.interval.correctAnswer && guess > state.interval.lowestGuess) {
-            state.interval.lowestGuess = guess;
-            console.log("New lowest " + guess)
+        },
+        badGuess(state, player){
+
         }
 
+    },
+    actions: {
+
     }
-}
-export default {
-    state,
-    getters,
-    mutations
 }
