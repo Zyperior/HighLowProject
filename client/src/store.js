@@ -9,7 +9,7 @@ export default new Vuex.Store({
         id: 0,
         question: 'What year was Öyvin born',
         answer: 1984,
-        status: true
+        status: false
 
       },
       {
@@ -25,7 +25,12 @@ export default new Vuex.Store({
         status: false
       }
     ],
-    activeQuestion: [],
+        currentQuestion: "",
+        startStage: true,
+        isRunning: false,
+        answerAttempts: 0,
+        answer: "",
+        questionCounter: 0,
 
     answeredQuestions: [{
 
@@ -34,21 +39,54 @@ export default new Vuex.Store({
 
     ],
     highAnswers:[
-
+      
     ],
     answers:[
-      
+
     ]
   },
   getters: {
-    getQuestions: state => {
-        return state.questions;
-      }
+    getCurrentQuestion: state => {
+        return state.currentQuestion;
+    },
+    getAnswer: state => {
+        return state.answer;
+    },
+    getIsRunning: state => {
+        return state.isRunning;
+    },
+    getStartStage: state => {
+        return state.startStage;
+    }
   },
+
   mutations: {
+    startGame: state => {
+        state.startStage = false;
+        state.isRunning = true;
+        state.currentQuestion = state.questions[state.questionCounter].question;
+    },
+    submitAnswer: state => {
+        if (state.answer == state.questions[state.questionCounter].answer) {
+            state.questionCounter++;
+            if (state.questionCounter === state.questions.length) {
+                state.questionCounter = 0;
+            }
+            state.currentQuestion = state.questions[state.questionCounter].question;
+        }
+        else {
+            alert('You fucked up (This profanity is for testing purposes only :)');
+        }
+        state.answer = '';
+    },
+    updateAnswer: (state, a) => {
+        state.answer = a;
+    }
 
   },
   actions: {
-
+    updateAnswer: ({commit}, a) => {
+        commit('updateAnswer', a);
+    }
   }
 })

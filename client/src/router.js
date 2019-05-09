@@ -13,11 +13,6 @@ export default new Router({
       component: Game
     },
     {
-      path: '/rules',
-      name: 'rules',
-      component: () => import('./components/Rules.vue')
-    },
-    {
       path: '/about',
       name: 'about',
       // route level code-splitting
