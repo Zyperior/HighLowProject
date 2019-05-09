@@ -42,7 +42,7 @@ export default new Vuex.Store({
 
     ],
     highAnswers:[
-      
+
     ],
     answers:[
 
@@ -70,7 +70,7 @@ export default new Vuex.Store({
         state.currentQuestion = state.questions[state.questionCounter].question;
     },
     submitAnswer: state => {
-        if (state.answer == state.questions[state.questionCounter].answer) {
+        if (state.answer == state.questions[rstate.questionCounte].answer) {
             state.questionCounter++;
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
