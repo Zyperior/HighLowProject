@@ -53,18 +53,17 @@ const bot3 = {
     guess: function(interval){
         let bossLow = interval.correctAnswer * 0.9;
         let bossHigh = interval.correctAnswer * 1.1;
-        console.log("high: "+bossHigh + ' ' + "low: "+bossLow);
-        if ((bossHigh < interval.highestGuess) && (bossLow > interval.lowestGuess)) {
-            return Math.floor(Math.random() * (bossHigh - bossLow)) + bossLow;
-        } else if (bossLow < interval.lowestGuess && bossHigh < interval.highestGuess) {
-            return Math.floor(Math.random() * (bossHigh - interval.lowestGuess) + interval.lowestGuess)
-        } else if (bossHigh < interval.highestGuess && bossLow < interval.lowestGuess) {
-            return Math.floor(Math.random() * (interval.highestGuess - bossLow) + bossLow)
-        } else {
-            if(interval.highestGuess <= interval.lowestGuess)
-                 return Math.floor(Math.random() * (bossHigh - bossLow) + bossLow);
-            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess)
+
+        if(bossLow < interval.lowestGuess) {
+            bossLow = interval.lowestGuess;
         }
+        if(bossHigh > interval.highestGuess && interval.highestGuess != 0) {
+            bossHigh = interval.highestGuess;
+        }
+
+        console.log("high: "+bossHigh + ' ' + "low: "+ Number.parseInt(bossLow + 1));
+        return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
+
     },
     unfair: true,
     difficulty: 'hard',
