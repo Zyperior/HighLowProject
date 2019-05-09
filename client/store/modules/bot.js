@@ -19,7 +19,7 @@ const bot1 = {
         return interval.highestGuess - 1;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Lowest guess + 1"
 }
 
@@ -50,7 +50,7 @@ const bot2 = {
         return interval.highestGuess - 250;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess"
 }
 
@@ -71,7 +71,7 @@ const bot3 = {
         }
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Guesses correctAnswer +- 10%, unless highest/lowest are closer"
 }
 
@@ -96,7 +96,7 @@ const bot4 = {
         return Math.floor(interval.highestGuess * 0.5 - 10);
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     description: "Guesses randomly between highest and lowest guess"
 }
 
@@ -110,7 +110,7 @@ const bot5 = {
             return guess;
     },
     timing: 2,
-    isPlaying: true
+    isPlaying: false
 }
 
 const bot6 =  {
@@ -134,12 +134,13 @@ const bot6 =  {
         return interval.highestGuess - 1981;
     },
     timing: 2,
-    isPlaying: true
+    isPlaying: false
 }
 
 const bot7 = { //TODO: Inte klar
     name: 'Segelbot',
     lastGuess: 0,
+    doubler: 2,
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
@@ -151,7 +152,8 @@ const bot7 = { //TODO: Inte klar
     },
     inIntervalGuess: function(interval) {
         var intervalSize = interval.highestGuess - interval.lowestGuess;
-        this.lastGuess = interval.lowestGuess + 30;
+        this.lastGuess *= doubler;
+        this.lastGuess = interval.lowestGuess * this.doubler;
         if(this.lastGuess >= interval.highestGuess) {
             this.lastGuess = interval.highestGuess / 2;
             return this.lastGuess;
@@ -167,7 +169,7 @@ const bot7 = { //TODO: Inte klar
         return interval.highestGuess * -2;
     },
     timing: 2,
-    isPlaying: true
+    isPlaying: false
 }
 
 const bot8 = {
@@ -183,17 +185,21 @@ const bot8 = {
         }
     },
     inIntervalGuess: function(interval) {
-        var lowerBound = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
-        return Math.floor(Math.random() * lowerBound + interval.lowestGuess);
+        console.log("wowowo")
+        var intervalSize = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
+        return Math.floor((Math.random() * intervalSize) + interval.lowestGuess);
+        return guess;
     },
     guessAbove: function(interval) {
+        console.log("wowowowoowowow 2")
         return interval.lowestGuess + 2006;
     },
     guessBelow: function(interval) {
+        console.log("drotdrot")
         return interval.highestGuess - 2006;
     },
     timing: 2,
-    isPlaying: true
+    isPlaying: false
 }
 
 const bot9 = {
@@ -209,7 +215,8 @@ const bot9 = {
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + (interval.lowestGuess + intervalSize * 0.5));
+        var guess = (interval.highestGuess - 1 ) - Math.floor(Math.random() * (intervalSize * 0.5));
+        return guess;
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 777;
@@ -218,7 +225,7 @@ const bot9 = {
         return 0;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Looks above for answers, answering in the top half of the interval"
 }
 
@@ -227,12 +234,12 @@ const bot10 = {
     guess: function(interval){
         let intervalSize = interval.highestGuess - interval.lowestGuess;
         if(intervalSize < 20) {
-            Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
+            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
         }
         return 0;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Bides his time and refuses to answer, unless > 20% chance to win"
 }
 
@@ -266,7 +273,7 @@ const bot11 = {
         return interval.highestGuess - 10;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Copies player's guess and adds 10 or 2 depending on how close to answer"
 }
 
@@ -278,8 +285,10 @@ const bot12 = {
         } else return 0;
     },
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     behavior: "Wins on a D20"
 }
 
-export default [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12];
+export default
+ [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
+
