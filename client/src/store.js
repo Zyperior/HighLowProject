@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import questions2 from "./modules/questions2"
+import game from "./modules/game"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+<<<<<<< HEAD
   state: {
     questions: [{
         id: 0,
@@ -89,4 +92,13 @@ export default new Vuex.Store({
         commit('updateAnswer', a);
     }
   }
+=======
+  modules: {
+    questions2,
+    game
+  },
+
+
+
+>>>>>>> e3222470cd724990e23640910661033c337e3089
 })
