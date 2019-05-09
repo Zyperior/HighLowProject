@@ -3,6 +3,8 @@
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
         <div v-if="isRunning">
+            <p>Highest Guess: {{highGuess[0]}} </p>
+            <p>Lowest Guess: {{lowGuess[0]}} </p>
             <input v-model="answer" name="answer" placeholder="Enter your answer">
             <button @click="submitAnswer()">Submit Answer</button>
         </div>
@@ -36,6 +38,12 @@
             },
             startStage() {
                 return this.$store.getters.getStartStage;
+            },
+            lowGuess() {
+                return this.$store.getters.getLowGuess;
+            },
+            highGuess() {
+                return this.$store.getters.getHighGuess;
             }
         }
     }
