@@ -11,8 +11,7 @@
         name: "IdaTestComponent",
 
         methods: {
-            //Load questions from the database with the given settings.
-            //These can then be accessed from vuex store
+
             loadQuestionsFromApi(){
                 this.$store.dispatch("getQuestions");
             }
