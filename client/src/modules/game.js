@@ -20,10 +20,12 @@ const state = {
         }
     ],
     players: [{
-        name: "Player One"
+        name: "Player One",
+        answer: 0
     },
     {
-        name: "Player Two"
+        name: "Player Two",
+        answer: 0
     }],
     currentQuestion: "",
     startStage: true,
@@ -31,6 +33,7 @@ const state = {
     answerAttempts: 0,
     answer: "",
     questionCounter: 0,
+    playerTurn: 0,
 
     answeredQuestions: [{
 
@@ -64,6 +67,9 @@ const getters = {
     },
     getHighGuess: state => {
         return state.highAnswers;
+    },
+    getPlayers: state => {
+        return state.players;
     }
 }
 
@@ -74,29 +80,33 @@ const mutations = {
         state.currentQuestion = state.questions[state.questionCounter].question;
     },
     submitAnswer: state => {
-        if (state.answer == state.questions[state.questionCounter].answer) {
+        state.players[state.playerTurn].answer = state.answer;
+        
+        if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             state.questionCounter += 1;
             state.lowAnswers = [];
             state.highAnswers = [];
+            state.playerTurn += 1;
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
             }
             state.currentQuestion = state.questions[state.questionCounter].question;
         }
-        if (state.answer < state.questions[state.questionCounter].answer) {
+        if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
-            state.lowAnswers.push(state.answer);
+            state.lowAnswers.push(state.players[state.playerTurn].answer);
             state.lowAnswers.reverse();
             console.log(state.lowAnswers);
+            state.playerTurn += 1;
         }
-        if (state.answer > state.questions[state.questionCounter].answer) {
+        if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
             console.log('Your answer is to high');
             
-            state.highAnswers.push(state.answer);
+            state.highAnswers.push(state.players[state.playerTurn].answer);
             state.highAnswers.sort();
             console.log(state.highAnswers);
-
+            state.playerTurn += 1;
         }
 
         state.answer = '';
