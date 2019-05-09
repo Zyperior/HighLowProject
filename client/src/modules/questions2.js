@@ -6,7 +6,7 @@ const state = {
 
 
 const actions = {
-    async getQuestions({commit}) {
+    async getQuestions2({commit}) {
         const response = await axios.get(
             'http://localhost:5000/questions'
         );

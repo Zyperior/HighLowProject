@@ -13,7 +13,7 @@
         methods: {
 
             loadQuestionsFromApi(){
-                this.$store.dispatch("getQuestions");
+                this.$store.dispatch("getQuestions2");
             }
         }
     }

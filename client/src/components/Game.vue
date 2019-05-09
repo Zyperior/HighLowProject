@@ -4,13 +4,13 @@
             TEMP BEFORE ROUTING WORKS
         </header>
         <p id="question">
-            {{this.$store.state.questions[questionNumber].question}}
+            <!--{{this.$store.state.questions[questionNumber].question}}-->
         </p>
         <p id="hiTracker">
-            Highest Answer: {{this.$store.state.highAnswers[0]}}
+            <!--Highest Answer: {{this.$store.state.highAnswers[0]}}-->
         </p>
         <p id="loTracker">
-            Lowest Answer: {{this.$store.state.lowAnswers[0]}}
+            <!--Lowest Answer: {{this.$store.state.lowAnswers[0]}}-->
         </p>
 
         <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name='answer' placeholder="Enter your answer" id="answer">
