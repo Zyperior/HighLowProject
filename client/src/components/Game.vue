@@ -13,7 +13,8 @@
     export default {
         methods: {
             startGame() {
-            this.$store.commit('startGame');
+            this.$store.dispatch("getQuestions", {amount: 100, difficulty: 0, category: 0});
+            
             },
             submitAnswer() {
             this.$store.commit('submitAnswer');

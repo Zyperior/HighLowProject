@@ -1,24 +1,8 @@
-const state = {
-    questions: [{
-        id: 0,
-        question: 'What year was Öyvin born',
-        answer: 1984,
-        status: false
+import axios from "axios";
 
-      },
-      {
-        id: 1,
-        question: 'What year was Filip born',
-        answer: 1995,
-        status: false
-      },
-      {
-        id: 2,
-        question: 'How many players are there in a soccer game',
-        answer: 22,
-        status: false
-      }
-    ],
+const state = {
+    questions: [],
+
         currentQuestion: "",
         startStage: true,
         isRunning: false,
@@ -55,6 +39,21 @@ const getters = {
     }
 }
 
+const actions = {
+    async getQuestions({commit}, settings) {
+
+        const response = await axios.get(
+            `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
+        );
+        commit('setQuestions', response.data);
+        commit("startGame");
+    },
+
+    updateAnswer: ({commit}, a) => {
+        commit('updateAnswer', a);
+    }
+}
+
 const mutations = {
     startGame: state => {
         state.startStage = false;
@@ -76,14 +75,11 @@ const mutations = {
     },
     updateAnswer: (state, a) => {
         state.answer = a;
-    }
+    },
+    setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions)
 }
 
-const actions = {
-    updateAnswer: ({commit}, a) => {
-        commit('updateAnswer', a);
-    }
-}
+
 
 export default {
     state,
