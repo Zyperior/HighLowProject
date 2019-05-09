@@ -10,44 +10,9 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view/>
-    <router-view>
-      
-    </router-view>
   </div>
 </template>
-<script>
-  import { mapGetters, mapMutations } from 'vuex'
-  export default {
-      data() {
-          return {
-              guess: 0,
-          }
-      },
-      computed: {
-          ...mapGetters([
-              'interval',
-              'bots',
-              'playingBots'
-          ])
-      },
-          methods: {
-              botGuesses() {
-                  this.playingBots.forEach(bot => {
-                      let guess = bot.guess(this.interval);
-                      this.$store.commit('updateGuess', guess);
-                      console.log(bot.name + ' ' + guess)
-                      if (guess > this.interval.highestGuess || guess < this.interval.lowestGuess) {
-                          console.log('Outside interval ' + bot.name + ' ' + guess)
-                      }
-                  })
-              },
-              updateGuess(guess, player) {
-                  console.log(guess);
-                  this.$store.commit('updateGuess', Number.parseInt(guess), player)
-              }
-          }
-  }
-</script>
+
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
