@@ -1,12 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import questions2 from "./modules/questions2"
 
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-
   state: {
     questions: [{
         id: 0,
