@@ -3,10 +3,8 @@ const bot1 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -14,9 +12,6 @@ const bot1 = {
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 1;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 1;
     },
     timing: 2,
     isPlaying: false,
@@ -28,10 +23,8 @@ const bot2 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -45,9 +38,6 @@ const bot2 = {
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 250;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 250;
     },
     timing: 2,
     isPlaying: false,
@@ -80,10 +70,8 @@ const bot4 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -91,9 +79,6 @@ const bot4 = {
     },
     guessAbove: function(interval) {
         return interval.lowestGuess * 2;
-    },
-    guessBelow: function(interval) {
-        return Math.floor(interval.highestGuess * 0.5 - 10);
     },
     timing: 2,
     isPlaying: false,
@@ -118,10 +103,8 @@ const bot6 =  {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -129,9 +112,6 @@ const bot6 =  {
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 1981;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 1981;
     },
     timing: 2,
     isPlaying: false
@@ -144,10 +124,8 @@ const bot7 = { //TODO: Inte klar
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -165,9 +143,6 @@ const bot7 = { //TODO: Inte klar
     guessAbove: function(interval) {
         return interval.lowestGuess + 486;
     },
-    guessBelow: function(interval) {
-        return interval.highestGuess * -2;
-    },
     timing: 2,
     isPlaying: false
 }
@@ -178,10 +153,8 @@ const bot8 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -194,10 +167,6 @@ const bot8 = {
         console.log("wowowowoowowow 2")
         return interval.lowestGuess + 2006;
     },
-    guessBelow: function(interval) {
-        console.log("drotdrot")
-        return interval.highestGuess - 2006;
-    },
     timing: 2,
     isPlaying: false
 }
@@ -207,10 +176,8 @@ const bot9 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
@@ -220,9 +187,6 @@ const bot9 = {
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 777;
-    },
-    guessBelow: function(interval) {
-        return 0;
     },
     timing: 2,
     isPlaying: false,
@@ -248,29 +212,24 @@ const bot11 = {
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
-        } else if (interval.isHigher) {
-            return this.guessAbove(interval);
         } else {
-            return this.guessBelow(interval);
+            return this.guessAbove(interval);
         }
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30 && interval.isHigherThanGuess) {
+        if (intervalSize > 30 && interval.isHigher) {
             return interval.lastGuess + 10;
-        } else if(intervalSize > 30 && !interval.isHigherThanGuess) {
+        } else if(intervalSize > 30 && !interval.isHigher) {
             return interval.lastGuess - 10;
-        } else if (interval.isHigherThanGuess) {
+        } else if (interval.isHigher) {
             return interval.lastGuess + 2;
-        } else if(!interval.isHigherThanGuess) {
+        } else if(!interval.isHigher) {
             return interval.lastGuess - 2;
         }
     },
     guessAbove: function(interval) {
         return interval.lowestGuess + 10;
-    },
-    guessBelow: function(interval) {
-        return interval.highestGuess - 10;
     },
     timing: 2,
     isPlaying: false,
