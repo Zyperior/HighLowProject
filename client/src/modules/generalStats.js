@@ -1,43 +1,47 @@
 import axios from "axios";
 
-const state = {
-    generalStats : {}
-}
+export default {
 
-const actions = {
-    async getDBData({commit}){
-        const response = await axios.get(
-            'http://localhost:5000/stats'
-        );
-        commit('setGeneralStats', response);
+    state:{
+        generalStats: {}
     },
 
-    /**
-     * @param dataObject - {questionsAsked : Integer, totalGuesses : Integer}
-     * @returns {Promise<void>}
-     */
-    async postDBData({commit}, dataObject){
+    actions:{
 
-        if(dataObject){
-            if(dataObject.questionsAsked && dataObject.totalGuesses){
+        async getDBData({commit}){
+            const response = await axios.get(
+                'http://localhost:5000/stats'
+            );
+            commit('setGeneralStats', response);
+        },
+
+        /**
+         * @param dataArray - [0] = questions asked, [1] = total guesses
+         * @returns {Promise<void>}
+         */
+        async postDBData({commit}, dataArray){
+
+            if(dataArray){
+
                 const response = await axios.post(
                     'http://localhost:5000/stats',
-                    {questionsAsked : dataObject.questionsAsked, totalGuesses : dataObject.totalGuesses}
+                    {questionsAsked : dataArray[0], totalGuesses : dataArray[1]}
                 );
                 commit('setGeneralStats', response);
+
             }
             else{
-                console.error("Bad input param dataObject: " + dataObject.toString())
+                console.error("Bad input param dataObject: " + dataArray.toString())
             }
         }
-        else{
-            console.error("Bad input param dataObject: " + dataObject.toString())
+    },
+
+    mutations:{
+        setGeneralStats(state, data){
+            state.generalStats = data;
         }
     }
-}
 
-const mutations = {
-    setGeneralStats(state, data){
-        state.generalStats = data;
-    }
-}
+};
+
+
