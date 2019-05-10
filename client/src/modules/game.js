@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 const state = {
     questions: [{
             id: 0,
@@ -34,7 +36,7 @@ const state = {
     answer: "",
     questionCounter: 0,
     playerTurn: 0,
-
+    lastGuess: 0,
     answeredQuestions: [{
 
     }],
@@ -81,16 +83,20 @@ const mutations = {
     },
     submitAnswer: state => {
         state.players[state.playerTurn].answer = state.answer;
-        
+        state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
-            state.questionCounter += 1;
-            state.lowAnswers = [];
-            state.highAnswers = [];
-            state.playerTurn += 1;
+
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
             }
+            if(state.playerTurn === 2){
+                state.playerTurn = 0;
+            }
+            state.questionCounter += 1;
+            state.lowAnswers = [];
+            state.highAnswers = [];
+            state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
         }
         if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
@@ -99,14 +105,24 @@ const mutations = {
             state.lowAnswers.reverse();
             console.log(state.lowAnswers);
             state.playerTurn += 1;
+            console.log('The last guess was', state.lastGuess);
+            
+            if(state.playerTurn === 2){
+                state.playerTurn = 0;
+            }
         }
         if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
             console.log('Your answer is to high');
-            
+
             state.highAnswers.push(state.players[state.playerTurn].answer);
             state.highAnswers.sort();
             console.log(state.highAnswers);
             state.playerTurn += 1;
+            console.log('The last guess was', state.lastGuess);
+            
+            if(state.playerTurn === 2){
+                state.playerTurn = 0;
+            }
         }
 
         state.answer = '';
