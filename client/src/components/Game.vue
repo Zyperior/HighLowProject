@@ -5,6 +5,8 @@
         <div v-if="isRunning">
             <p>Highest Guess: {{highGuess[0]}} </p>
             <p>Lowest Guess: {{lowGuess[0]}} </p>
+            <p>{{players[0].name}}: {{players[0].answer}}</p>
+            <p>{{players[1].name}}: {{players[1].answer}}</p>
             <input v-model="answer" name="answer" placeholder="Enter your answer">
             <button @click="submitAnswer()">Submit Answer</button>
         </div>
@@ -44,6 +46,9 @@
             },
             highGuess() {
                 return this.$store.getters.getHighGuess;
+            },
+            players(){
+                return this.$store.getters.getPlayers
             }
         }
     }
