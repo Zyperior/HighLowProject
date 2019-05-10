@@ -1,6 +1,8 @@
 import { stat } from "fs";
+import store from '../store'
 
 const state = {
+
     questions: [{
             id: 0,
             question: 'What year was Öyvin born',
@@ -94,10 +96,11 @@ const mutations = {
                 state.playerTurn = 0;
             }
             state.questionCounter += 1;
-            state.lowAnswers = [];1
+            state.lowAnswers = [];
             state.highAnswers = [];
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
+            store.dispatch('generalStats/postDBData', [1, 2]);
         }
         if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
@@ -134,8 +137,8 @@ const mutations = {
 
 const actions = {
     updateAnswer: ({
-        commit
-    }, a) => {
+                       commit
+                   }, a) => {
         commit('updateAnswer', a);
     }
 }
