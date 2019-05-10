@@ -2,13 +2,15 @@
     <div>
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
-        <div v-show="isRunning">            <!-- v-show är bättre än v-if??? -->
+        <div v-show="isRunning">
+            <p>Highest Guess: {{highGuess[0]}} </p>
+            <p>Lowest Guess: {{lowGuess[0]}} </p>
             <input v-model="answer" name="answer" placeholder="Enter your answer">
             <button @click="submitAnswer()">Submit Answer</button>
 
             <Timer ref="myTimer"/>
         </div>
-        <button v-show="startStage" @click="startGame()">Start Game</button>        <!-- v-show är bättre än v-if??? -->
+        <button v-show="startStage" @click="startGame()">Start Game</button>
     </div>
 </template>
 <script>
@@ -41,6 +43,12 @@
             },
             startStage() {
                 return this.$store.getters.getStartStage;
+            },
+            lowGuess() {
+                return this.$store.getters.getLowGuess;
+            },
+            highGuess() {
+                return this.$store.getters.getHighGuess;
             }
         },
 
