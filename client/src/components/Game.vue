@@ -24,7 +24,6 @@
             startGame() {
                 this.$store.dispatch("loadQuestionsAndStartGame", {amount: 10, difficulty: 0, category: 0});
 
-                //this.$store.commit('startGame');
 
                 this.$refs.myTimer.startTimer();
             },
