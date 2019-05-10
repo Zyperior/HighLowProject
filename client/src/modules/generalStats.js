@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default {
-
+    namespaced: true,
     state:{
         generalStats: {}
     },
@@ -23,7 +23,7 @@ export default {
 
             if(dataArray){
 
-                const response = await axios.post(
+                const response = await axios.put(
                     'http://localhost:5000/stats',
                     {questionsAsked : dataArray[0], totalGuesses : dataArray[1]}
                 );
