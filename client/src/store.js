@@ -7,6 +7,7 @@ import generalStats from './modules/generalStats'
 
 
 
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({

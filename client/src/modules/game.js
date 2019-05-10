@@ -1,27 +1,11 @@
 import { stat } from "fs";
+import axios from "axios";
 import store from '../store'
 
+
 const state = {
+    questions: [
 
-    questions: [{
-            id: 0,
-            question: 'What year was Öyvin born',
-            answer: 1984,
-            status: false
-
-        },
-        {
-            id: 1,
-            question: 'What year was Filip born',
-            answer: 1995,
-            status: false
-        },
-        {
-            id: 2,
-            question: 'How many players are there in a soccer game',
-            answer: 22,
-            status: false
-        }
     ],
     players: [{
         name: "Player One",
@@ -78,13 +62,15 @@ const getters = {
 }
 
 const mutations = {
+    setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+
     startGame: state => {
         state.startStage = false;
         state.isRunning = true;
         state.currentQuestion = state.questions[state.questionCounter].question;
     },
-    submitAnswer: state => {
-        state.players[state.playerTurn].answer = state.answer;
+    submitAnswer: (state, a) => {
+        state.players[state.playerTurn].answer = a;
         state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
 
@@ -98,8 +84,17 @@ const mutations = {
             state.questionCounter += 1;
             state.lowAnswers = [];
             state.highAnswers = [];
+
+            if(state.questionCounter === state.questions.length){
+                alert('Game over');
+            }
+
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
+
+            if(state.playerTurn === 2){
+                state.playerTurn = 0;
+            }
             store.dispatch('generalStats/postDBData', [1, 2]);
         }
         if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
@@ -136,9 +131,18 @@ const mutations = {
 }
 
 const actions = {
+    async loadQuestionsAndStartGame({commit}, settings) {
+
+        const response = await axios.get(
+            `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
+        );
+        commit('setQuestions', response.data);
+        commit("startGame");
+    },
+
     updateAnswer: ({
-                       commit
-                   }, a) => {
+        commit
+    }, a) => {
         commit('updateAnswer', a);
     }
 }

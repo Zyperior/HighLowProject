@@ -6,13 +6,22 @@ export default {
         generalStats: {}
     },
 
+    getters :{
+        getStats : state =>{
+
+            return state.generalStats
+
+        }
+    },
+
     actions:{
 
         async getDBData({commit}){
             const response = await axios.get(
-                'http://localhost:5000/stats'
+                'http://localhost:5000/stats/'
             );
-            commit('setGeneralStats', response);
+            console.log(response.data);
+            commit('setGeneralStats', response.data[0]);
         },
 
         /**
@@ -24,10 +33,10 @@ export default {
             if(dataArray){
 
                 const response = await axios.put(
-                    'http://localhost:5000/stats',
+                    'http://localhost:5000/stats/',
                     {questionsAsked : dataArray[0], totalGuesses : dataArray[1]}
                 );
-                commit('setGeneralStats', response);
+                commit('setGeneralStats', response.data[0]);
 
             }
             else{
