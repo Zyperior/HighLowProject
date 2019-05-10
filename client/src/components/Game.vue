@@ -2,25 +2,30 @@
     <div>
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
-        <div v-if="isRunning">
+        <div v-show="isRunning">
             <p>Highest Guess: {{highGuess[0]}} </p>
             <p>Lowest Guess: {{lowGuess[0]}} </p>
             <p>{{players[0].name}}: {{players[0].answer}}</p>
             <p>{{players[1].name}}: {{players[1].answer}}</p>
             <input v-model="answer" name="answer" placeholder="Enter your answer">
             <button @click="submitAnswer()">Submit Answer</button>
+
+            <Timer ref="myTimer"/>
         </div>
-        <button v-if="startStage" @click="startGame()">Start Game</button>
+        <button v-show="startStage" @click="startGame()">Start Game</button>
     </div>
 </template>
 <script>
+    import Timer from '@/components/Timer.vue'
+
     export default {
         methods: {
-            startGame() {
-            this.$store.commit('startGame');
+            startGame() {               
+                this.$store.commit('startGame');
+                this.$refs.myTimer.startTimer();
             },
             submitAnswer() {
-            this.$store.commit('submitAnswer');
+                this.$store.commit('submitAnswer');
             }
         },
         computed: {
@@ -50,6 +55,10 @@
             players(){
                 return this.$store.getters.getPlayers
             }
+        },
+
+        components: {
+            Timer
         }
     }
 </script>
