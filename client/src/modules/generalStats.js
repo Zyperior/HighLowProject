@@ -16,22 +16,22 @@ export default {
         },
 
         /**
-         * @param dataObject - {questionsAsked : Integer, totalGuesses : Integer}
+         * @param dataArray - [0] = questions asked, [1] = total guesses
          * @returns {Promise<void>}
          */
         async postDBData({commit}, dataArray){
 
-            if(dataObject){
+            if(dataArray){
 
                 const response = await axios.post(
                     'http://localhost:5000/stats',
-                    {questionsAsked : dataObject.questionsAsked, totalGuesses : dataObject.totalGuesses}
+                    {questionsAsked : dataArray[0], totalGuesses : dataArray[1]}
                 );
                 commit('setGeneralStats', response);
 
             }
             else{
-                console.error("Bad input param dataObject: " + dataObject.toString())
+                console.error("Bad input param dataObject: " + dataArray.toString())
             }
         }
     },
