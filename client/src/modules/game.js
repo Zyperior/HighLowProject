@@ -94,7 +94,7 @@ const mutations = {
                 state.playerTurn = 0;
             }
             state.questionCounter += 1;
-            state.lowAnswers = [];1
+            state.lowAnswers = [];
             state.highAnswers = [];
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
