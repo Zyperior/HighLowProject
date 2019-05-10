@@ -13,30 +13,31 @@ import axios from "axios"
 
 
 
-const state = {
-    questions2: []
-}
-
-
-const actions = {
-    async getQuestions2({commit}, settings) {
-
-        const response = await axios.get(
-            `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
-        );
-        console.log(response)
-        commit('setQuestions', response.data);
-    }
-}
-
-
-const mutations = {
-    setQuestions: (state, loadedQuestions) => (state.questions2 = loadedQuestions)
-}
-
-
-export default {
-    state,
-    actions,
-    mutations
-}
+// const state = {
+//     questions: []
+// }
+//
+//
+// const actions = {
+//     async getQuestions({commit}, settings) {
+//
+//         const response = await axios.get(
+//             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
+//         );
+//         commit('setQuestions', response.data);
+//         console.log(state.questions)
+//         commit("startGame")
+//     }
+// }
+//
+//
+// const mutations = {
+//     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions)
+// }
+//
+//
+// export default {
+//     state,
+//     actions,
+//     mutations
+// }

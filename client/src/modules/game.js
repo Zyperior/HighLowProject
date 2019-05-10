@@ -1,28 +1,10 @@
 import { stat } from "fs";
-import store from '../store'
+import axios from "axios";
+
 
 const state = {
+    questions: [],
 
-    questions: [{
-            id: 0,
-            question: 'What year was Öyvin born',
-            answer: 1984,
-            status: false
-
-        },
-        {
-            id: 1,
-            question: 'What year was Filip born',
-            answer: 1995,
-            status: false
-        },
-        {
-            id: 2,
-            question: 'How many players are there in a soccer game',
-            answer: 22,
-            status: false
-        }
-    ],
     players: [{
         name: "Player One",
         answer: 0
@@ -78,6 +60,8 @@ const getters = {
 }
 
 const mutations = {
+    setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+
     startGame: state => {
         state.startStage = false;
         state.isRunning = true;
@@ -92,15 +76,20 @@ const mutations = {
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
             }
+
+
+
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
+
+
+
             state.questionCounter += 1;
-            state.lowAnswers = [];
+            state.lowAnswers = [];1
             state.highAnswers = [];
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
-            store.dispatch('generalStats/postDBData', [1, 2]);
         }
         if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
@@ -136,9 +125,18 @@ const mutations = {
 }
 
 const actions = {
+    async loadQuestionsAndStartGame({commit}, settings) {
+
+        const response = await axios.get(
+            `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
+        );
+        commit('setQuestions', response.data);
+        commit("startGame");
+    },
+
     updateAnswer: ({
-                       commit
-                   }, a) => {
+        commit
+    }, a) => {
         commit('updateAnswer', a);
     }
 }
