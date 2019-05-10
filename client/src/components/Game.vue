@@ -13,6 +13,7 @@
             <Timer ref="myTimer"/>
         </div>
         <button v-show="startStage" @click="startGame()">Start Game</button>
+
     </div>
 </template>
 <script>
@@ -20,8 +21,10 @@
 
     export default {
         methods: {
-            startGame() {               
-                this.$store.commit('startGame');
+            startGame() {
+                this.$store.dispatch("loadQuestionsAndStartGame", {amount: 10, difficulty: 0, category: 0});
+
+
                 this.$refs.myTimer.startTimer();
             },
             submitAnswer(a) {
