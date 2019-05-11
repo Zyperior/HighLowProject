@@ -49,6 +49,10 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
                     scrambledQuestions.push(foundquestions[questionIndex])
                     indexes.push(questionIndex);
                 }
+                //REMOVE THIS "IF" BELOW ONCE THERE ARE AT LEAST 5 QUESTIONS OF EACH DIFFICULTY IN EACH CATEGORY
+                if(foundquestions < amount){
+                    break;
+                }
             }
 
             res.status(200).send(scrambledQuestions)

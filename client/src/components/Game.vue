@@ -38,7 +38,7 @@
                     <option v-for="(difficultyOption, index) in difficultyOptions" :value="index">
                         {{ difficultyOption }}
                     </option>
-                    
+
                 </select>
             </div>
         </div>
