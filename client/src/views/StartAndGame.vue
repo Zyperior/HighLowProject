@@ -6,14 +6,14 @@
 </template>
 
 <script>
-    import Start from "../components/Start"
-    import Game from "../components/Game";
+    import start from "../components/Start"
+    import game from "../components/Game";
 
     export default {
         name: "StartAndGame",
         components: {
-            start: Start,
-            game: Game
+            start,
+            game
         }
     }
 </script>

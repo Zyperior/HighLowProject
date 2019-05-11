@@ -9,6 +9,8 @@
             <p>Det kommer behöva finnas minst 5 frågor i varje svårighetsgrad om amount of questions bredden är till exempel 5. Tills dess laddar den in så många som den hittar</p>
             <br><br>
 
+            <h3>Questions</h3>
+
             <p>Amount of questions:</p>
             <select v-model="questionSettings.amount">
                 <option v-for="(amountOption, index) in amountOptions" :value="++index">
@@ -28,8 +30,10 @@
                 <option v-for="(difficultyOption, index) in difficultyOptions" :value="index">
                     {{ difficultyOption }}
                 </option>
-
             </select>
+
+            <br><br>
+            <h3>Bots</h3>
         </div>
 
     </div>

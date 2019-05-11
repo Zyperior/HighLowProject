@@ -273,5 +273,27 @@ const bot12 = {
     behavior: "Wins on a D20"
 }
 
+
+const bot13 = {
+    name: "Not a bot",
+    guess: function(interval){
+        let guess = -1;
+        const high = interval.highestGuess !== 0 ?  interval.highestGuess : interval.correctAnswer * 1.4;
+        const low = interval.lowestGuess !== 0 ?  interval.lowestGuess : interval.correctAnswer * 0.6;
+
+        while(guess < low || guess > high) {
+            const min = Math.ceil(interval.correctAnswer * (1.4));
+            const max = Math.floor(interval.correctAnswer * (0.6));
+            guess = Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        return guess;
+    },
+    unfair: false,
+    difficulty: "medium",
+    timing: 2,
+    isPlaying: false,
+    behaviour: "Guesses suspiciously life like..."
+}
+
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
+ [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13]
