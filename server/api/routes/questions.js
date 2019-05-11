@@ -32,11 +32,19 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         query = {difficulty: difficulty}
     }
 
+
+
     Question.find(query)
-        .limit(amount)
+        //.limit(amount)
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.status(200).send(foundquestions))
+        .then(foundquestions => {
+            let scrambledQuestions = [];
+            for(let i = 0; i < amount; i++){
+                scrambledQuestions.push(foundquestions[Math.floor(Math.random() * foundquestions.length)])
+            }
+            res.status(200).send(scrambledQuestions)
+        })
         .catch(error => res.status(500).json({message: error.toString()}))
 
 });
