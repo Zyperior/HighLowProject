@@ -50,7 +50,7 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
                     indexes.push(questionIndex);
                 }
                 //REMOVE THIS "IF" BELOW ONCE THERE ARE AT LEAST 5 QUESTIONS OF EACH DIFFICULTY IN EACH CATEGORY
-                if(foundquestions.length < amount){
+                if(foundquestions.length < amount && foundquestions.length === indexes.length){
                     break;
                 }
             }
