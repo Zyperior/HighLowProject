@@ -39,10 +39,18 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         .select("question answer difficulty category source")
         .exec()
         .then(foundquestions => {
+
+            //Randomize which questions that are returned each time
             let scrambledQuestions = [];
-            for(let i = 0; i < amount; i++){
-                scrambledQuestions.push(foundquestions[Math.floor(Math.random() * foundquestions.length)])
+            let indexes = [];
+            while(scrambledQuestions.length < amount){
+                const questionIndex = Math.floor(Math.random() * foundquestions.length);
+                if(!indexes.includes(questionIndex)){
+                    scrambledQuestions.push(foundquestions[questionIndex])
+                    indexes.push(questionIndex);
+                }
             }
+
             res.status(200).send(scrambledQuestions)
         })
         .catch(error => res.status(500).json({message: error.toString()}))
