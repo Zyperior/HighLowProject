@@ -277,16 +277,23 @@ const bot12 = {
 const bot13 = {
     name: "Not a bot",
     guess: function(interval){
-        let guess = -1;
-        const high = interval.highestGuess !== 0 ?  interval.highestGuess : interval.correctAnswer * 1.4;
-        const low = interval.lowestGuess !== 0 ?  interval.lowestGuess : interval.correctAnswer * 0.6;
+        let max = 0;
+        let min = 0;
 
-        while(guess < low || guess > high) {
-            const min = Math.ceil(interval.correctAnswer * (1.4));
-            const max = Math.floor(interval.correctAnswer * (0.6));
-            guess = Math.floor(Math.random() * (max - min + 1)) + min;
+        if(interval.highestGuess === 0 || interval.highestGuess > interval.correctAnswer * 1.4){
+            max = Math.ceil(interval.correctAnswer * (1.4));
+        } else {
+            max = interval.highestGuess;
         }
-        return guess;
+
+        if(interval.lowestGuess === 0 || interval.lowestGuess < interval.correctAnswer * 0.6){
+            min = Math.floor(interval.correctAnswer * (0.6));
+        } else {
+            min = interval.lowestGuess;
+        }
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+        
     },
     unfair: false,
     difficulty: "medium",

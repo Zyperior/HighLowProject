@@ -6,9 +6,7 @@
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
-            <p>Det kommer behöva finnas minst 5 frågor i varje svårighetsgrad om amount of questions bredden är till exempel 5. Tills dess laddar den in så många som den hittar</p>
-            <br><br>
-
+            <br>
             <h3>Questions</h3>
 
             <p>Amount of questions:</p>
@@ -34,6 +32,10 @@
 
             <br><br>
             <h3>Bots</h3>
+            <p>Playing bots (1-5)</p>
+            <!--{{ this.$store.getters.availableBots}}-->
+            <p>Available bots</p>
+
         </div>
 
     </div>
