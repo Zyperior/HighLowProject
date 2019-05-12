@@ -42,7 +42,7 @@ const bot2 = {
     unfair: false,
     difficulty: 'hard',
     timing: 2,
-    isPlaying: false,
+    isPlaying: true,
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess"
 }
 
@@ -160,7 +160,7 @@ const bot7 = {
     unfair: false,
     difficulty: 'medium',
     timing: 2,
-    isPlaying: false,
+    isPlaying: true,
     behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1'
 }
 
@@ -293,7 +293,7 @@ const bot13 = {
         }
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
-        
+
     },
     unfair: false,
     difficulty: "medium",

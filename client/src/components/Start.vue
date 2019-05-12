@@ -2,7 +2,7 @@
     <div v-show="startStage" id="startStage">
         <h1>Start Page</h1>
 
-        <button @click="startGame()">Start Game</button>
+        <button @click="startGame()">Start Game</button><br>
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
@@ -30,11 +30,29 @@
                 </option>
             </select>
 
+
             <br><br>
             <h3>Bots</h3>
-            <p>Playing bots (1-5)</p>
-            <!--{{ this.$store.getters.availableBots}}-->
-            <p>Available bots</p>
+            <i>Select bots and use the arrows to choose which ones to play against.</i><br>
+            <i>Hover over a bot to read its description.</i>
+
+            <br><br><b>Playing bots (1-5)</b><br><br>
+            <select size="5" v-model="selectedPlayingBot">
+                <option v-for="(playingBot, index) in playingBots" :value="index">
+                    {{ playingBot.name }}
+                </option>
+            </select>
+
+            <br><br>
+            <button><img src="../assets/arrow-up.png" alt="arrowUp"></button>
+            <button><img src="../assets/arrow-down.png" alt="arrowDown"></button>
+
+            <br><br><b>Available bots</b><br><br>
+            <select size="5" v-model="selectedAvailableBot">
+                <option v-for="(availableBot, index) in availableBots" :value="index">
+                    {{ availableBot.name }}
+                </option>
+            </select>
 
         </div>
 
@@ -42,7 +60,6 @@
 </template>
 
 <script>
-    //import Timer from '@/components/Timer.vue'
 
     export default {
         name: "Start",
@@ -60,33 +77,37 @@
                     amount: 3,
                     difficulty: 0,
                     category: 0
-                }
+                },
+                selectedAvailableBot: "",
+                selectedPlayingBot: ""
             }
         },
         methods: {
             startGame() {
-                this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings);
-                //this.$refs.myTimer.startTimer();
+                this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
             }
         },
         computed: {
-            startStage() {
+            startStage(){
                 return this.$store.getters.getStartStage;
+            },
+            availableBots(){
+                return this.$store.getters.availableBots;
+            },
+            playingBots(){
+                return this.$store.getters.playingBots;
             }
         },
-        // components: {
-        //     Timer
-        // }
+
 
     }
 </script>
 
 <style scoped>
-    /*placerar settings knappen under start knappen*/
-    /*kan ta bort det när vi börjar styla programmet*/
-    #startStage{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+  /*Jag har lagt till några <br> (linebreak) i template koden för att saker ska hamna på nya rader.
+  Helt ok att ta bort dem för den som sedan stylar programmet*/
+
+    img{
+        width: 1em;
     }
 </style>
