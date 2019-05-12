@@ -87,7 +87,7 @@ const bot4 = {
     difficulty: 'easy',
     timing: 2,
     isPlaying: false,
-    description: "Guesses randomly between highest and lowest guess"
+    behavior: "Guesses randomly between highest and lowest guess"
 }
 
 const bot5 = {
@@ -299,7 +299,7 @@ const bot13 = {
     difficulty: "medium",
     timing: 2,
     isPlaying: false,
-    behaviour: "Guesses suspiciously life like..."
+    behavior: "Guesses suspiciously life like..."
 }
 
 export default

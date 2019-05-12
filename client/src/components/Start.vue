@@ -38,7 +38,9 @@
 
             <br><br><b>Playing bots (1-5)</b><br><br>
             <select size="5" v-model="selectedPlayingBotIndex">
-                <option v-for="(playingBot, index) in playingBots" :value="index">
+                <option v-for="(playingBot, index) in playingBots"
+                        :value="index"
+                        :title="'Difficulty: ' + playingBot.difficulty + '\nBehavior: ' + playingBot.behavior">
                     {{ playingBot.name }}
                 </option>
             </select>
@@ -49,7 +51,9 @@
 
             <br><br><b>Available bots</b><br><br>
             <select size="5" v-model="selectedAvailableBotIndex">
-                <option v-for="(availableBot, index) in availableBots" :value="index">
+                <option v-for="(availableBot, index) in availableBots"
+                        :value="index"
+                        :title="'Difficulty: ' + availableBot.difficulty + '\nBehavior: ' + availableBot.behavior">
                     {{ availableBot.name }}
                 </option>
             </select>
@@ -119,5 +123,9 @@
 
     img{
         width: 1em;
+    }
+
+    .hover-text{
+
     }
 </style>
