@@ -37,18 +37,18 @@
             <i>Hover over a bot to read its description.</i>
 
             <br><br><b>Playing bots (1-5)</b><br><br>
-            <select size="5" v-model="selectedPlayingBot">
+            <select size="5" v-model="selectedPlayingBotIndex">
                 <option v-for="(playingBot, index) in playingBots" :value="index">
                     {{ playingBot.name }}
                 </option>
             </select>
 
             <br><br>
-            <button><img src="../assets/arrow-up.png" alt="arrowUp"></button>
-            <button><img src="../assets/arrow-down.png" alt="arrowDown"></button>
+            <button @click="addAvailableBotToPlayingBots"><img src="../assets/arrow-up.png" alt="arrowUp"></button>
+            <button @click="addPlayingBotToAvailableBots"><img src="../assets/arrow-down.png" alt="arrowDown"></button>
 
             <br><br><b>Available bots</b><br><br>
-            <select size="5" v-model="selectedAvailableBot">
+            <select size="5" v-model="selectedAvailableBotIndex">
                 <option v-for="(availableBot, index) in availableBots" :value="index">
                     {{ availableBot.name }}
                 </option>
@@ -78,13 +78,23 @@
                     difficulty: 0,
                     category: 0
                 },
-                selectedAvailableBot: "",
-                selectedPlayingBot: ""
+                selectedAvailableBotIndex: "",
+                selectedPlayingBotIndex: ""
             }
         },
         methods: {
             startGame() {
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
+            },
+            addAvailableBotToPlayingBots(){
+                if(typeof this.availableBots[this.selectedAvailableBotIndex] !== "undefined"
+                    && this.playingBots.length < 5)
+                    this.availableBots[this.selectedAvailableBotIndex].isPlaying = true;
+            },
+            addPlayingBotToAvailableBots(){
+                if(typeof this.playingBots[this.selectedPlayingBotIndex] !== "undefined"
+                    && this.playingBots.length > 1)
+                    this.playingBots[this.selectedPlayingBotIndex].isPlaying = false;
             }
         },
         computed: {
@@ -104,7 +114,7 @@
 </script>
 
 <style scoped>
-  /*Jag har lagt till några <br> (linebreak) i template koden för att saker ska hamna på nya rader.
+  /*Jag har lagt till några <br> (linebreak) i template/html koden för att saker ska hamna på nya rader.
   Helt ok att ta bort dem för den som sedan stylar programmet*/
 
     img{
