@@ -6,8 +6,7 @@
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
-            <br>
-            <h3>Questions</h3>
+            <br><h3>Questions</h3>
 
             <p>Amount of questions:</p>
             <select v-model="questionSettings.amount">
@@ -30,9 +29,8 @@
                 </option>
             </select>
 
-
-            <br><br>
-            <h3>Bots</h3>
+            
+            <br><br><h3>Bots</h3>
             <i>Select bots and use the arrows to choose which ones to play against.</i><br>
             <i>Hover over a bot to read its description.</i>
 
@@ -59,7 +57,6 @@
             </select>
 
         </div>
-
     </div>
 </template>
 
@@ -112,8 +109,6 @@
                 return this.$store.getters.playingBots;
             }
         },
-
-
     }
 </script>
 
@@ -123,9 +118,5 @@
 
     img{
         width: 1em;
-    }
-
-    .hover-text{
-
     }
 </style>
