@@ -7,7 +7,7 @@
             <p>Lowest Guess: {{lowGuess[0]}} </p>
             <p>{{players[0].name}}: {{players[0].answer}}</p>
             <p>{{players[1].name}}: {{players[1].answer}}</p>
-            <input v-model="answer" name="answer" placeholder="Enter your answer">
+            <input type="text" v-model="answer" name="answer" placeholder="Enter your answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')">
             <button @click="submitAnswer()">Submit Answer</button>
 
             <Timer ref="myTimer"/>
@@ -21,11 +21,13 @@
     export default {
         methods: {
             startGame() {               
-                this.$store.commit('startGame');
-                this.$refs.myTimer.startTimer();
+                //this.$store.commit('startGame');
+                //this.$refs.myTimer.startTimer();
+                this.$store.dispatch("startGame");      // Anropar action istället för mutation
             },
             submitAnswer() {
-                this.$store.commit('submitAnswer');
+                //this.$store.commit('submitAnswer');
+                this.$store.dispatch("submitAnswer");      // Anropar action istället för mutation
             }
         },
         computed: {
@@ -53,13 +55,15 @@
                 return this.$store.getters.getHighGuess;
             },
             players(){
-                return this.$store.getters.getPlayers
+                return this.$store.getters.getPlayers;
             }
         },
 
         components: {
             Timer
-        }
+        }      
+
+
     }
 </script>
 <style scoped>
