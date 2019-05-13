@@ -119,6 +119,9 @@
             },
             players(){
                 return this.$store.getters.getPlayers
+            },
+            correctAnswer(){
+                return this.$store.getters.correctAnswer;
             }
         },
         watch: {
