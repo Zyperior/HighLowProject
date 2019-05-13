@@ -80,9 +80,14 @@ const mutations = {
         state.startStage = false;
         state.isRunning = true;
         state.currentQuestion = state.questions[state.questionCounter].question;
+
     },
     submitAnswer: state => {
         state.players[state.playerTurn].answer = state.answer;
+
+        console.log("submitAnswer");
+        
+
         state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
 
@@ -98,6 +103,8 @@ const mutations = {
             state.highAnswers = [];
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
+
+            // Här!
         }
         if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
@@ -137,7 +144,39 @@ const actions = {
         commit
     }, a) => {
         commit('updateAnswer', a);
+        //commit("stopTimer")
+    },
+
+
+
+    startGame(context) {            // Tillagd action
+
+        console.log("actions startGame");
+        
+
+        context.commit("startGame");
+
+        context.commit("startTimer")
+
+    },
+
+
+    submitAnswer(context) {            // Tillagd action
+
+        console.log("actions submitAnswer");
+        
+
+        context.commit("submitAnswer");
+
+        context.commit("stopTimer");
+
+        context.commit("startTimer");
+
     }
+
+
+
+    
 }
 
 export default {
