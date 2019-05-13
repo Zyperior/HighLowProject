@@ -2,11 +2,18 @@
     <div v-show="startStage" id="startStage">
         <h1>Start Page</h1>
 
-        <button @click="startGame()">Start Game</button><br>
+        <button @click="startGame(); createPlayers(playerNr);">Start Game</button><br>
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
             <br><h3>Questions</h3>
+
+            <p>Amount of players:</p>
+            <select v-model="playerNr">
+                <option v-for="(playersAmount, index) in playersAmount" :value="++index">
+                    {{ playersAmount }}
+                </option>
+            </select>
 
             <p>Amount of questions:</p>
             <select v-model="questionSettings.amount">
@@ -73,6 +80,8 @@
                 categoryOptions: [
                     "Mixed", "Animals", "Science", "History", "Literature", "Games", "Miscellaneous"
                 ],
+                playersAmount: [1, 2, 3, 4, 5, 6],
+                playerNr: 1,
                 amountOptions: Array.from({length: 5}, (v, i) => ++i), //[1, 2, 3, 4, 5]
                 questionSettings: {
                     amount: 3,
@@ -96,6 +105,17 @@
                 if(typeof this.playingBots[this.selectedPlayingBotIndex] !== "undefined"
                     && this.playingBots.length > 1)
                     this.playingBots[this.selectedPlayingBotIndex].isPlaying = false;
+            },
+            createPlayers(amount){
+                for(var i = 1; i <= amount; i++){
+                    this.players.push({
+                        name: 'Player '+i,
+                        score: 0,
+                        guessCount: 0,
+                        score: 0
+                    })
+                    console.log(this.players)
+                }
             }
         },
         computed: {
@@ -107,6 +127,9 @@
             },
             playingBots(){
                 return this.$store.getters.playingBots;
+            },
+            players(){
+                return this.$store.getters.getPlayers;
             }
         },
     }

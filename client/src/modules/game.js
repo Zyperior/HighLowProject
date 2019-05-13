@@ -10,16 +10,8 @@ const state = {
     questions: [
 
     ],
-    players: [{
-        name: "Player One",
-        answer: 0,
-        guessCount: 0
-    },
-    {
-        name: "Player Two",
-        answer: 0,
-        guessCount: 0
-    }],
+    players: [
+      ],
     currentQuestion: "",
     startStage: true,
     isRunning: false,

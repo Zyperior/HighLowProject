@@ -5,18 +5,15 @@
         <div>
             <p>Highest Guess: {{highGuess[0]}} </p>
             <p>Lowest Guess: {{lowGuess[0]}} </p>
-            <p>{{players[0].name}}: {{players[0].answer}}</p>
-            <p>{{players[1].name}}: {{players[1].answer}}</p>
-            <br>
-            <p>{{activeBot.name}}</p>
+            <p v-for="player in players">{{player.name}}: {{player.answer}}</p>
+            <div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">
+                <p>{{bot.name}}</p>
+            </div>
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
             <button @click="submitAnswer(answer); botGuess();">Submit Answer</button>
 
             <Timer ref="myTimer"/>
         </div>
-
-
-
 
     </div>
 </template>
@@ -71,6 +68,9 @@
             }
         },
         computed: {
+            currentPlayers(){
+              return this.players.concat(this.activeBots);
+            },
             activeBots(){
                 return this.$store.getters.playingBots;
             },
@@ -136,7 +136,9 @@
 </script>
 <style scoped>
 
-
+.activeBot {
+    background-color: red;
+}
 
 
 </style>
