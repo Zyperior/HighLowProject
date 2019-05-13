@@ -155,10 +155,12 @@ const mutations = {
 
 const actions = {
     async loadQuestionsAndStartGame({commit}, settings) {
-
+        console.log("hello")
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
         );
+        console.log("hello2")
+        console.log(response.data)
         commit('setQuestions', response.data);
         commit("startGame");
     },

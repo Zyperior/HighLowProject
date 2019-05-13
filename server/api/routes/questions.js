@@ -43,6 +43,7 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
             //Randomize which questions that are returned each time
             let scrambledQuestions = [];
             let indexes = [];
+
             while(scrambledQuestions.length < amount){
                 const questionIndex = Math.floor(Math.random() * foundquestions.length);
                 if(!indexes.includes(questionIndex)){
