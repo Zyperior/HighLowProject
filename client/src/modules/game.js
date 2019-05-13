@@ -1,6 +1,8 @@
 import { stat } from "fs";
 import axios from "axios";
 import store from '../store'
+import GameComplete from "../components/GameComplete";
+import router from "../router";
 
 
 const state = {
@@ -10,11 +12,13 @@ const state = {
     ],
     players: [{
         name: "Player One",
-        answer: 0
+        answer: 0,
+        guessCount: 0
     },
     {
         name: "Player Two",
-        answer: 0
+        answer: 0,
+        guessCount: 0
     }],
     currentQuestion: "",
     startStage: true,
@@ -86,7 +90,10 @@ const mutations = {
         state.players[state.playerTurn].answer = a;
         // state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+            var audioCorrectAnswer = new Audio('/correctAnswer.wav');
+            audioCorrectAnswer.play();
             state.lastGuess = '';
+            state.players[state.playerTurn].guessCount += 1;
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
@@ -99,7 +106,7 @@ const mutations = {
             state.highAnswers = [];
 
             if(state.questionCounter === state.questions.length){
-                alert('Game over');
+               router.push('/complete')
             }
 
             state.playerTurn += 1;
@@ -112,6 +119,7 @@ const mutations = {
         }
         else if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
+            state.players[state.playerTurn].guessCount += 1;
 
             state.lowAnswers.push(state.players[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
@@ -130,6 +138,7 @@ const mutations = {
         else if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
 
             console.log('Your answer is to high');
+            state.players[state.playerTurn].guessCount += 1;
 
             state.highAnswers.push(state.players[state.playerTurn].answer);
             state.highAnswers.sort((a, b) => {
