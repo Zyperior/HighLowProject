@@ -348,15 +348,10 @@ const bot11 = {
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30 && !interval.isHigher) {
+        if (intervalSize > 30) {
             return interval.lastGuess + 10;
-        } else if(intervalSize > 30 && interval.isHigher) {
-            return interval.lastGuess - 10;
-        } else if (!interval.isHigher) {
+        } else
             return interval.lastGuess + 1;
-        } else if(interval.isHigher) {
-            return interval.lastGuess - 1;
-        }
     },
     guessAbove: function(interval) {
 
