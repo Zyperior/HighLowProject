@@ -4,7 +4,6 @@ import store from '../store'
 
 
 const state = {
-    activePlayers: [],
     questions: [
 
     ],
@@ -43,7 +42,7 @@ const getters = {
         if(state.questions.length > 0)
         return state.questions[state.questionCounter].answer;
         else
-            return "No";
+            return "";
     },
     getCurrentQuestion: state => {
         return state.currentQuestion;
@@ -67,7 +66,6 @@ const getters = {
         return state.players;
     },
     getLastGuess: state => {
-        console.log("last guess::: "+state.lastGuess)
         return state.lastGuess;
     }
 }
@@ -122,7 +120,7 @@ const mutations = {
 
             state.playerTurn += 1;
 
-            
+
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
