@@ -4,6 +4,7 @@ import store from '../store'
 
 
 const state = {
+    activePlayers: [],
     questions: [
 
     ],
@@ -38,6 +39,12 @@ const state = {
 }
 
 const getters = {
+    correctAnswer: state => {
+        if(state.questions.length > 0)
+        return state.questions[state.questionCounter].answer;
+        else
+            return "No";
+    },
     getCurrentQuestion: state => {
         return state.currentQuestion;
     },
@@ -58,6 +65,10 @@ const getters = {
     },
     getPlayers: state => {
         return state.players;
+    },
+    getLastGuess: state => {
+        console.log("last guess::: "+state.lastGuess)
+        return state.lastGuess;
     }
 }
 
@@ -70,10 +81,12 @@ const mutations = {
         state.currentQuestion = state.questions[state.questionCounter].question;
     },
     submitAnswer: (state, a) => {
+        a = parseInt(a);
+        state.lastGuess = a;
         state.players[state.playerTurn].answer = a;
-        state.lastGuess = state.players[state.playerTurn];
+        // state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
-
+            state.lastGuess = '';
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
@@ -97,33 +110,43 @@ const mutations = {
             }
             store.dispatch('generalStats/postDBData', [1, 2]);
         }
-        if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
+
             state.lowAnswers.push(state.players[state.playerTurn].answer);
-            state.lowAnswers.reverse();
-            console.log(state.lowAnswers);
+            state.lowAnswers.sort((a, b) => {
+                if(a > b) return -1;
+                if(b < a) return 1;
+                return 0;
+            });
+
             state.playerTurn += 1;
-            console.log('The last guess was', state.lastGuess);
+
             
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
         }
-        if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
+
             console.log('Your answer is to high');
 
             state.highAnswers.push(state.players[state.playerTurn].answer);
-            state.highAnswers.sort();
-            console.log(state.highAnswers);
+            state.highAnswers.sort((a, b) => {
+                if(a > b) return 1;
+                if(b > a) return -1;
+                return 0;
+            });
+
             state.playerTurn += 1;
-            console.log('The last guess was', state.lastGuess);
+
             
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
         }
 
-        state.answer = '';
+
     },
     updateAnswer: (state, a) => {
         state.answer = a;
