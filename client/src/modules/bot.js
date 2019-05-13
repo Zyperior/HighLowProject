@@ -53,7 +53,7 @@ const bot2 = {
     unfair: false,
     difficulty: 'hard',
     timing: 2,
-    isPlaying: false,
+    isPlaying: true,
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
     phrases: {
         guessing: [
@@ -120,7 +120,7 @@ const bot4 = {
     difficulty: 'easy',
     timing: 2,
     isPlaying: false,
-    description: "Guesses randomly between highest and lowest guess",
+    behavior: "Guesses randomly between highest and lowest guess",
     phrases: {
         guessing: [
             "Jå gissar.",
@@ -190,7 +190,7 @@ const bot6 =  {
         thisBotCorrect: "Torpedoed!",
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
-    }
+    },
     behavior: 'The smaller the interval is the smaller its guesses are'
 }
 
@@ -226,7 +226,7 @@ const bot7 = {
     unfair: false,
     difficulty: 'medium',
     timing: 2,
-    isPlaying: false,
+    isPlaying: true,
     phrases: {
         guessing: [
             "Yarr!",
@@ -403,6 +403,35 @@ const bot12 = {
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
     }
+}
+
+
+const bot13 = {
+    name: "Not a bot",
+    guess: function(interval){
+        let max = 0;
+        let min = 0;
+
+        if(interval.highestGuess === 0 || interval.highestGuess > interval.correctAnswer * 1.4){
+            max = Math.ceil(interval.correctAnswer * (1.4));
+        } else {
+            max = interval.highestGuess;
+        }
+
+        if(interval.lowestGuess === 0 || interval.lowestGuess < interval.correctAnswer * 0.6){
+            min = Math.floor(interval.correctAnswer * (0.6));
+        } else {
+            min = interval.lowestGuess;
+        }
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+
+    },
+    unfair: false,
+    difficulty: "medium",
+    timing: 2,
+    isPlaying: false,
+    behavior: "Guesses suspiciously life like..."
 }
 
 export default

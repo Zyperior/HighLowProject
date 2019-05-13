@@ -4,6 +4,7 @@ import store from '../store'
 
 
 const state = {
+    activePlayers: [],
     questions: [
 
     ],
@@ -42,7 +43,7 @@ const getters = {
         if(state.questions.length > 0)
         return state.questions[state.questionCounter].answer;
         else
-            return "";
+            return "No";
     },
     getCurrentQuestion: state => {
         return state.currentQuestion;
@@ -66,6 +67,7 @@ const getters = {
         return state.players;
     },
     getLastGuess: state => {
+        console.log("last guess::: "+state.lastGuess)
         return state.lastGuess;
     }
 }
@@ -120,7 +122,7 @@ const mutations = {
 
             state.playerTurn += 1;
 
-
+            
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
@@ -153,10 +155,12 @@ const mutations = {
 
 const actions = {
     async loadQuestionsAndStartGame({commit}, settings) {
-
+        console.log("hello")
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
         );
+        console.log("hello2")
+        console.log(response.data)
         commit('setQuestions', response.data);
         commit("startGame");
     },
