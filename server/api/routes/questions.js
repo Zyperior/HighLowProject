@@ -32,11 +32,32 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         query = {difficulty: difficulty}
     }
 
+
+
     Question.find(query)
-        .limit(amount)
+        //.limit(amount)
         .select("question answer difficulty category source")
         .exec()
-        .then(foundquestions => res.status(200).send(foundquestions))
+        .then(foundquestions => {
+
+            //Randomize which questions that are returned each time
+            let scrambledQuestions = [];
+            let indexes = [];
+
+            while(scrambledQuestions.length < amount){
+                const questionIndex = Math.floor(Math.random() * foundquestions.length);
+                if(!indexes.includes(questionIndex)){
+                    scrambledQuestions.push(foundquestions[questionIndex])
+                    indexes.push(questionIndex);
+                }
+                //REMOVE THIS "IF" BELOW ONCE THERE ARE AT LEAST 5 QUESTIONS OF EACH DIFFICULTY IN EACH CATEGORY
+                if(foundquestions.length < amount && foundquestions.length === indexes.length){
+                    break;
+                }
+            }
+
+            res.status(200).send(scrambledQuestions)
+        })
         .catch(error => res.status(500).json({message: error.toString()}))
 
 });

@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div v-show="isRunning">
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
-        <div v-show="isRunning">
+        <div>
             <p>Highest Guess: {{highGuess[0]}} </p>
             <p>Lowest Guess: {{lowGuess[0]}} </p>
             <p>{{players[0].name}}: {{players[0].answer}}</p>
@@ -12,7 +12,9 @@
 
             <Timer ref="myTimer"/>
         </div>
-        <button v-show="startStage" @click="startGame()">Start Game</button>
+
+
+
 
     </div>
 </template>
@@ -21,12 +23,6 @@
 
     export default {
         methods: {
-            startGame() {
-                this.$store.dispatch("loadQuestionsAndStartGame", {amount: 10, difficulty: 0, category: 0});
-
-
-                this.$refs.myTimer.startTimer();
-            },
             submitAnswer(a) {
                 this.$store.commit('submitAnswer', a);
             }
@@ -59,11 +55,19 @@
                 return this.$store.getters.getPlayers
             }
         },
-
+        watch: {
+            startStage(){
+                this.$refs.myTimer.startTimer();
+            }
+        },
         components: {
             Timer
         }
     }
 </script>
 <style scoped>
+
+
+
+
 </style>
