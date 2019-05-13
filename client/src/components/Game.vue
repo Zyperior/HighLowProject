@@ -8,7 +8,11 @@
             <p>{{players[0].name}}: {{players[0].answer}}</p>
             <p>{{players[1].name}}: {{players[1].answer}}</p>
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer">
-            <button @click="submitAnswer(answer)">Submit Answer</button>
+            <div>
+                <button @click="submitAnswer(answer)">Submit Answer</button>
+                <audio ref="audioTest" src="/testAudio.wav"></audio>
+            </div>
+            
 
             <Timer ref="myTimer"/>
         </div>
@@ -20,10 +24,10 @@
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
-
     export default {
         methods: {
             submitAnswer(a) {
+                this.$refs.audioTest.play();
                 this.$store.commit('submitAnswer', a);
             }
         },
