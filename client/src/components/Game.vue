@@ -1,24 +1,36 @@
 <template>
-    <div>
+    <div v-show="isRunning">
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
-        <div v-show="isRunning">
+        <div>
             <p>Highest Guess: {{highGuess[0]}} </p>
             <p>Lowest Guess: {{lowGuess[0]}} </p>
             <p>{{players[0].name}}: {{players[0].answer}}</p>
             <p>{{players[1].name}}: {{players[1].answer}}</p>
-            <input type="text" v-model="answer" name="answer" placeholder="Enter your answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')">
-            <button @click="submitAnswer()">Submit Answer</button>
+            <br>
+            <p>{{activeBot.name}}</p>
+            <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+            <button @click="submitAnswer(answer); botGuess();">Submit Answer</button>
 
             <Timer ref="myTimer"/>
         </div>
-        <button v-show="startStage" @click="startGame()">Start Game</button>
+
+
+
+
     </div>
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
 
     export default {
+        data(){
+          return {
+              playerTurn: true,
+              number: 0,
+              activeBot: {}
+          }
+        },
         methods: {
             startGame() {               
                 //this.$store.commit('startGame');
@@ -28,9 +40,69 @@
             submitAnswer() {
                 //this.$store.commit('submitAnswer');
                 this.$store.dispatch("submitAnswer");      // Anropar action istället för mutation
+            },
+            add(){
+              this.number++;
+            },
+            reset(){
+                this.number = 0;
+                this.playerTurn = true;
+            },
+            // submitAnswer(a) {
+            //     this.$store.commit('submitAnswer', a);
+            // },
+            botGuess(){
+                console.log("inside bot guess")
+                this.playerTurn = false;
+                let bots = this.activeBots;
+                let bot = bots[this.number];
+                let submitGuessFunction = this.submitAnswer;
+                let int = this.interval;
+                let nr = this.number;
+                let addFunction = this.add;
+                let resetFunction = this.reset;
+                let loopFunction = this.botGuess;
+                this.activeBot = bot;
+                console.log(bots);
+                setTimeout(function () {
+                    let guess = bot.guess(int)
+                    console.log(bot.name + " "+guess)
+                    submitGuessFunction(guess)
+                    addFunction()
+                    if (nr < bots.length - 1) {
+                        loopFunction();
+                    }
+                    else {
+                        resetFunction();
+                    }
+                }, 2000)
+
             }
         },
         computed: {
+            activeBots(){
+                return this.$store.getters.playingBots;
+            },
+            interval(){
+                let interval = {
+                    lowestGuess: this.lowGuess[0],
+                    highestGuess: this.highGuess[0],
+                    correctAnswer: this.correctAnswer,
+                    isInInterval: function () {
+                        return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
+                    },
+                    lastGuess: this.lastGuess
+                }
+                if (typeof interval.lowestGuess === 'undefined')
+                    interval.lowestGuess = 0;
+                if (typeof interval.highestGuess === 'undefined')
+                    interval.highestGuess = 0;
+
+                return interval;
+            },
+            lastGuess() {
+              return this.$store.getters.getLastGuess;
+            },
             answer: {
             get() {
                 return this.$store.getters.getAnswer;
@@ -55,10 +127,17 @@
                 return this.$store.getters.getHighGuess;
             },
             players(){
-                return this.$store.getters.getPlayers;
+                return this.$store.getters.getPlayers
+            },
+            correctAnswer(){
+                return this.$store.getters.correctAnswer;
             }
         },
-
+        watch: {
+            startStage(){
+                this.$refs.myTimer.startTimer();
+            }
+        },
         components: {
             Timer
         }      
@@ -67,4 +146,8 @@
     }
 </script>
 <style scoped>
+
+
+
+
 </style>

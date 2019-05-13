@@ -1,33 +1,24 @@
 import { stat } from "fs";
+import axios from "axios";
+import store from '../store'
+import GameComplete from "../components/GameComplete";
+import router from "../router";
+
 
 const state = {
-    questions: [{
-            id: 0,
-            question: 'What year was Öyvin born',
-            answer: 1984,
-            status: false
+    activePlayers: [],
+    questions: [
 
-        },
-        {
-            id: 1,
-            question: 'What year was Filip born',
-            answer: 1995,
-            status: false
-        },
-        {
-            id: 2,
-            question: 'How many players are there in a soccer game',
-            answer: 22,
-            status: false
-        }
     ],
     players: [{
         name: "Player One",
-        answer: 0
+        answer: 0,
+        guessCount: 0
     },
     {
         name: "Player Two",
-        answer: 0
+        answer: 0,
+        guessCount: 0
     }],
     currentQuestion: "",
     startStage: true,
@@ -52,6 +43,12 @@ const state = {
 }
 
 const getters = {
+    correctAnswer: state => {
+        if(state.questions.length > 0)
+        return state.questions[state.questionCounter].answer;
+        else
+            return "No";
+    },
     getCurrentQuestion: state => {
         return state.currentQuestion;
     },
@@ -72,25 +69,30 @@ const getters = {
     },
     getPlayers: state => {
         return state.players;
+    },
+    getLastGuess: state => {
+        console.log("last guess::: "+state.lastGuess)
+        return state.lastGuess;
     }
 }
 
 const mutations = {
+    setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+
     startGame: state => {
         state.startStage = false;
         state.isRunning = true;
         state.currentQuestion = state.questions[state.questionCounter].question;
 
     },
-    submitAnswer: state => {
-        state.players[state.playerTurn].answer = state.answer;
-
-        console.log("submitAnswer");
-        
-
-        state.lastGuess = state.players[state.playerTurn];
+    submitAnswer: (state, a) => {
+        a = parseInt(a);
+        state.lastGuess = a;
+        state.players[state.playerTurn].answer = a;
+        // state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
-
+            state.lastGuess = '';
+            state.players[state.playerTurn].guessCount += 1;
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
@@ -101,38 +103,59 @@ const mutations = {
             state.questionCounter += 1;
             state.lowAnswers = [];
             state.highAnswers = [];
+
+            if(state.questionCounter === state.questions.length){
+               router.push('/complete')
+            }
+
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
 
             // Här!
+            if(state.playerTurn === 2){
+                state.playerTurn = 0;
+            }
+            store.dispatch('generalStats/postDBData', [1, 2]);
         }
-        if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
+            state.players[state.playerTurn].guessCount += 1;
+
             state.lowAnswers.push(state.players[state.playerTurn].answer);
-            state.lowAnswers.reverse();
-            console.log(state.lowAnswers);
+            state.lowAnswers.sort((a, b) => {
+                if(a > b) return -1;
+                if(b < a) return 1;
+                return 0;
+            });
+
             state.playerTurn += 1;
-            console.log('The last guess was', state.lastGuess);
+
             
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
         }
-        if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
+
             console.log('Your answer is to high');
+            state.players[state.playerTurn].guessCount += 1;
 
             state.highAnswers.push(state.players[state.playerTurn].answer);
-            state.highAnswers.sort();
-            console.log(state.highAnswers);
+            state.highAnswers.sort((a, b) => {
+                if(a > b) return 1;
+                if(b > a) return -1;
+                return 0;
+            });
+
             state.playerTurn += 1;
-            console.log('The last guess was', state.lastGuess);
+
             
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
         }
 
-        state.answer = '';
+
     },
     updateAnswer: (state, a) => {
         state.answer = a;
@@ -140,6 +163,17 @@ const mutations = {
 }
 
 const actions = {
+    async loadQuestionsAndStartGame({commit}, settings) {
+        console.log("hello")
+        const response = await axios.get(
+            `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
+        );
+        console.log("hello2")
+        console.log(response.data)
+        commit('setQuestions', response.data);
+        commit("startGame");
+    },
+
     updateAnswer: ({
         commit
     }, a) => {

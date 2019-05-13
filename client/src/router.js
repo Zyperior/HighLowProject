@@ -1,16 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Game from './components/Game.vue'
+//import GameComplete from "./components/GameComplete";
+//import Game from './components/Game.vue'
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'game',
+    //   component: Game
+    // },
     {
       path: '/',
-      name: 'game',
-      component: Game
+      name: 'startAndGame',
+      component: () => import('./views/StartAndGame.vue')
+    },
+    {
+      path: '/complete',
+      name: "GameComplete",
+      component: () => import('./components/GameComplete.vue')
     },
     {
       path: '/about',
