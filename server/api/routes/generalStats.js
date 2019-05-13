@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
     Stats.find()
         .select("gamesPlayed questionsAsked totalGuesses")
         .exec()
-        .then(stats => res.status(200).json(stats))
+        .then(stats => res.status(200).send(stats))
         .catch(error => res.status(500).json({message : error.toString()}))
 });
 
@@ -21,7 +21,7 @@ router.put("/", (req, res) => {
         {new:true},
         (error, response )=>{
             if(error){res.status(500).json({message : error.toString()})}
-            else{res.status(200).json(response)}
+            else{res.status(200).send(response)}
         });
 
 });
@@ -42,7 +42,7 @@ router.post("/", (req, res) => {
 
                 stats.save()
                     .then(savedStats => {
-                        res.status(201).json(savedStats)
+                        res.status(201).send(savedStats)
                     });
 
             }
