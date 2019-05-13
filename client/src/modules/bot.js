@@ -431,7 +431,18 @@ const bot13 = {
     difficulty: "medium",
     timing: 2,
     isPlaying: false,
-    behavior: "Guesses suspiciously life like..."
+    behavior: "Guesses suspiciously life like...",
+    phrases: {
+        guessing: [
+            "This must be it!",
+            "Hmm..."
+        ],
+        badGuess: "...",
+        thisBotCorrect: "I knew it!",
+        otherCorrect: "That would had been my next guess...",
+        otherWinGame: "Congrats",
+        thisBotWinGame: "Horray!"
+    }
 }
 
 export default
