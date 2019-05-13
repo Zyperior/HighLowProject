@@ -3,14 +3,14 @@
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
         <div>
-            <p>Highest Guess: {{highGuess[0]}} </p>
-            <p>Lowest Guess: {{lowGuess[0]}} </p>
-            <p v-for="player in players">{{player.name}}: {{player.answer}}</p>
-            <div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">
-                <p>{{bot.name}}</p>
-            </div>
+            <h2>Highest Guess: {{highGuess[0]}} </h2>
+            <h2>Lowest Guess: {{lowGuess[0]}} </h2>
+            <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
+            <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
+                <!--<p>{{bot.name}}</p>-->
+            <!--</div>-->
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
-            <button @click="submitAnswer(answer); botGuess();">Submit Answer</button>
+            <button @click="submitAnswer(answer); guess();">Submit Answer</button>
 
             <Timer ref="myTimer"/>
         </div>
@@ -25,7 +25,7 @@
           return {
               playerTurn: true,
               number: 0,
-              activeBot: {}
+              activePlayer: {}
           }
         },
         methods: {
@@ -39,37 +39,32 @@
             submitAnswer(a) {
                 this.$store.commit('submitAnswer', a);
             },
-            botGuess(){
-                console.log("inside bot guess")
-                this.playerTurn = false;
-                let bots = this.activeBots;
-                let bot = bots[this.number];
+            botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
-                let nr = this.number;
-                let addFunction = this.add;
-                let resetFunction = this.reset;
-                let loopFunction = this.botGuess;
-                this.activeBot = bot;
-                console.log(bots);
+                let loopFunction = this.guess;
+
                 setTimeout(function () {
                     let guess = bot.guess(int)
-                    console.log(bot.name + " "+guess)
                     submitGuessFunction(guess)
-                    addFunction()
-                    if (nr < bots.length - 1) {
-                        loopFunction();
-                    }
-                    else {
-                        resetFunction();
-                    }
+                    loopFunction();
                 }, 2000)
 
+            },
+            guess(){
+                this.activePlayer = this.activePlayers[this.playerCounter]
+
+                if(this.activePlayer.isHuman){
+                    this.playerTurn = true;
+                }else{
+                    this.playerTurn = false;
+                    this.botGuess(this.activePlayer);
+                }
             }
         },
         computed: {
-            currentPlayers(){
-              return this.players.concat(this.activeBots);
+            playerCounter(){
+              return this.$store.getters.getPlayerTurn;
             },
             activeBots(){
                 return this.$store.getters.playingBots;
@@ -118,15 +113,20 @@
                 return this.$store.getters.getHighGuess;
             },
             players(){
-                return this.$store.getters.getPlayers
+                return this.$store.getters.getPlayers;
             },
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
+            },
+            activePlayers(){
+                return this.$store.getters.getActivePlayers;
             }
         },
         watch: {
             startStage(){
                 this.$refs.myTimer.startTimer();
+                this.activePlayer = this.players[this.playerCounter]
+                this.guess();
             }
         },
         components: {
@@ -136,7 +136,7 @@
 </script>
 <style scoped>
 
-.activeBot {
+.activePlayer {
     background-color: red;
 }
 

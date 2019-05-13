@@ -108,14 +108,18 @@
             },
             createPlayers(amount){
                 for(var i = 1; i <= amount; i++){
-                    this.players.push({
+                    var player = {
                         name: 'Player '+i,
                         score: 0,
                         guessCount: 0,
-                        score: 0
-                    })
-                    console.log(this.players)
+                        score: 0,
+                        isHuman: true
+                    }
+                    this.players.push(player);
+                    this.activePlayers.push(player);
                 }
+
+                this.$store.commit('updateActivePlayers', this.playingBots);
             }
         },
         computed: {
@@ -130,6 +134,9 @@
             },
             players(){
                 return this.$store.getters.getPlayers;
+            },
+            activePlayers(){
+                return this.$store.getters.getActivePlayers;
             }
         },
     }
