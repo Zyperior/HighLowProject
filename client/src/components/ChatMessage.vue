@@ -1,24 +1,28 @@
 <template>
-    <div class="card">
-        <div class="container" @mouseenter="toggleBubble">
-            <h4><b>{{player.name}}</b></h4>
-            <p>Points: {{player.points}}</p>
-            <p>Correct guesses: {{player.correctGuesses}}</p>
-            <transition>
-                <div v-show="showBubble" id="SpeechBubble">{{bubble.message}}</div>
-            </transition>
-        </div>
+    <div class="message-area">
+        <transition-group>
+            <div v-if="showMessage"
+                 v-for="message, index in messages"
+                 :message="messages[index]"
+                 :key="index"
+                 class="message-container"
+                 >
+                <p class="messager-name">{{message.name}}</p>
+                <p class="message">{{message.text}}</p>
+            </div>
+        </transition-group>
     </div>
 </template>
 
 <script>
+    //<div v-show="showBubble" id="SpeechBubble">{{bubble.message}}</div>
     const Card = {
-        props: ['player'],
+        props: ['player', 'message'],
 
     };
 
     export default {
-        name: "PlayerCard",
+        name: "ChatMessage",
         data: function () {
             return {
                 player: {
@@ -35,15 +39,20 @@
                     }
                 },
                 showBubble: false,
+                showMessage: true,
                 bubble: {
                     message: "Bubble message here"
                 },
                 question: {
                     chatType: "otherWin"
-                }
+                },
+                messages: [{name: "Bo", text:"hello"}, {name: "Segelbot", text:"goodbye"}, {name: "The La Bossen", text:"cheesecake"}, {name: "Abbott", text:"ipsum lorem dolor set this is a long message and I couldn't remember more on ipsum lorem and for whatever reason intellij didn't want to do the ipsum20+tab that worked before. I tried lorem20, too, but that didn't work either."}]
             }
         },
         methods: {
+            hideMessage: function() {
+              this.showMessage = false;
+            },
             toggleBubble: function () {
                 if(this.randomTalk()) {
                     this.updateBubble();
@@ -55,7 +64,39 @@
             },
             randomTalk: function () {
                 //50% chance to return true.
-                return (Math.floor(Math.random() * 2) === 1);
+                return (Math.floor(Math.random() * 1) === 0);
+            },
+            pushMessage: function(msg) {
+                if(this.messages.length !== 3) {
+
+                    switch (this.question.chatType) {
+                        case "guessing": {
+                            let index = Math.floor(Math.random() * 2);
+                            this.message.text = this.player.phrases.guessing[index];
+                            break;
+                        }
+                        case "badGuess": {
+                            this.bubble.message = this.player.phrases.badGuess;
+                            break;
+                        }
+                        case "thisCorrect": {
+                            this.bubble.message = this.player.phrases.thisBotCorrect;
+                            break;
+                        }
+                        case "thisWin": {
+                            this.bubble.message = this.player.phrases.thisBotWinGame;
+                            break;
+                        }
+                        case "otherCorrect": {
+                            this.bubble.message = this.player.phrases.otherCorrect;
+                            break;
+                        }
+                        case "otherWin": {
+                            this.bubble.message = this.player.phrases.otherWinGame;
+                            break;
+                        }
+                    }
+                }
             },
             updateBubble: function() {
                 // Ta in chatType some argument istället.
@@ -90,7 +131,6 @@
 
 .card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 2px 8px 16px 2px rgba(0,0,0,0.2);
     transition: 0.3s;
     position: relative;
 
@@ -101,8 +141,29 @@
     border-radius: 5px;
 }
 
-.container {
-    padding: 2px 16px;
+.message-area {
+    position: absolute;
+    left: 25%;
+    color: whitesmoke;
+    top: 0;
+    width: 50%;
+    transition: height 0.2s;
+}
+
+.message-container {
+    background: rgba(0,0,0,.6);
+    border-radius: 20px;
+}
+
+.messager-name {
+    font-weight: 600;
+    display: flex;
+    margin-left: 5%;
+    padding-top: 10px;
+}
+
+.message {
+    padding: 10px;
 }
 
 
