@@ -31,7 +31,8 @@ const bot1 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot2 = {
@@ -71,7 +72,8 @@ const bot2 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot3 = {
@@ -107,7 +109,8 @@ const bot3 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot4 = {
@@ -143,7 +146,8 @@ const bot4 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot5 = {
@@ -172,7 +176,8 @@ const bot5 = {
     behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot6 =  {
@@ -209,7 +214,8 @@ const bot6 =  {
     behavior: 'The smaller the interval is the smaller its guesses are',
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot7 = {
@@ -258,7 +264,8 @@ const bot7 = {
     behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot8 = {
@@ -296,7 +303,8 @@ const bot8 = {
     behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot9 = {
@@ -333,7 +341,8 @@ const bot9 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot10 = {
@@ -363,7 +372,8 @@ const bot10 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot11 = {
@@ -404,7 +414,8 @@ const bot11 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 const bot12 = {
@@ -432,7 +443,8 @@ const bot12 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 
@@ -475,7 +487,8 @@ const bot13 = {
     },
     answer: 0,
     guessCount: 0,
-    isHuman: false
+    isHuman: false,
+    score: 0
 }
 
 export default
