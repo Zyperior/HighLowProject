@@ -28,7 +28,10 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot2 = {
@@ -65,7 +68,10 @@ const bot2 = {
         thisBotCorrect: "",
         otherWinGame: "",
         thisBotWinGame: ""
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot3 = {
@@ -98,7 +104,10 @@ const bot3 = {
         thisBotCorrect: "Nothing personal, it’s just business.",
         otherWinGame: "You wanna play rough? Okay. Say hello to my little friend!",
         thisBotWinGame: "Veni, vidi, vici."
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot4 = {
@@ -131,7 +140,10 @@ const bot4 = {
         thisBotCorrect: "E la inget mä detta!",
         otherWinGame: "Hallå eller. Änna bra gjort!",
         thisBotWinGame: "Änna görkul detta!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot5 = {
@@ -157,7 +169,10 @@ const bot5 = {
         otherWinGame: "In Mother Russia, game wins you.",
         thisBotWinGame: "Radost.",
     },
-    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000'
+    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot6 =  {
@@ -191,7 +206,10 @@ const bot6 =  {
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
     },
-    behavior: 'The smaller the interval is the smaller its guesses are'
+    behavior: 'The smaller the interval is the smaller its guesses are',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot7 = {
@@ -210,7 +228,6 @@ const bot7 = {
             return 0;
         }
         var intervalSize = interval.highestGuess - interval.lowestGuess;
-        console.log(intervalSize);
         if(intervalSize >= 1000)
             return Math.floor(interval.lowestGuess + intervalSize * 0.8);
         else if(intervalSize >= 100)
@@ -238,7 +255,10 @@ const bot7 = {
         otherWinGame: "Scupper that!",
         thisBotWinGame: "Shiver me timbers!"
     },
-    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1'
+    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot8 = {
@@ -273,7 +293,10 @@ const bot8 = {
         otherWinGame: "",
         thisBotWinGame: "No one can beat our bot"
     },
-    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval'
+    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot9 = {
@@ -307,7 +330,10 @@ const bot9 = {
         otherCorrect: "Proverbs 3:27",
         otherWinGame: "Ezekiel 25:17",
         thisBotWinGame: "Exodus 20:17"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot10 = {
@@ -334,7 +360,10 @@ const bot10 = {
         otherCorrect: "...",
         otherWinGame: "...",
         thisBotWinGame: "B&E!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot11 = {
@@ -372,7 +401,10 @@ const bot11 = {
         otherCorrect: "01010111 01010000",
         otherWinGame: "01010111 01010100 01000110",
         thisBotWinGame: "01001100 00110010 01010000"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 const bot12 = {
@@ -397,7 +429,10 @@ const bot12 = {
         otherCorrect: "Random encounter!",
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 
@@ -437,7 +472,10 @@ const bot13 = {
         otherCorrect: "That would had been my next guess...",
         otherWinGame: "Congrats",
         thisBotWinGame: "Horray!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false
 }
 
 export default
