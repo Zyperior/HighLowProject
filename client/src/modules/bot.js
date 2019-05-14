@@ -474,6 +474,17 @@ const bot13 = {
     timing: 2,
     isPlaying: false,
     behavior: "Guesses suspiciously life like...",
+    phrases: {
+        guessing: [
+            "This must be it!",
+            "Hmm..."
+        ],
+        badGuess: "...",
+        thisBotCorrect: "I knew it!",
+        otherCorrect: "That would had been my next guess...",
+        otherWinGame: "Congrats",
+        thisBotWinGame: "Horray!"
+    },
     answer: 0,
     guessCount: 0,
     isHuman: false,
