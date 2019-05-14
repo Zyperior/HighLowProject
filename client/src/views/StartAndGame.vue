@@ -9,6 +9,7 @@
     import start from "../components/Start"
     import game from "../components/Game";
 
+
     export default {
         name: "StartAndGame",
         components: {
