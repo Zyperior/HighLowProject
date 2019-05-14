@@ -141,7 +141,7 @@
         },
         watch: {
             startStage(){
-                this.$refs.myTimer.startTimer;
+                this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
             },
