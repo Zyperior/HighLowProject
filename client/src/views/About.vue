@@ -23,6 +23,7 @@
     </div>
 </template>
 
+
 <script>
     import GeneralStats from '../components/GeneralStats'
 
@@ -61,3 +62,4 @@
         justify-items: flex-start;
     }
 </style>
+

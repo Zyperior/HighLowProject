@@ -178,19 +178,32 @@ const mutations = {
     updateAnswer: (state, a) => {
         state.answer = a;
     },
+    
+    jumpToNextPlayer: state => {
+
+        state.playerTurn += 1;
+            
+        if(state.playerTurn === 2){
+            state.playerTurn = 0;
+        }
+
+        console.log("jumpToNextPlayer i game.js");
+
+    },
+        
+
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
     }
+
+
 }
 
 const actions = {
     async loadQuestionsAndStartGame({commit}, settings) {
-        console.log("hello")
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
         );
-        console.log("hello2")
-        console.log(response.data)
         commit('setQuestions', response.data);
         commit("startGame");
     },
@@ -199,8 +212,41 @@ const actions = {
         commit
     }, a) => {
         commit('updateAnswer', a);
+    },
+
+
+
+    startGame(context) {            // Tillagd action
+
+        console.log("actions startGame");
+        
+
+        context.commit("startGame");
+
+        context.commit("startTimer");
+
+    },
+
+
+    submitAnswer(context, a) {            // Tillagd action
+
+        console.log("actions submitAnswer");
+        
+
+        context.commit("submitAnswer", a);
+
+        context.commit("stopTimer");
+
+        context.commit("startTimer");
+
     }
+    
 }
+
+
+
+
+
 
 export default {
     state,
