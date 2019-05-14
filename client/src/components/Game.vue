@@ -71,7 +71,6 @@
                     this.playerTurn = true;
                 }else{
                     this.playerTurn = false;
-                    console.log("yehaaw")
                     this.botGuess(this.activePlayer);
                 }
             }
@@ -137,6 +136,9 @@
             },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
+            },
+            isTimerZero(){
+                return this.$store.getters.getIsTimerZero;
             }
         },
         watch: {
@@ -145,13 +147,11 @@
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
             },
-
-            jumpToNextPlayer() {
-                console.log("jumpToNextPlayer");
-                
-                this.$store.commit("jumpToNextPlayer");
-                
+            isTimerZero(){
+                this.submitAnswer(0);
+                this.guess();
             }
+
 
 
         },

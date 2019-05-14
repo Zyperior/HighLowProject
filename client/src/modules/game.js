@@ -34,7 +34,11 @@ const state = {
     ],
     answers: [
 
-    ]
+    ],
+    time: 3000,
+    interval: 0,
+    timeLimit: 3000,
+    isTimerZero: false
 }
 
 const getters = {
@@ -69,11 +73,22 @@ const getters = {
         return state.players;
     },
     getLastGuess: state => {
-        console.log("last guess::: "+state.lastGuess)
         return state.lastGuess;
     },
     getActivePlayers: state => {
         return state.activePlayers.reverse();
+    },
+    getTimeLeft: state => {
+        return (state.time / 1000).toFixed(1);
+    },
+
+    getTimeIsUp: state => {
+
+        return state.time === 0;
+
+    },
+    getIsTimerZero: state => {
+        return state.isTimerZero;
     }
 }
 
@@ -122,7 +137,6 @@ const mutations = {
 
         }
         else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
-            console.log('Your answer is to low');
             state.activePlayers[state.playerTurn].guessCount += 1;
 
             state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
@@ -141,7 +155,7 @@ const mutations = {
         }
         else if (state.activePlayers[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
 
-            console.log('Your answer is to high');
+
             state.activePlayers[state.playerTurn].guessCount += 1;
 
             state.highAnswers.push(state.activePlayers[state.playerTurn].answer);
@@ -165,21 +179,37 @@ const mutations = {
         state.answer = a;
     },
     
-    jumpToNextPlayer: state => {
 
-        state.playerTurn += 1;
-            
-        if(state.playerTurn === 2){
-            state.playerTurn = 0;
-        }
-
-        console.log("jumpToNextPlayer i game.js");
-
-    },
         
 
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
+    },
+
+    startTimer: state => {
+
+        state.time = state.timeLimit;
+
+        state.interval = setInterval(function() {
+
+            state.time -= 100;
+
+            if (state.time === 0) {
+
+                clearInterval(state.interval);
+                state.isTimerZero = !state.isTimerZero;
+
+            }
+
+        }, 100);
+
+    },
+
+
+    stopTimer: state => {
+
+        clearInterval(state.interval);
+
     }
 
 
@@ -202,7 +232,7 @@ const actions = {
 
 
 
-    startGame(context) {            // Tillagd action
+    startGame(context) {
 
         console.log("actions startGame");
         
@@ -214,9 +244,9 @@ const actions = {
     },
 
 
-    submitAnswer(context, a) {            // Tillagd action
+    submitAnswer(context, a) {
 
-        console.log("actions submitAnswer");
+
         
 
         context.commit("submitAnswer", a);
