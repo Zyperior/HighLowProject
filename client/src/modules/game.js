@@ -159,7 +159,22 @@ const mutations = {
     },
     updateAnswer: (state, a) => {
         state.answer = a;
+    },
+    
+    jumpToNextPlayer: state => {
+
+        state.playerTurn += 1;
+            
+        if(state.playerTurn === 2){
+            state.playerTurn = 0;
+        }
+
+        console.log("jumpToNextPlayer i game.js");
+        
+
     }
+
+
 }
 
 const actions = {
@@ -178,7 +193,6 @@ const actions = {
         commit
     }, a) => {
         commit('updateAnswer', a);
-        //commit("stopTimer")
     },
 
 
@@ -195,23 +209,25 @@ const actions = {
     },
 
 
-    submitAnswer(context) {            // Tillagd action
+    submitAnswer(context, a) {            // Tillagd action
 
         console.log("actions submitAnswer");
         
 
-        context.commit("submitAnswer");
+        context.commit("submitAnswer", a);
 
         context.commit("stopTimer");
 
         context.commit("startTimer");
 
     }
-
-
-
     
 }
+
+
+
+
+
 
 export default {
     state,
