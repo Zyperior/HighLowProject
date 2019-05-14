@@ -10,8 +10,10 @@
                 <!--<p>{{bot.name}}</p>-->
             <!--</div>-->
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
-            <button @click="submitAnswer(answer); guess();">Submit Answer</button>
-
+            <div>
+                <button @click="submitAnswer(answer); guess;">Submit Answer</button>
+                <audio ref="audioTest" src="/testAudio.wav"></audio>
+            </div>
             <Timer ref="myTimer"/>
         </div>
 
@@ -37,6 +39,7 @@
                 this.playerTurn = true;
             },
             submitAnswer(a) {
+                this.$refs.audioTest.play();
                 this.$store.commit('submitAnswer', a);
             },
             botGuess(bot){
