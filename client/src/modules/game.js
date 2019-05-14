@@ -180,12 +180,12 @@ const mutations = {
 
 const actions = {
     async loadQuestionsAndStartGame({commit}, settings) {
-        console.log("hello")
+        console.log("hello");
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
         );
-        console.log("hello2")
-        console.log(response.data)
+        console.log("hello2");
+        console.log(response.data);
         commit('setQuestions', response.data);
         commit("startGame");
     },
@@ -205,7 +205,7 @@ const actions = {
 
         context.commit("startGame");
 
-        context.commit("startTimer")
+        context.commit("startTimer");
 
     },
 

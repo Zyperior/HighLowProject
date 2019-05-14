@@ -38,8 +38,8 @@
             },
             submitAnswer(a) {
                 //this.$store.commit('submitAnswer');
-                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation
                 this.$refs.audioTest.play();
+                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation                
             },
             add(){
               this.number++;
@@ -103,13 +103,13 @@
               return this.$store.getters.getLastGuess;
             },
             answer: {
-            get() {
-                return this.$store.getters.getAnswer;
+                get() {
+                    return this.$store.getters.getAnswer;
+                },
+                set(answer) {
+                    this.$store.dispatch('updateAnswer', answer);
+                }
             },
-            set(answer) {
-                this.$store.dispatch('updateAnswer', answer);
-            }
-        },
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
