@@ -11,7 +11,7 @@
             <!--</div>-->
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
             <div>
-                <button @click="submitAnswer(answer); guess();">Submit Answer</button>
+                <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
             </div>
             <Timer ref="myTimer"/>
@@ -31,6 +31,16 @@
           }
         },
         methods: {
+            startGame() {               
+                //this.$store.commit('startGame');
+                //this.$refs.myTimer.startTimer();
+                this.$store.dispatch("startGame");      // Anropar action istället för mutation
+            },
+            submitAnswer(a) {
+                //this.$store.commit('submitAnswer');
+                this.$refs.audioTest.play();
+                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation                
+            },
             add(){
               this.number++;
             },
@@ -38,10 +48,10 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
-            submitAnswer(a) {
-                this.$refs.audioTest.play();
-                this.$store.commit('submitAnswer', a);
-            },
+            // submitAnswer(a) {
+            //     this.$refs.audioTest.play();
+            //     this.$store.commit('submitAnswer', a);
+            // },
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
@@ -94,13 +104,13 @@
               return this.$store.getters.getLastGuess;
             },
             answer: {
-            get() {
-                return this.$store.getters.getAnswer;
+                get() {
+                    return this.$store.getters.getAnswer;
+                },
+                set(answer) {
+                    this.$store.dispatch('updateAnswer', answer);
+                }
             },
-            set(answer) {
-                this.$store.dispatch('updateAnswer', answer);
-            }
-        },
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
@@ -122,6 +132,9 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
+            jumpToNextPlayer() {
+                return this.$store.getters.getTimeIsUp;
+            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
             }
@@ -131,11 +144,22 @@
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
+            },
+
+            jumpToNextPlayer() {
+                console.log("jumpToNextPlayer");
+                
+                this.$store.commit("jumpToNextPlayer");
+                
             }
+
+
         },
         components: {
             Timer
-        }
+        }      
+
+
     }
 </script>
 <style scoped>
