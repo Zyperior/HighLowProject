@@ -33,11 +33,8 @@ const state = {
     ],
     answers: [
 
-    ],
-    time: 3000,
-    interval: 0,
-    timeLimit: 3000,
-    isTimerZero: false
+    ]
+
 }
 
 const getters = {
@@ -74,18 +71,6 @@ const getters = {
     },
     getActivePlayers: state => {
         return state.activePlayers.reverse();
-    },
-    getTimeLeft: state => {
-        return (state.time / 1000).toFixed(1);
-    },
-
-    getTimeIsUp: state => {
-
-        return state.time === 0;
-
-    },
-    getIsTimerZero: state => {
-        return state.isTimerZero;
     }
 }
 
@@ -180,33 +165,9 @@ const mutations = {
 
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
-    },
-
-    startTimer: state => {
-
-        state.time = state.timeLimit;
-
-        state.interval = setInterval(function() {
-
-            state.time -= 100;
-
-            if (state.time === 0) {
-
-                clearInterval(state.interval);
-                state.isTimerZero = !state.isTimerZero;
-
-            }
-
-        }, 100);
-
-    },
-
-
-    stopTimer: state => {
-
-        clearInterval(state.interval);
-
     }
+
+
 
 
 }
@@ -235,7 +196,7 @@ const actions = {
 
         context.commit("startGame");
 
-        context.commit("startTimer");
+        context.commit("startTimer", {root:true});
 
     },
 
@@ -247,9 +208,9 @@ const actions = {
 
         context.commit("submitAnswer", a);
 
-        context.commit("stopTimer");
+        context.commit("stopTimer", {root: true});
 
-        context.commit("startTimer");
+        context.commit("startTimer", {root: true});
 
     }
     
