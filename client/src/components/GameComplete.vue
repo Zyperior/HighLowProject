@@ -1,9 +1,9 @@
 <template>
     <div>
-        {{players[0].name}} guessed {{players[0].guessCount}} times this match
-        <br>
-        <br>
-        {{players[1].name}} guessed {{players[1].guessCount}} times this match
+        <div v-for="player in players">
+            {{ player.name }} guessed {{ player.guessCount}} times this match
+            {{ player.name }} earned {{ player.score}} points
+        </div>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
         name: 'GameComplete',
         computed: {
             players(){
-                return this.$store.getters.getPlayers
+                return this.$store.getters.getActivePlayers
             }
         }
 
