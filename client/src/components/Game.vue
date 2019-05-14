@@ -10,7 +10,7 @@
             <br>
             <p>{{activeBot.name}}</p>
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
-            <button @click="submitAnswer(answer); botGuess();">Submit Answer</button>
+            <button @click="submitAnswer(answer); botGuess();" :disabled="!playerTurn">Submit Answer</button>
 
             <Timer ref="myTimer"/>
         </div>
@@ -37,9 +37,9 @@
                 //this.$refs.myTimer.startTimer();
                 this.$store.dispatch("startGame");      // Anropar action istället för mutation
             },
-            submitAnswer() {
+            submitAnswer(a) {
                 //this.$store.commit('submitAnswer');
-                this.$store.dispatch("submitAnswer");      // Anropar action istället för mutation
+                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation
             },
             add(){
               this.number++;
@@ -131,12 +131,23 @@
             },
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
+            },
+            jumpToNextPlayer() {
+                return this.$store.getters.getTimeIsUp;
             }
         },
         watch: {
             startStage(){
                 this.$refs.myTimer.startTimer();
+            },
+
+            jumpToNextPlayer() {
+                console.log("jumpToNextPlayer");
+                
+                this.$store.commit("jumpToNextPlayer");
             }
+
+
         },
         components: {
             Timer
