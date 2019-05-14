@@ -16,8 +16,7 @@ const state = {
     currQ: {
       question: "", currQAnswer: "", points: 0
     },
-    startStage: true,
-    isRunning: false,
+    isStartButtonClicked: false,
     answerAttempts: 0,
     answer: "",
     questionCounter: 0,
@@ -57,11 +56,9 @@ const getters = {
     getAnswer: state => {
         return state.answer;
     },
-    getIsRunning: state => {
-        return state.isRunning;
-    },
-    getStartStage: state => {
-        return state.startStage;
+
+    getIsStartButtonClicked: state => {
+        return state.isStartButtonClicked;
     },
     getLowGuess: state => {
         return state.lowAnswers;
@@ -96,8 +93,7 @@ const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
 
     startGame: state => {
-        state.startStage = false;
-        state.isRunning = true;
+        state.isStartButtonClicked = true;
         state.currentQuestion = state.questions[state.questionCounter].question;
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;

@@ -1,5 +1,5 @@
 <template>
-    <div v-show="isRunning">
+    <div>
         <h1>Game Page</h1>
         <p>{{currentQuestion}}</p>
         <div>
@@ -31,15 +31,12 @@
           }
         },
         methods: {
-            startGame() {               
-                //this.$store.commit('startGame');
-                //this.$refs.myTimer.startTimer;
-                this.$store.dispatch("startGame");      // Anropar action istället för mutation
+            startGame() {
+                this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                //this.$store.commit('submitAnswer');
                 this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation                
+                this.$store.dispatch("submitAnswer", a);
             },
             add(){
               this.number++;
@@ -48,10 +45,6 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
-            // submitAnswer(a) {
-            //     this.$refs.audioTest.play();
-            //     this.$store.commit('submitAnswer', a);
-            // },
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
@@ -113,11 +106,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isRunning() {
-                return this.$store.getters.getIsRunning;
-            },
-            startStage() {
-                return this.$store.getters.getStartStage;
+            isStartButtonClicked() {
+                return this.$store.getters.getIsStartButtonClicked;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -142,7 +132,7 @@
             }
         },
         watch: {
-            startStage(){
+            isStartButtonClicked(){
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
