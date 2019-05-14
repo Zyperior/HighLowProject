@@ -11,7 +11,7 @@
             <!--</div>-->
             <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
             <div>
-                <button @click="submitAnswer(answer); guess;">Submit Answer</button>
+                <button @click="submitAnswer(answer); guess();">Submit Answer</button>
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
             </div>
             <Timer ref="myTimer"/>
@@ -61,6 +61,7 @@
                     this.playerTurn = true;
                 }else{
                     this.playerTurn = false;
+                    console.log("yehaaw")
                     this.botGuess(this.activePlayer);
                 }
             }
