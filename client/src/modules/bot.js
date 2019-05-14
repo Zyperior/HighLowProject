@@ -28,11 +28,7 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
-    },
-    answer: 0,
-    guessCount: 0,
-    isHuman: false,
-    score: 0
+    }
 }
 
 const bot2 = {
@@ -61,14 +57,14 @@ const bot2 = {
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
     phrases: {
         guessing: [
-            "",
-            ""
+            "Let's see how this goes.",
+            "My turn!"
         ],
-        badGuess: "",
-        otherCorrect: "",
-        thisBotCorrect: "",
-        otherWinGame: "",
-        thisBotWinGame: ""
+        badGuess: "Better luck next time!",
+        otherCorrect: "Jolly good!",
+        thisBotCorrect: "Lark!",
+        otherWinGame: "Well done!",
+        thisBotWinGame: "Oh, dearie me, that was fun!"
     },
     answer: 0,
     guessCount: 0,
@@ -203,7 +199,7 @@ const bot6 =  {
     phrases: {
         guessing: [
             "Ping... ping...",
-            ""
+            "Diving.."
         ],
         badGuess: "Miss!",
         otherCorrect: "Hit!",
@@ -291,14 +287,14 @@ const bot8 = {
     isPlaying: false,
     phrases: {
         guessing: [
-            "I'm not a bot",
-            "Unts-unts-unts"
+            "Jag är ingen bot",
+            "Ingen kan slå våran bot."
         ],
-        badGuess: "No take-overs allowed!",
-        otherCorrect: "I can ban you...",
-        thisBotCorrect: "",
-        otherWinGame: "",
-        thisBotWinGame: "No one can beat our bot"
+        badGuess: "Det svaret är väldigt främmande för mig.",
+        otherCorrect: "Det finns inget som behöver förklaras.",
+        thisBotCorrect: "Jag är en väldigt, väldigt vacker tjej.",
+        otherWinGame: "Jag kan banna, banna dig så hårt.",
+        thisBotWinGame: "Det finns ingen take-over som lyckas."
     },
     behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
     answer: 0,
@@ -491,5 +487,48 @@ const bot13 = {
     score: 0
 }
 
+const bot14 = {
+    name: 'BratBot',
+    guess: function(interval){
+        let bratLow = interval.correctAnswer * 0.75;
+        let bratHigh = interval.correctAnswer * 1.25;
+
+        if(bratLow < interval.lowestGuess) {
+            bratLow = interval.lowestGuess;
+        }
+        if(bratHigh > interval.highestGuess && interval.highestGuess != 0) {
+            bratHigh = interval.highestGuess;
+        }
+        return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
+
+    },
+    inIntervalGuess: function(interval) {
+        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
+    },
+    guessAbove: function(interval) {
+        return interval.lowestGuess * 2;
+    },
+    unfair: true,
+    difficulty: 'medium',
+    timing: 2,
+    isPlaying: false,
+    behavior: "Guesses within 25% of the correct answer. Cheats",
+    phrases: {
+        guessing: [
+            "LAZORZ",
+            "1337"
+        ],
+        badGuess: "gg n00b",
+        otherCorrect: "urmom",
+        thisBotCorrect: "l2p",
+        otherWinGame: "fml",
+        thisBotWinGame: "lmao haxzorz"
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
+}
+
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
+ [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13, bot14]
