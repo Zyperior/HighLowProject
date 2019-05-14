@@ -115,11 +115,16 @@
                         score: 0,
                         isHuman: true
                     }
+                    console.log(player);
                     this.players.push(player);
                     this.activePlayers.push(player);
+                    console.log("after push")
+                    console.log(this.activePlayers);
                 }
 
                 this.$store.commit('updateActivePlayers', this.playingBots);
+                console.log("after bots insert")
+                console.log(this.activePlayers);
             }
         },
         computed: {

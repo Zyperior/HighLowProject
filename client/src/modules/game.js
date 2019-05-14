@@ -67,7 +67,7 @@ const getters = {
         return state.highAnswers;
     },
     getPlayers: state => {
-        return state.activePlayers;
+        return state.players;
     },
     getLastGuess: state => {
         console.log("last guess::: "+state.lastGuess);
@@ -92,6 +92,7 @@ const mutations = {
     submitAnswer: (state, a) => {
         a = parseInt(a);
         state.lastGuess = a;
+        console.log(state.players)
         state.activePlayers[state.playerTurn].answer = a;
         if (state.activePlayers[state.playerTurn].answer == state.currQ.currQAnswer) {
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
@@ -193,7 +194,11 @@ const mutations = {
         
 
     updateActivePlayers: (state, players) => {
+        console.log("before insert players:")
+        console.log(state.players)
         state.activePlayers = state.players.concat(players);
+        console.log(state.activePlayers)
+        console.log("inside update")
     }
 
 
