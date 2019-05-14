@@ -2,7 +2,7 @@
 
 const state = {
 
-    time: 0,
+    time: 10000,
     interval: 0,
     timeLimit: 10000
 
@@ -48,7 +48,9 @@ const getters = {
     },
 
     getTimeIsUp: state => {
+
         return state.time === 0;
+
     }
 
 }
