@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import game from './modules/game'
 import botLogic from './modules/storemodules'
 import generalStats from './modules/generalStats'
+import timer from './modules/timer'
 
 
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     modules: {
         game,
         botLogic,
-        generalStats
+        generalStats,
+        timer
     }
 });
