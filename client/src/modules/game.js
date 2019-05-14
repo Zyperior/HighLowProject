@@ -10,18 +10,8 @@ const state = {
     questions: [
 
     ],
-    players: [{
-        name: "Player One",
-        answer: 0,
-        guessCount: 0,
-        score: 10
-    },
-    {
-        name: "Player Two",
-        answer: 0,
-        guessCount: 0,
-        score: 10
-    }],
+    players: [
+      ],
     currentQuestion: "",
     currQ: {
       question: "", currQAnswer: "", points: 0
@@ -48,6 +38,9 @@ const state = {
 }
 
 const getters = {
+    getPlayerTurn: state => {
+      return state.playerTurn;
+    },
     correctAnswer: state => {
         if(state.questions.length > 0)
         return state.questions[state.questionCounter].answer;
@@ -78,6 +71,9 @@ const getters = {
     getLastGuess: state => {
         console.log("last guess::: "+state.lastGuess)
         return state.lastGuess;
+    },
+    getActivePlayers: state => {
+        return state.activePlayers.reverse();
     }
 }
 
@@ -95,19 +91,17 @@ const mutations = {
     submitAnswer: (state, a) => {
         a = parseInt(a);
         state.lastGuess = a;
-        state.players[state.playerTurn].answer = a;
-        // state.lastGuess = state.players[state.playerTurn];
-        if (state.players[state.playerTurn].answer == state.currQ.currQAnswer) {
-            state.questionCounter += 1;
-            state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
+        state.activePlayers[state.playerTurn].answer = a;
+        if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+            var audioCorrectAnswer = new Audio('/correctAnswer.wav');
+            audioCorrectAnswer  .play();
             state.lastGuess = '';
-            state.players[state.playerTurn].guessCount += 1;
+            state.activePlayers[state.playerTurn].guessCount += 1;
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
             }
-
-            if(state.playerTurn === 2){
+            if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
             }
 
@@ -122,17 +116,16 @@ const mutations = {
             state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
 
-            if(state.playerTurn === 2){
+            if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
             }
 
         }
-        else if (state.players[state.playerTurn].answer < state.currQ.currQAnswer) {
+        else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
             console.log('Your answer is to low');
-            state.players[state.playerTurn].guessCount += 1;
-            state.players[state.playerTurn].score *= 0.8;
+            state.activePlayers[state.playerTurn].guessCount += 1;
 
-            state.lowAnswers.push(state.players[state.playerTurn].answer);
+            state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
                 if(a > b) return -1;
                 if(b < a) return 1;
@@ -142,17 +135,16 @@ const mutations = {
             state.playerTurn += 1;
 
             
-            if(state.playerTurn === 2){
+            if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
             }
         }
-        else if (state.players[state.playerTurn].answer > state.currQ.currQAnswer) {
+        else if (state.activePlayers[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
 
             console.log('Your answer is to high');
-            state.players[state.playerTurn].guessCount += 1;
-            state.players[state.playerTurn].score *= 0.8;
+            state.activePlayers[state.playerTurn].guessCount += 1;
 
-            state.highAnswers.push(state.players[state.playerTurn].answer);
+            state.highAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.highAnswers.sort((a, b) => {
                 if(a > b) return 1;
                 if(b > a) return -1;
@@ -162,7 +154,7 @@ const mutations = {
             state.playerTurn += 1;
 
             
-            if(state.playerTurn === 2){
+            if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
             }
         }
@@ -171,6 +163,9 @@ const mutations = {
     },
     updateAnswer: (state, a) => {
         state.answer = a;
+    },
+    updateActivePlayers: (state, players) => {
+        state.activePlayers = state.players.concat(players);
     }
 }
 

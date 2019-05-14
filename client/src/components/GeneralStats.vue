@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div>Games played: {{stats.gamesPlayed}}</div>
-        <div>Total questions asked: {{stats.questionsAsked}}</div>
-        <div>Total guesses made: {{stats.totalGuesses}}</div>
-        <div>Average guesses / question: {{stats.totalGuesses / stats.questionsAsked}}</div>
+    <div v-if="stats.totalGuesses > 0">
+        <div>Games played:</div><div>{{stats.gamesPlayed}}</div>
+        <div>Total questions:</div><div>{{stats.questionsAsked}}</div>
+        <div>Total guesses:</div><div>{{stats.totalGuesses}}</div>
+        <div>Guess / question:</div><div>{{averageGuesses}}</div>
     </div>
 </template>
 
@@ -17,6 +17,11 @@
                 stats : {totalGuesses:0, questionsAsked: 0}
             }
 
+        },
+        computed:{
+            averageGuesses: function(){
+                return Math.round(this.stats.totalGuesses / this.stats.questionsAsked);
+            }
         },
         created() {
 
