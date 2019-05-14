@@ -98,6 +98,7 @@ const mutations = {
         state.players[state.playerTurn].answer = a;
         // state.lastGuess = state.players[state.playerTurn];
         if (state.players[state.playerTurn].answer == state.currQ.currQAnswer) {
+            state.questionCounter += 1;
             state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
             state.lastGuess = '';
             state.players[state.playerTurn].guessCount += 1;
@@ -109,7 +110,7 @@ const mutations = {
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
-            state.questionCounter += 1;
+
             state.lowAnswers = [];
             state.highAnswers = [];
 
