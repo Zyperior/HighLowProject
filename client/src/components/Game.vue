@@ -13,7 +13,6 @@
             <div>
                 <button @click="submitAnswer(answer); botGuess();">Submit Answer</button>
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
-                <audio ref="answerCorrect" src="/correctAnswer.wav"></audio>
             </div>
             <Timer ref="myTimer"/>
         </div>
