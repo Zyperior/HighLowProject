@@ -13,14 +13,19 @@ const state = {
     players: [{
         name: "Player One",
         answer: 0,
-        guessCount: 0
+        guessCount: 0,
+        score: 10
     },
     {
         name: "Player Two",
         answer: 0,
-        guessCount: 0
+        guessCount: 0,
+        score: 10
     }],
     currentQuestion: "",
+    currQ: {
+      question: "", currQAnswer: "", points: 0
+    },
     startStage: true,
     isRunning: false,
     answerAttempts: 0,
@@ -83,19 +88,24 @@ const mutations = {
         state.startStage = false;
         state.isRunning = true;
         state.currentQuestion = state.questions[state.questionCounter].question;
+        state.currQ.question = state.questions[state.questionCounter].question;
+        state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
+        state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
     },
     submitAnswer: (state, a) => {
         a = parseInt(a);
         state.lastGuess = a;
         state.players[state.playerTurn].answer = a;
         // state.lastGuess = state.players[state.playerTurn];
-        if (state.players[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+        if (state.players[state.playerTurn].answer == state.currQ.currQAnswer) {
+            state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
             state.lastGuess = '';
             state.players[state.playerTurn].guessCount += 1;
 
             if (state.questionCounter === state.questions.length) {
                 state.questionCounter = 0;
             }
+
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
@@ -104,7 +114,8 @@ const mutations = {
             state.highAnswers = [];
 
             if(state.questionCounter === state.questions.length){
-               router.push('/complete')
+                store.dispatch('generalStats/postDBData', [1, 2]);
+                router.push('/complete');
             }
 
             state.playerTurn += 1;
@@ -113,11 +124,12 @@ const mutations = {
             if(state.playerTurn === 2){
                 state.playerTurn = 0;
             }
-            store.dispatch('generalStats/postDBData', [1, 2]);
+
         }
-        else if (state.players[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer < state.currQ.currQAnswer) {
             console.log('Your answer is to low');
             state.players[state.playerTurn].guessCount += 1;
+            state.players[state.playerTurn].score *= 0.8;
 
             state.lowAnswers.push(state.players[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
@@ -133,10 +145,11 @@ const mutations = {
                 state.playerTurn = 0;
             }
         }
-        else if (state.players[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
+        else if (state.players[state.playerTurn].answer > state.currQ.currQAnswer) {
 
             console.log('Your answer is to high');
             state.players[state.playerTurn].guessCount += 1;
+            state.players[state.playerTurn].score *= 0.8;
 
             state.highAnswers.push(state.players[state.playerTurn].answer);
             state.highAnswers.sort((a, b) => {
