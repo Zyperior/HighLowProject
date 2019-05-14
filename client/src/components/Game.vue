@@ -33,7 +33,7 @@
         methods: {
             startGame() {               
                 //this.$store.commit('startGame');
-                //this.$refs.myTimer.startTimer();
+                //this.$refs.myTimer.startTimer;
                 this.$store.dispatch("startGame");      // Anropar action istället för mutation
             },
             submitAnswer(a) {
@@ -141,7 +141,7 @@
         },
         watch: {
             startStage(){
-                this.$refs.myTimer.startTimer();
+                this.$refs.myTimer.startTimer;
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
             },
