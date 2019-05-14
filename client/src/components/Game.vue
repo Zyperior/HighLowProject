@@ -71,7 +71,7 @@
                     this.playerTurn = true;
                 }else{
                     this.playerTurn = false;
-                    console.log("yehaaw")
+                    console.log("yehaaw");
                     this.botGuess(this.activePlayer);
                 }
             }
