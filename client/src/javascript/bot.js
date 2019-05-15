@@ -34,7 +34,7 @@ const bot1 = {
     correctAnswer: 0,
     isHuman: false,
     score: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: "botImg/olle.jpg"
 }
 
 const bot2 = {
@@ -77,7 +77,7 @@ const bot2 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/kerstin.jpg'
 }
 
 const bot3 = {
@@ -116,7 +116,7 @@ const bot3 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/deLaBossen.jpg'
 }
 
 const bot4 = {
@@ -155,7 +155,7 @@ const bot4 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/bo.jpg'
 }
 
 const bot5 = {
@@ -187,7 +187,7 @@ const bot5 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/botinski.png'
 }
 
 const bot6 =  {
@@ -227,7 +227,7 @@ const bot6 =  {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/submarine.jpg'
 }
 
 const bot7 = {
@@ -279,7 +279,7 @@ const bot7 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/segelBot.jpg'
 }
 
 const bot8 = {
@@ -320,7 +320,7 @@ const bot8 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/anna.jpg'
 }
 
 const bot9 = {
@@ -360,7 +360,7 @@ const bot9 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/abbot.jpg'
 }
 
 const bot10 = {
@@ -393,7 +393,7 @@ const bot10 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '/botImg/inbotstjuven.jpg'
 }
 
 const bot11 = {
@@ -437,7 +437,7 @@ const bot11 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '../botImg/copyBot.jpg'
 }
 
 const bot12 = {
@@ -468,7 +468,7 @@ const bot12 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../public/botImg/segelBot.jpg'
+    imgSrc: '../botImg/dungeonMaster.png'
 }
 
 
@@ -514,7 +514,7 @@ const bot13 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../../public/botImg/segelBot.jpg'
+    imgSrc: '../botImg/humanBot.jpg'
 }
 
 export default
