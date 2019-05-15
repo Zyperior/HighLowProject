@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="container">
+        <div class="info">
         <h1>{{bot.name}}</h1>
         <p><i>{{bot.phrases.thisBotWinGame}}</i></p>
         <img :src="bot.imgSrc">
@@ -9,6 +10,13 @@
         <p><b>Likes:</b> {{bot.description.likes}}</p>
         <p><b>Dislikes:</b> {{bot.description.dislikes}}</p>
         <p>{{bot.behavior}}</p>
+        </div>
+        <div class="statistics">
+            <p>Correct answer percentage: 0.0%</p> <!-- Get this from DB -->
+            <p>Total of games played: 0</p>
+            <p>Total amount of guesses: 0</p>
+            <p>Total amount of points: 0p</p>
+        </div>
     </div>
 
 </template>
@@ -26,12 +34,22 @@
 </script>
 
 <style scoped>
+    .container{
+      text-align: center;
+    }
     img{
-        width: 20%;
-        height: 15%;
+        width: 25%;
+        height: 20%;
         border: 1px solid black;
     }
-    p{
+    .statistics{
+        width: 25%;
+        margin-left: 37%;
+        border: 1px solid black;
+    }
+    .info{
+    }
+    div {
 
     }
 
