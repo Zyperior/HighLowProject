@@ -1,19 +1,18 @@
 <template>
-    <h1>
-        text header
-    </h1>
-    <p>
-        test text
-        {{players[0].answer}}
-    </p>
+    <div>
+        <div v-for="player in players">
+            {{ player.name }} guessed {{ player.guessCount}} times this match
+            {{ player.name }} earned {{ player.score}} points
+        </div>
+    </div>
 </template>
 
 <script>
     export default {
-
+        name: 'GameComplete',
         computed: {
             players(){
-                return this.$store.getters.getPlayers
+                return this.$store.getters.getActivePlayers
             }
         }
 

@@ -28,7 +28,11 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot2 = {
@@ -65,7 +69,11 @@ const bot2 = {
         thisBotCorrect: "Lark!",
         otherWinGame: "Well done!",
         thisBotWinGame: "Oh, dearie me, that was fun!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot3 = {
@@ -98,7 +106,11 @@ const bot3 = {
         thisBotCorrect: "Nothing personal, it’s just business.",
         otherWinGame: "You wanna play rough? Okay. Say hello to my little friend!",
         thisBotWinGame: "Veni, vidi, vici."
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot4 = {
@@ -131,7 +143,11 @@ const bot4 = {
         thisBotCorrect: "E la inget mä detta!",
         otherWinGame: "Hallå eller. Änna bra gjort!",
         thisBotWinGame: "Änna görkul detta!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot5 = {
@@ -157,7 +173,11 @@ const bot5 = {
         otherWinGame: "In Mother Russia, game wins you.",
         thisBotWinGame: "Radost.",
     },
-    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000'
+    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot6 =  {
@@ -191,7 +211,11 @@ const bot6 =  {
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
     },
-    behavior: 'The smaller the interval is the smaller its guesses are'
+    behavior: 'The smaller the interval is the smaller its guesses are',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot7 = {
@@ -210,7 +234,6 @@ const bot7 = {
             return 0;
         }
         var intervalSize = interval.highestGuess - interval.lowestGuess;
-        console.log(intervalSize);
         if(intervalSize >= 1000)
             return Math.floor(interval.lowestGuess + intervalSize * 0.8);
         else if(intervalSize >= 100)
@@ -238,7 +261,11 @@ const bot7 = {
         otherWinGame: "Scupper that!",
         thisBotWinGame: "Shiver me timbers!"
     },
-    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1'
+    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot8 = {
@@ -267,13 +294,17 @@ const bot8 = {
             "Jag är ingen bot",
             "Ingen kan slå våran bot."
         ],
-        badGuess: "Det svaret är väldigt främmande för mig.",
-        otherCorrect: "Det finns inget som behöver förklaras.",
-        thisBotCorrect: "Jag är en väldigt, väldigt vacker tjej.",
-        otherWinGame: "Jag kan banna, banna dig så hårt.",
-        thisBotWinGame: "Det finns ingen take-over som lyckas."
+        badGuess: "No take-overs allowed!",
+        otherCorrect: "I can ban you...",
+        thisBotCorrect: "",
+        otherWinGame: "",
+        thisBotWinGame: "No one can beat our bot"
     },
-    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval'
+    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot9 = {
@@ -307,7 +338,11 @@ const bot9 = {
         otherCorrect: "Proverbs 3:27",
         otherWinGame: "Ezekiel 25:17",
         thisBotWinGame: "Exodus 20:17"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot10 = {
@@ -334,7 +369,11 @@ const bot10 = {
         otherCorrect: "...",
         otherWinGame: "...",
         thisBotWinGame: "B&E!"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot11 = {
@@ -348,15 +387,10 @@ const bot11 = {
     },
     inIntervalGuess: function(interval) {
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30 && !interval.isHigher) {
+        if (intervalSize > 30) {
             return interval.lastGuess + 10;
-        } else if(intervalSize > 30 && interval.isHigher) {
-            return interval.lastGuess - 10;
-        } else if (!interval.isHigher) {
+        } else
             return interval.lastGuess + 1;
-        } else if(interval.isHigher) {
-            return interval.lastGuess - 1;
-        }
     },
     guessAbove: function(interval) {
 
@@ -377,7 +411,11 @@ const bot11 = {
         otherCorrect: "01010111 01010000",
         otherWinGame: "01010111 01010100 01000110",
         thisBotWinGame: "01001100 00110010 01010000"
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot12 = {
@@ -402,7 +440,11 @@ const bot12 = {
         otherCorrect: "Random encounter!",
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
-    }
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 
@@ -431,7 +473,22 @@ const bot13 = {
     difficulty: "medium",
     timing: 2,
     isPlaying: false,
-    behavior: "Guesses suspiciously life like..."
+    behavior: "Guesses suspiciously life like...",
+    phrases: {
+        guessing: [
+            "This must be it!",
+            "Hmm..."
+        ],
+        badGuess: "...",
+        thisBotCorrect: "I knew it!",
+        otherCorrect: "That would had been my next guess...",
+        otherWinGame: "Congrats",
+        thisBotWinGame: "Horray!"
+    },
+    answer: 0,
+    guessCount: 0,
+    isHuman: false,
+    score: 0
 }
 
 const bot14 = {
@@ -474,4 +531,4 @@ const bot14 = {
 }
 
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
+ [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13, bot14]
