@@ -1,17 +1,23 @@
 
-
-const state = {
-
-    time: 10000,
+const state =  {
+    time: 3000,
     interval: 0,
-    timeLimit: 10000
+    timeLimit: 3000,
+    isTimerZero: false
+};
 
-}
 
+const getters = {
+    getIsTimerZero: state => {
+        return state.isTimerZero;
+    },
+    getTimeLeft: state => {
+        return (state.time / 1000).toFixed(1);
+    },
 
+};
 
 const mutations = {
-
     startTimer: state => {
 
         state.time = state.timeLimit;
@@ -23,6 +29,7 @@ const mutations = {
             if (state.time === 0) {
 
                 clearInterval(state.interval);
+                state.isTimerZero = !state.isTimerZero;
 
             }
 
@@ -32,33 +39,12 @@ const mutations = {
 
 
     stopTimer: state => {
-
         clearInterval(state.interval);
-
     }
-
 }
 
-
-
-const getters = {
-
-    getTimeLeft: state => {
-        return (state.time / 1000).toFixed(1);
-    },
-
-    getTimeIsUp: state => {
-
-        return state.time === 0;
-
-    }
-
-}
-
-
-
-export default {
+export default{
     state,
-    mutations,
-    getters    
+    getters,
+    mutations
 }

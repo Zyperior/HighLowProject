@@ -1,6 +1,4 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import bots from './bot'
+import bots from '../javascript/bot'
 
 
 export default {
