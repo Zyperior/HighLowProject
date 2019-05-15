@@ -31,8 +31,10 @@ const bot1 = {
     },
     answer: 0,
     guessCount: 0,
+    correctAnswer: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot2 = {
@@ -73,7 +75,9 @@ const bot2 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot3 = {
@@ -110,7 +114,9 @@ const bot3 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot4 = {
@@ -147,7 +153,9 @@ const bot4 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot5 = {
@@ -177,7 +185,9 @@ const bot5 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot6 =  {
@@ -215,7 +225,9 @@ const bot6 =  {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot7 = {
@@ -265,7 +277,9 @@ const bot7 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot8 = {
@@ -304,7 +318,9 @@ const bot8 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot9 = {
@@ -342,7 +358,9 @@ const bot9 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot10 = {
@@ -373,7 +391,9 @@ const bot10 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot11 = {
@@ -415,7 +435,9 @@ const bot11 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 const bot12 = {
@@ -444,7 +466,9 @@ const bot12 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../public/botImg/segelBot.jpg'
 }
 
 
@@ -488,8 +512,10 @@ const bot13 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../../public/botImg/segelBot.jpg'
 }
 
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12]
+ [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13]

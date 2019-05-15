@@ -1,6 +1,6 @@
 <template>
     <div>
-    <h1>This is da bottys</h1>
+    <h1>Bots</h1>
     <div v-for="bot in bots">
         <botPresentation :bot="bot"></botPresentation><br>
     </div>
