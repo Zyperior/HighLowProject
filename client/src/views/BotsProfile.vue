@@ -3,6 +3,7 @@
     <h1>Bots</h1>
     <div v-for="bot in bots">
         <botPresentation :bot="bot"></botPresentation><br>
+        <hr>
     </div>
     </div>
 </template>

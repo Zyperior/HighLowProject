@@ -2,10 +2,13 @@
     <div>
         <h1>{{bot.name}}</h1>
         <p><i>{{bot.phrases.thisBotWinGame}}</i></p>
-        <hr>
         <img :src="bot.imgSrc">
 
-        <p>About: {{bot.behavior}}</p>
+        <h4>{{bot.description.blurb}}</h4>
+        <p><b>Type:</b> {{bot.description.type}}</p>
+        <p><b>Likes:</b> {{bot.description.likes}}</p>
+        <p><b>Dislikes:</b> {{bot.description.dislikes}}</p>
+        <p>{{bot.behavior}}</p>
     </div>
 
 </template>
@@ -18,12 +21,6 @@
                 type: Object,
                 required: true
             }
-        },
-        computed: {
-            imgPath(){
-                console.log(this.bot.imgSrc);
-                return this.bot.imgSrc;
-            }
         }
     }
 </script>
@@ -32,6 +29,7 @@
     img{
         width: 20%;
         height: 15%;
+        border: 1px solid black;
     }
     p{
 
