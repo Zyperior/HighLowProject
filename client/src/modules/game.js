@@ -94,9 +94,9 @@ const mutations = {
             state.lastGuess = '';
             state.activePlayers[state.playerTurn].guessCount += 1;
             state.questionCounter++;
-            if (state.questionCounter === state.questions.length) {
-                state.questionCounter = 0;
-            }
+            // if (state.questionCounter === state.questions.length) {
+            //     state.questionCounter = 0;
+            // }
             if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
             }
@@ -105,6 +105,7 @@ const mutations = {
             state.highAnswers = [];
 
             if(state.questionCounter === state.questions.length){
+                state.questionCounter = 0;
                 store.dispatch('generalStats/postDBData', [1, 2]);
                 router.push('/complete');
             }
