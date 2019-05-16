@@ -12,12 +12,11 @@ const state = {
     ],
     players: [
       ],
-   // currentQuestion: "",
+    currentQuestion: "",
     currQ: {
       question: "", currQAnswer: "", points: 0
     },
-    startStage: true,
-    isRunning: false,
+    isStartButtonClicked: false,
     answerAttempts: 0,
     answer: "",
     questionCounter: 0,
@@ -36,6 +35,7 @@ const state = {
     answers: [
 
     ]
+
 }
 
 const getters = {
@@ -54,11 +54,9 @@ const getters = {
     getAnswer: state => {
         return state.answer;
     },
-    getIsRunning: state => {
-        return state.isRunning;
-    },
-    getStartStage: state => {
-        return state.startStage;
+
+    getIsStartButtonClicked: state => {
+        return state.isStartButtonClicked;
     },
     getLowGuess: state => {
         return state.lowAnswers;
@@ -67,10 +65,9 @@ const getters = {
         return state.highAnswers;
     },
     getPlayers: state => {
-        return state.activePlayers;
+        return state.players;
     },
     getLastGuess: state => {
-        console.log("last guess::: "+state.lastGuess);
         return state.lastGuess;
     },
     getActivePlayers: state => {
@@ -82,9 +79,8 @@ const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
 
     startGame: state => {
-        state.startStage = false;
-        state.isRunning = true;
-       // state.currentQuestion = state.questions[state.questionCounter].question;
+        state.isStartButtonClicked = true;
+        state.currentQuestion = state.questions[state.questionCounter].question;
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
         state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
@@ -93,7 +89,7 @@ const mutations = {
         a = parseInt(a);
         state.lastGuess = a;
         state.activePlayers[state.playerTurn].answer = a;
-        if (state.activePlayers[state.playerTurn].answer == state.currQ.currQAnswer) {
+        if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
             state.questionCounter += 1;
@@ -120,19 +116,33 @@ const mutations = {
                 if (state.playerTurn === state.activePlayers.length) {
                     state.playerTurn = 0;
                 }
-
-                state.lowAnswers = [];
-                state.highAnswers = [];
-
-
-                state.playerTurn += 1;
-                state.currentQuestion = state.questions[state.questionCounter].question;
-
-                if (state.playerTurn === state.activePlayers.length) {
-                    state.playerTurn = 0;
-                }
+            state.activePlayers[state.playerTurn].guessCount += 1;
+            state.questionCounter++;
+            // if (state.questionCounter === state.questions.length) {
+            //     state.questionCounter = 0;
+            // }
+            if(state.playerTurn === state.activePlayers.length){
+                state.playerTurn = 0;
             }
+
+            state.lowAnswers = [];
+            state.highAnswers = [];
+
+            if(state.questionCounter === state.questions.length){
+                state.questionCounter = 0;
+                store.dispatch('generalStats/postDBData', [1, 2]);
+                router.push('/complete');
+            }
+
+            state.playerTurn += 1;
+            state.currentQuestion = state.questions[state.questionCounter].question;
+
+            if(state.playerTurn === state.activePlayers.length){
+                state.playerTurn = 0;
+            }
+
         }
+        else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
         else if (state.activePlayers[state.playerTurn].answer < state.currQ.currQAnswer) {
             console.log('Your answer is to low');
             state.activePlayers[state.playerTurn].guessCount += 1;
@@ -197,6 +207,8 @@ const mutations = {
     }
 
 
+
+
 }
 
 const actions = {
@@ -216,28 +228,28 @@ const actions = {
 
 
 
-    startGame(context) {            // Tillagd action
+    startGame(context) {
 
         console.log("actions startGame");
         
 
         context.commit("startGame");
 
-        context.commit("startTimer");
+        context.commit("startTimer", {root:true});
 
     },
 
 
-    submitAnswer(context, a) {            // Tillagd action
+    submitAnswer(context, a) {
 
-        console.log("actions submitAnswer");
+
         
 
         context.commit("submitAnswer", a);
 
-        context.commit("stopTimer");
+        context.commit("stopTimer", {root: true});
 
-        context.commit("startTimer");
+        context.commit("startTimer", {root: true});
 
     }
     
