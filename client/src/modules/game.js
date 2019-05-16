@@ -16,7 +16,7 @@ const state = {
     currQ: {
       question: "", currQAnswer: "", points: 0
     },
-    isStartButtonClicked: false,
+    startTimer: false,
     answerAttempts: 0,
     answer: "",
     questionCounter: 0,
@@ -33,7 +33,10 @@ const state = {
     ],
     answers: [
 
-    ]
+    ],
+
+
+    displayGameCompleteResults: false
 
 }
 
@@ -54,8 +57,8 @@ const getters = {
         return state.answer;
     },
 
-    getIsStartButtonClicked: state => {
-        return state.isStartButtonClicked;
+    getStartTimer: state => {
+        return state.startTimer;
     },
     getLowGuess: state => {
         return state.lowAnswers;
@@ -71,6 +74,10 @@ const getters = {
     },
     getActivePlayers: state => {
         return state.activePlayers.reverse();
+    },
+
+    getDisplayGameCompleteResults: state => {
+        return state.displayGameCompleteResults;
     }
 }
 
@@ -78,7 +85,11 @@ const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
 
     startGame: state => {
-        state.isStartButtonClicked = true;
+        state.startTimer = !state.startTimer;
+        state.playerTurn = 0;
+        state.lowAnswers = [];
+        state.highAnswers = [];
+        state.displayGameCompleteResults = false;
         state.currentQuestion = state.questions[state.questionCounter].question;
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
@@ -88,6 +99,8 @@ const mutations = {
         a = parseInt(a);
         state.lastGuess = a;
         state.activePlayers[state.playerTurn].answer = a;
+        state.answer = "";
+
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
@@ -104,10 +117,12 @@ const mutations = {
             state.lowAnswers = [];
             state.highAnswers = [];
 
+
             if(state.questionCounter === state.questions.length){
                 state.questionCounter = 0;
                 store.dispatch('generalStats/postDBData', [1, 2]);
                 router.push('/complete');
+                state.displayGameCompleteResults = true;
             }
 
             state.playerTurn += 1;
@@ -166,6 +181,11 @@ const mutations = {
 
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
+    },
+
+    resetPlayersBeforeNewGames: (state) => {
+        state.players = [];
+        state.activePlayers.forEach(activePlayer => activePlayer.answer = "");
     }
 
 
@@ -182,9 +202,7 @@ const actions = {
         commit("startGame");
     },
 
-    updateAnswer: ({
-        commit
-    }, a) => {
+    updateAnswer: ({commit}, a) => {
         commit('updateAnswer', a);
     },
 

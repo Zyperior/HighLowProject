@@ -15,6 +15,7 @@
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
             </div>
             <Timer ref="myTimer"/>
+
         </div>
 
     </div>
@@ -35,8 +36,13 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);
+                if(this.$route.path === "/game"){
+                    this.$refs.audioTest.play();
+                    this.$store.dispatch("submitAnswer", a);
+                }
+
+
+
             },
             add(){
               this.number++;
@@ -49,20 +55,28 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
+                
+                if(this.$route.path === "/game"){
+                    setTimeout(function () {
 
-                setTimeout(function () {
-                    let guess = bot.guess(int)
-                    submitGuessFunction(guess)
-                    loopFunction();
-                }, 2000)
+                        let guess = bot.guess(int)
+                        submitGuessFunction(guess)
+                        loopFunction();
+
+                    }, 2000)
+                }
+
+
+
 
             },
             guess(){
+
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else{
+                }else {
                     this.playerTurn = false;
                     this.botGuess(this.activePlayer);
                 }
@@ -106,8 +120,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isStartButtonClicked() {
-                return this.$store.getters.getIsStartButtonClicked;
+            startTimer() {
+                return this.$store.getters.getStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -121,9 +135,6 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
-            jumpToNextPlayer() {
-                return this.$store.getters.getTimeIsUp;
-            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
             },
@@ -132,7 +143,8 @@
             }
         },
         watch: {
-            isStartButtonClicked(){
+            startTimer(){
+                this.$refs.myTimer.stopTimer();
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
