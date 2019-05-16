@@ -1,8 +1,14 @@
-<template>
-    <div>
-        <router-link to="/start">Home</router-link>
-        <router-link to="about">About</router-link>
-        <router-link to="/bots">Bots</router-link>
+<template>    
+    <div id="navBar">
+        <div>
+            <router-link to="/start">Home</router-link>
+        </div>
+        <div>
+            <router-link to="about">About</router-link>
+        </div>
+        <div>
+            <router-link to="/bots">Bots</router-link>
+        </div>        
     </div>
 </template>
 
@@ -13,5 +19,27 @@
 </script>
 
 <style scoped>
+
+    /* #navBarContainer {
+        width: 100%;
+        
+        text-align: center;
+    } */
+
+
+    #navBar {
+        margin: auto;
+        width: 90%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+
+    #navBar div {
+        /* font-size: 3vw; */
+        padding: 1em;
+    }
+
+
 
 </style>
