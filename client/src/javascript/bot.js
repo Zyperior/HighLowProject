@@ -364,10 +364,10 @@ const bot8 = {
     correctAnswer: 0,
     imgSrc: '/botImg/anna.jpg',
     description: {
-        dislikes: 'Trolls',
-        likes: 'Banning, watching over her channel',
+        dislikes: 'Trolls, spambots',
+        likes: "Banning, watching over her channel, mid-2000's pop songs",
         type: 'Moderator',
-        blurb: 'A very, very beautiful girl that can ban you so hard'
+        blurb: 'A very, very beautiful girl that can ban you very, very hard'
     }
 }
 
