@@ -32,12 +32,15 @@
           }
         },
         methods: {
-            startGame() {
-                this.$store.dispatch("startGame");
+            startGame() {               
+                //this.$store.commit('startGame');
+                //this.$refs.myTimer.startTimer();
+                this.$store.dispatch("startGame");      // Anropar action istället för mutation
             },
             submitAnswer(a) {
-                // this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);
+                //this.$store.commit('submitAnswer');
+                this.$refs.audioTest.play();
+                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation                
             },
             add(){
               this.number++;
@@ -46,6 +49,10 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
+            // submitAnswer(a) {
+            //     this.$refs.audioTest.play();
+            //     this.$store.commit('submitAnswer', a);
+            // },
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
@@ -65,6 +72,7 @@
                     this.playerTurn = true;
                 }else{
                     this.playerTurn = false;
+                    console.log("yehaaw");
                     this.botGuess(this.activePlayer);
                 }
             }
@@ -107,8 +115,11 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isStartButtonClicked() {
-                return this.$store.getters.getIsStartButtonClicked;
+            isRunning() {
+                return this.$store.getters.getIsRunning;
+            },
+            startStage() {
+                return this.$store.getters.getStartStage;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -127,22 +138,21 @@
             },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
-            },
-            isTimerZero(){
-                return this.$store.getters.getIsTimerZero;
             }
         },
         watch: {
-            isStartButtonClicked(){
+            startStage(){
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
             },
-            isTimerZero(){
-                this.submitAnswer(0);
-                this.guess();
-            }
 
+            jumpToNextPlayer() {
+                console.log("jumpToNextPlayer");
+                
+                this.$store.commit("jumpToNextPlayer");
+                
+            }
 
 
         },
@@ -217,16 +227,18 @@
         }
 
         .infoContainer {
-            grid-row: 1 ;
+            grid-row: 1;
             grid-column: 2;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(4, 1fr)
         }
-        #head{
+
+        #head {
             grid-row: 3;
             grid-column: 2;
         }
+
         #question {
             grid-column: 2;
             grid-row: 1;
@@ -263,10 +275,11 @@
             grid-row: 3;
             grid-column: 3;
         }
-
-        .activePlayer {
-            background-color: red;
-        }
     }
+
+.activePlayer {
+    background-color: red;
+}
+
 
 </style>

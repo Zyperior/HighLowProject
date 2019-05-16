@@ -22,6 +22,7 @@ const state = {
     questionCounter: 0,
     playerTurn: 0,
     lastGuess: 0,
+    roundGuessCounter: 0,
     answeredQuestions: [{
 
     }],
@@ -48,7 +49,7 @@ const getters = {
             return "No";
     },
     getCurrentQuestion: state => {
-        return state.currentQuestion;
+        return state.currQ.question;
     },
     getAnswer: state => {
         return state.answer;
@@ -64,9 +65,10 @@ const getters = {
         return state.highAnswers;
     },
     getPlayers: state => {
-        return state.players;
+        return state.activePlayers;
     },
     getLastGuess: state => {
+        console.log("last guess::: "+state.lastGuess);
         return state.lastGuess;
     },
     getActivePlayers: state => {
@@ -78,8 +80,9 @@ const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
 
     startGame: state => {
-        state.isStartButtonClicked = true;
-        state.currentQuestion = state.questions[state.questionCounter].question;
+        state.startStage = false;
+        state.isRunning = true;
+       // state.currentQuestion = state.questions[state.questionCounter].question;
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
         state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
@@ -88,21 +91,36 @@ const mutations = {
         a = parseInt(a);
         state.lastGuess = a;
         state.activePlayers[state.playerTurn].answer = a;
-        if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+        if (state.activePlayers[state.playerTurn].answer == state.currQ.currQAnswer) {
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
+            state.questionCounter += 1;
             state.lastGuess = '';
-            state.activePlayers[state.playerTurn].guessCount += 1;
-            state.questionCounter++;
-            // if (state.questionCounter === state.questions.length) {
-            //     state.questionCounter = 0;
-            // }
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
+            state.activePlayers[state.playerTurn].score += state.currQ.points
+            state.answerAttempts += state.roundGuessCounter;
+            if(state.questionCounter === state.questions.length){
+                store.dispatch('generalStats/postDBData', [1, 2]);
+                router.push('/complete');
             }
+            else {
 
-            state.lowAnswers = [];
-            state.highAnswers = [];
+                //if (state.questionCounter == state.questions.length) {
+                //    state.questionCounter = 0;
+                //}
+
+
+                state.activePlayers[state.playerTurn].guessCount += 1;
+                state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
+                state.currQ.question = state.questions[state.questionCounter].question;
+
+
+
+                if (state.playerTurn === state.activePlayers.length) {
+                    state.playerTurn = 0;
+                }
+
+                state.lowAnswers = [];
+                state.highAnswers = [];
 
             if(state.questionCounter === state.questions.length){
                 state.questionCounter = 0;
@@ -110,15 +128,16 @@ const mutations = {
                 router.push('/complete');
             }
 
-            state.playerTurn += 1;
-            state.currentQuestion = state.questions[state.questionCounter].question;
+                state.playerTurn += 1;
+                state.currentQuestion = state.questions[state.questionCounter].question;
 
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
+                if (state.playerTurn === state.activePlayers.length) {
+                    state.playerTurn = 0;
+                }
             }
-
         }
-        else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
+        else if (state.activePlayers[state.playerTurn].answer < state.currQ.currQAnswer) {
+            console.log('Your answer is to low');
             state.activePlayers[state.playerTurn].guessCount += 1;
 
             state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
@@ -135,11 +154,11 @@ const mutations = {
                 state.playerTurn = 0;
             }
         }
-        else if (state.activePlayers[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
-
-
+        else if (state.activePlayers[state.playerTurn].answer > state.currQ.currQAnswer) {
+            state.answerAttempts ++;
+            console.log('Your answer is to high');
             state.activePlayers[state.playerTurn].guessCount += 1;
-
+            state.currQ.points -= Math.ceil(state.currQ.points * (state.roundGuessCounter * 0.01));
             state.highAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.highAnswers.sort((a, b) => {
                 if(a > b) return 1;
@@ -160,15 +179,23 @@ const mutations = {
     updateAnswer: (state, a) => {
         state.answer = a;
     },
-    
 
+    jumpToNextPlayer: state => {
+
+        state.playerTurn += 1;
+
+        if(state.playerTurn === 2){
+            state.playerTurn = 0;
+        }
+
+        console.log("jumpToNextPlayer i game.js");
+
+    },
         
 
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
     }
-
-
 
 
 }
@@ -190,28 +217,28 @@ const actions = {
 
 
 
-    startGame(context) {
+    startGame(context) {            // Tillagd action
 
         console.log("actions startGame");
         
 
         context.commit("startGame");
 
-        context.commit("startTimer", {root:true});
+        context.commit("startTimer");
 
     },
 
 
-    submitAnswer(context, a) {
+    submitAnswer(context, a) {            // Tillagd action
 
-
+        console.log("actions submitAnswer");
         
 
         context.commit("submitAnswer", a);
 
-        context.commit("stopTimer", {root: true});
+        context.commit("stopTimer");
 
-        context.commit("startTimer", {root: true});
+        context.commit("startTimer");
 
     }
     
