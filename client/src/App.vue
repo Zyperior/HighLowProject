@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <NavBar/>
@@ -24,3 +25,4 @@
   margin-top: 60px;
 }
 </style>
+

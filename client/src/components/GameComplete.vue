@@ -1,8 +1,8 @@
 <template>
     <div>
         <div v-for="player in players">
-            {{ player.name }} guessed {{ player.guessCount}} times this match
-            {{ player.name }} earned {{ player.score}} points
+            <p>{{ player.name }} guessed {{ player.guessCount}} times this match </p>
+            <p>{{ player.name }} earned {{ player.score}} points </p>
         </div>
     </div>
 </template>
