@@ -1,22 +1,24 @@
 <template>
     <div>
         <h1>Game Page</h1>
-        <p>{{currentQuestion}}</p>
-        <div>
-            <h2>Highest Guess: {{highGuess[0]}} </h2>
-            <h2>Lowest Guess: {{lowGuess[0]}} </h2>
-            <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
-            <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
-                <!--<p>{{bot.name}}</p>-->
-            <!--</div>-->
-            <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+        <div v-show="isGameRunning">
+            <p>{{currentQuestion}}</p>
             <div>
-                <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-                <audio ref="audioTest" src="/testAudio.wav"></audio>
+                <h2>Highest Guess: {{highGuess[0]}} </h2>
+                <h2>Lowest Guess: {{lowGuess[0]}} </h2>
+                <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
+                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
+                <!--<p>{{bot.name}}</p>-->
+                <!--</div>-->
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+                <div>
+                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
+                    <audio ref="audioTest" src="/testAudio.wav"></audio>
+                </div>
+                <Timer ref="myTimer"/>
             </div>
-            <Timer ref="myTimer"/>
-
         </div>
+
 
     </div>
 </template>
@@ -36,7 +38,7 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                if(this.$route.path === "/game"){
+                if(this.isGameRunning){
                     this.$refs.audioTest.play();
                     this.$store.dispatch("submitAnswer", a);
                 }
@@ -56,7 +58,7 @@
                 let int = this.interval;
                 let loopFunction = this.guess;
                 
-                if(this.$route.path === "/game"){
+                if(this.isGameRunning){
                     setTimeout(function () {
 
                         let guess = bot.guess(int)
@@ -83,6 +85,9 @@
             }
         },
         computed: {
+            isGameRunning(){
+              return this.$store.getters.getIsGameRunning;
+            },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
             },
