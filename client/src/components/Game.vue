@@ -50,11 +50,13 @@
                 let int = this.interval;
                 let loopFunction = this.guess;
 
-                setTimeout(function () {
-                    let guess = bot.guess(int)
-                    submitGuessFunction(guess)
-                    loopFunction();
-                }, 2000)
+                    setTimeout(function () {
+                        let guess = bot.guess(int)
+                        submitGuessFunction(guess)
+                        loopFunction();
+                    }, 2000)
+
+
 
             },
             guess(){
@@ -62,7 +64,7 @@
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else{
+                }else if(this.$store.getters.getIsGameRunning){
                     this.playerTurn = false;
                     this.botGuess(this.activePlayer);
                 }
@@ -106,8 +108,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isStartButtonClicked() {
-                return this.$store.getters.getIsStartButtonClicked;
+            timerToggle() {
+                return this.$store.getters.getTimerToggle;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -132,7 +134,7 @@
             }
         },
         watch: {
-            isStartButtonClicked(){
+            timerToggle(){
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
