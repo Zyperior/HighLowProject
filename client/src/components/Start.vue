@@ -108,6 +108,8 @@
                     this.playingBots[this.selectedPlayingBotIndex].isPlaying = false;
             },
             createPlayers(amount){
+                this.$store.commit("resetPlayersBeforeNewGames");
+
                 for(var i = 1; i <= amount; i++){
                     var player = {
                         name: 'Player '+i,

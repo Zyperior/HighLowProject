@@ -4,6 +4,7 @@
             {{ player.name }} guessed {{ player.guessCount}} times this match
             {{ player.name }} earned {{ player.score}} points
         </div>
+        <router-link to="/">Play again</router-link>
     </div>
 </template>
 

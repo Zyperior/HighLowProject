@@ -15,6 +15,7 @@
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
             </div>
             <Timer ref="myTimer"/>
+
         </div>
 
     </div>
@@ -108,8 +109,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            timerToggle() {
-                return this.$store.getters.getTimerToggle;
+            startTimer() {
+                return this.$store.getters.getStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -123,9 +124,6 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
-            jumpToNextPlayer() {
-                return this.$store.getters.getTimeIsUp;
-            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
             },
@@ -134,7 +132,8 @@
             }
         },
         watch: {
-            timerToggle(){
+            startTimer(){
+                this.$refs.myTimer.stopTimer();
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
