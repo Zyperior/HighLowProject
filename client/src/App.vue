@@ -10,6 +10,13 @@
     name: "app",
     components:{
       NavBar,
+    },
+    watch: {
+      $route(to, from){
+        if(from.name === "game"){
+          this.$store.commit("stopGame")
+        }
+      }
     }
   }
 </script>
