@@ -36,8 +36,13 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);
+                if(this.$route.path === "/game"){
+                    this.$refs.audioTest.play();
+                    this.$store.dispatch("submitAnswer", a);
+                }
+
+
+
             },
             add(){
               this.number++;
@@ -50,22 +55,28 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-
+                
+                if(this.$route.path === "/game"){
                     setTimeout(function () {
+
                         let guess = bot.guess(int)
                         submitGuessFunction(guess)
                         loopFunction();
+
                     }, 2000)
+                }
+
 
 
 
             },
             guess(){
+
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else if(this.$store.getters.getIsGameRunning){
+                }else {
                     this.playerTurn = false;
                     this.botGuess(this.activePlayer);
                 }

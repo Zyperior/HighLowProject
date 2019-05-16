@@ -35,7 +35,8 @@ const state = {
 
     ],
 
-    isGameRunning: false
+
+    displayGameCompleteResults: false
 
 }
 
@@ -74,8 +75,9 @@ const getters = {
     getActivePlayers: state => {
         return state.activePlayers.reverse();
     },
-    getIsGameRunning: state => {
-        return state.isGameRunning;
+
+    getDisplayGameCompleteResults: state => {
+        return state.displayGameCompleteResults;
     }
 }
 
@@ -83,8 +85,11 @@ const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
 
     startGame: state => {
-        state.isGameRunning = true;
         state.startTimer = !state.startTimer;
+        state.playerTurn = 0;
+        state.lowAnswers = [];
+        state.highAnswers = [];
+        state.displayGameCompleteResults = false;
         state.currentQuestion = state.questions[state.questionCounter].question;
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
@@ -117,7 +122,7 @@ const mutations = {
                 state.questionCounter = 0;
                 store.dispatch('generalStats/postDBData', [1, 2]);
                 router.push('/complete');
-                state.isGameRunning = false;
+                state.displayGameCompleteResults = true;
             }
 
             state.playerTurn += 1;
