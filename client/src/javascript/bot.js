@@ -69,14 +69,14 @@ const bot2 = {
     behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
     phrases: {
         guessing: [
-            "",
-            ""
+            "Let's see how this goes.",
+            "My turn!"
         ],
-        badGuess: "",
-        otherCorrect: "",
-        thisBotCorrect: "",
-        otherWinGame: "",
-        thisBotWinGame: ""
+        badGuess: "Better luck next time!",
+        otherCorrect: "Jolly good!",
+        thisBotCorrect: "Lark!",
+        otherWinGame: "Well done!",
+        thisBotWinGame: "Oh, dearie me, that was fun!"
     },
     answer: "",
     guessCount: 0,
@@ -243,7 +243,7 @@ const bot6 =  {
     phrases: {
         guessing: [
             "Ping... ping...",
-            ""
+            "Diving.."
         ],
         badGuess: "Miss!",
         otherCorrect: "Hit!",
@@ -347,8 +347,8 @@ const bot8 = {
     isPlaying: false,
     phrases: {
         guessing: [
-            "I'm not a bot",
-            "Unts-unts-unts"
+            "Jag är ingen bot",
+            "Ingen kan slå våran bot."
         ],
         badGuess: "No take-overs allowed!",
         otherCorrect: "I can ban you...",
@@ -595,5 +595,49 @@ const bot13 = {
     }
 }
 
+const bot14 = {
+    name: 'BratBot',
+    guess: function(interval){
+        let bratLow = interval.correctAnswer * 0.75;
+        let bratHigh = interval.correctAnswer * 1.25;
+
+        if(bratLow < interval.lowestGuess) {
+            bratLow = interval.lowestGuess;
+        }
+        if(bratHigh > interval.highestGuess && interval.highestGuess != 0) {
+            bratHigh = interval.highestGuess;
+        }
+        return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
+    },
+    unfair: true,
+    difficulty: 'medium',
+    timing: 2,
+    isPlaying: false,
+    behavior: "Guesses within 25% of the correct answer. Cheats",
+    phrases: {
+        guessing: [
+            "LAZORZ",
+            "1337"
+        ],
+        badGuess: "gg n00b",
+        otherCorrect: "urmom",
+        thisBotCorrect: "l2p",
+        otherWinGame: "fml",
+        thisBotWinGame: "lmao haxzorz"
+    },
+    answer: "",
+    guessCount: 0,
+    isHuman: false,
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/brat.jpg',
+    description: {
+        dislikes: 'When you steal his frags, cooties, old people music.',
+        likes: 'Candy, stealing your frags, screaming.',
+        type: 'Brat',
+        blurb: "Like, whatever, you're not my mom!"
+    }
+}
+
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13]
+ [bot1, bot2, bot3, bot4, bot5, bot6, bot7, bot8, bot9, bot10, bot11, bot12, bot13, bot14]

@@ -15,6 +15,7 @@
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                     <audio ref="audioTest" src="/testAudio.wav"></audio>
                 </div>
+                <chat-message/>
                 <Timer ref="myTimer"/>
             </div>
         </div>
@@ -24,6 +25,7 @@
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
+    import ChatMessage from "./ChatMessage";
 
     export default {
         data(){
@@ -38,10 +40,12 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                
+
                 if(this.isGameRunning){
                     this.$refs.audioTest.play();
                     this.$store.dispatch("submitAnswer", a);
+                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                    this.$store.dispatch("chat", chatPayload);
                 }
 
 
@@ -54,7 +58,6 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
-
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
@@ -71,7 +74,6 @@
                 }
             },
             guess(){
-
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
@@ -109,7 +111,13 @@
                     isInInterval: function () {
                         return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
                     },
-                    lastGuess: this.lastGuess
+                    lastGuess: this.lastGuess,
+                    isBadGuess: function() {
+                        return (this.lastGuess < this.lowestGuess || this.lastGuess > this.highestGuess)
+                    },
+                    isCorrect: function() {
+                        return (this.lastGuess === this.correctAnswer);
+                    }
                 }
                 if (typeof interval.lowestGuess === 'undefined')
                     interval.lowestGuess = 0;
@@ -170,6 +178,7 @@
 
         },
         components: {
+            ChatMessage,
             Timer
         }      
 

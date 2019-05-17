@@ -5,6 +5,7 @@ import botLogic from './modules/botlogic'
 import generalStats from './modules/generalStats'
 import timer from "./modules/timer"
 import botStats from './modules/botStats'
+import chat from "./modules/chat"
 
 
 Vue.use(Vuex)
@@ -15,6 +16,7 @@ export default new Vuex.Store({
         botLogic,
         generalStats,
         botStats,
-        timer
+        timer,
+        chat,
     }
 });
