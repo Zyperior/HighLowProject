@@ -85,9 +85,9 @@
                 playerNr: 1,
                 amountOptions: Array.from({length: 5}, (v, i) => ++i), //[1, 2, 3, 4, 5]
                 questionSettings: {
-                    amount: 1,
-                    difficulty: 1,
-                    category: 1
+                    amount: 3,
+                    difficulty: 0,
+                    category: 0
                 },
                 selectedAvailableBotIndex: "",
                 selectedPlayingBotIndex: ""

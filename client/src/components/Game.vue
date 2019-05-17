@@ -38,7 +38,7 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                console.log("submit")
+                
                 if(this.isGameRunning){
                     this.$refs.audioTest.play();
                     this.$store.dispatch("submitAnswer", a);

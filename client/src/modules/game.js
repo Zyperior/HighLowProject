@@ -113,36 +113,47 @@ const mutations = {
         state.answer = "";
 
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
-            state.lastGuess = '';
-            state.activePlayers[state.playerTurn].guessCount += 1;
-            state.questionCounter++;
-            // if (state.questionCounter === state.questions.length) {
-            //     state.questionCounter = 0;
-            // }
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
-
-            state.lowAnswers = [];
-            state.highAnswers = [];
 
 
-            if(state.questionCounter === state.questions.length){
-                state.isGameRunning = false;
-                state.questionCounter = 0;
-                store.dispatch('generalStats/postDBData', [1, 2]);
-                router.push('/complete');
-                state.displayGameCompleteResults = true;
-            }
 
-            state.playerTurn += 1;
-            state.currentQuestion = state.questions[state.questionCounter].question;
 
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
+                state.lastGuess = '';
+                state.activePlayers[state.playerTurn].guessCount += 1;
+                state.questionCounter++;
+
+                if(state.playerTurn === state.activePlayers.length){
+                    state.playerTurn = 0;
+                }
+
+                state.lowAnswers = [];
+                state.highAnswers = [];
+
+
+                if(state.questionCounter === state.questions.length){
+                    state.isGameRunning = false;
+                    state.questionCounter = 0;
+                    store.dispatch('generalStats/postDBData', [1, 2]);
+                    router.push('/complete');
+                    state.displayGameCompleteResults = true;
+                }
+
+                state.playerTurn += 1;
+                state.currentQuestion = state.questions[state.questionCounter].question;
+
+                if(state.playerTurn === state.activePlayers.length){
+                    state.playerTurn = 0;
+                }
+
+
+
+
+
+
+
+
 
         }
         else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
@@ -236,17 +247,17 @@ const actions = {
 
     submitAnswer(context, a) {
 
-        // if(state.questionCounter + 1 === state.questions.length){
-        //     context.commit("breakOutOfBotLoop")
-        //     console.log("hello");
-        // }
-        
+
+
+
+            context.commit("stopTimer", {root: true});
+            context.commit("startTimer", {root: true});
+
+
 
         context.commit("submitAnswer", a);
 
-        context.commit("stopTimer", {root: true});
 
-        context.commit("startTimer", {root: true});
 
     }
     
