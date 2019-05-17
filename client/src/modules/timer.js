@@ -1,8 +1,8 @@
 
 const state =  {
-    time: 3000,
+    time: 10000,
     interval: 0,
-    timeLimit: 3000,
+    timeLimit: 10000,
     isTimerZero: false
 };
 

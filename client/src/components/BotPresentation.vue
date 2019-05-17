@@ -38,7 +38,7 @@
         computed: {
             percentage(){
                 if(this.botInfo.guessCounter > 0) {
-                     return (this.botInfo.correctAnswers / this.botInfo.guessCounter) * 100;
+                     return Math.floor((this.botInfo.correctAnswers / this.botInfo.guessCounter) * 100);
                 }
                 else
                     return 0;
