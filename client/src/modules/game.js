@@ -96,11 +96,10 @@ const mutations = {
             state.lastGuess = '';
             state.activePlayers[state.playerTurn].score += state.currQ.points
             state.answerAttempts += state.roundGuessCounter;
-            if(state.questionCounter === state.questions.length){
+            if (state.questionCounter === state.questions.length) {
                 store.dispatch('generalStats/postDBData', [1, 2]);
                 router.push('/complete');
-            }
-            else {
+            } else {
 
                 //if (state.questionCounter == state.questions.length) {
                 //    state.questionCounter = 0;
@@ -112,38 +111,37 @@ const mutations = {
                 state.currQ.question = state.questions[state.questionCounter].question;
 
 
+                if (state.playerTurn === state.activePlayers.length) {
+                    state.playerTurn = 0;
+                }
+                state.activePlayers[state.playerTurn].guessCount += 1;
+                state.questionCounter++;
+                // if (state.questionCounter === state.questions.length) {
+                //     state.questionCounter = 0;
+                // }
+                if (state.playerTurn === state.activePlayers.length) {
+                    state.playerTurn = 0;
+                }
+
+                state.lowAnswers = [];
+                state.highAnswers = [];
+
+                if (state.questionCounter === state.questions.length) {
+                    state.questionCounter = 0;
+                    store.dispatch('generalStats/postDBData', [1, 2]);
+                    router.push('/complete');
+                }
+
+                state.playerTurn += 1;
+                state.currentQuestion = state.questions[state.questionCounter].question;
 
                 if (state.playerTurn === state.activePlayers.length) {
                     state.playerTurn = 0;
                 }
-            state.activePlayers[state.playerTurn].guessCount += 1;
-            state.questionCounter++;
-            // if (state.questionCounter === state.questions.length) {
-            //     state.questionCounter = 0;
-            // }
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
+
             }
-
-            state.lowAnswers = [];
-            state.highAnswers = [];
-
-            if(state.questionCounter === state.questions.length){
-                state.questionCounter = 0;
-                store.dispatch('generalStats/postDBData', [1, 2]);
-                router.push('/complete');
-            }
-
-            state.playerTurn += 1;
-            state.currentQuestion = state.questions[state.questionCounter].question;
-
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
-
         }
-        else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
-        else if (state.activePlayers[state.playerTurn].answer < state.currQ.currQAnswer) {
+            else if (state.activePlayers[state.playerTurn].answer < state.currQ.currQAnswer) {
             console.log('Your answer is to low');
             state.activePlayers[state.playerTurn].guessCount += 1;
             state.answerAttempts ++;
