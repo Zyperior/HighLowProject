@@ -85,9 +85,9 @@
                 playerNr: 1,
                 amountOptions: Array.from({length: 5}, (v, i) => ++i), //[1, 2, 3, 4, 5]
                 questionSettings: {
-                    amount: 3,
-                    difficulty: 0,
-                    category: 0
+                    amount: 1,
+                    difficulty: 1,
+                    category: 1
                 },
                 selectedAvailableBotIndex: "",
                 selectedPlayingBotIndex: ""
@@ -108,6 +108,8 @@
                     this.playingBots[this.selectedPlayingBotIndex].isPlaying = false;
             },
             createPlayers(amount){
+                this.$store.commit("resetPlayersBeforeNewGames");
+
                 for(var i = 1; i <= amount; i++){
                     var player = {
                         name: 'Player '+i,

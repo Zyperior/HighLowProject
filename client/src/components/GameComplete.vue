@@ -1,13 +1,10 @@
 <template>
-    <div>
+    <div v-show="displayGameCompleteResults">
         <div v-for="player in players">
-            <p>{{ player.name }} guessed {{ player.guessCount}} times this match </p>
-            <p>{{ player.name }} earned {{ player.score}} points </p>
+            {{ player.name }} guessed {{ player.guessCount}} times this match
+            {{ player.name }} earned {{ player.score}} points
         </div>
-        <div v-for="bot in bots">
-            {{bot.name}} guessed {{bot.guessCount}} times this match
-            {{bot.name}} earned {{bot.score}} points
-        </div>
+        <router-link to="/">Play again</router-link>
     </div>
 </template>
 
@@ -16,12 +13,13 @@
         name: 'GameComplete',
         computed: {
             players(){
-                return this.$store.getters.players
+                return this.$store.getters.getActivePlayers
             },
-            bots(){
-                return this.$store.getters.playingBots
+            displayGameCompleteResults(){
+                return this.$store.getters.getDisplayGameCompleteResults;
             }
-        }
+        },
+
 
     }
 </script>

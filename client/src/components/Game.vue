@@ -1,22 +1,24 @@
 <template>
-    <div class="gameContainer">
-        <h1 id="head">Game Page</h1>
-        <p id="question">{{currentQuestion}}</p>
-        <div class="infoContainer">
-            <h2 id="highGuess">Highest Guess: {{highGuess[0]}} </h2>
-            <h2 id="lowGuess">Lowest Guess: {{lowGuess[0]}} </h2>
-            <p id="players" v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
-            <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
+    <div>
+        <h1>Game Page</h1>
+        <div v-show="isGameRunning">
+            <p>{{currentQuestion}}</p>
+            <div>
+                <h2>Highest Guess: {{highGuess[0]}} </h2>
+                <h2>Lowest Guess: {{lowGuess[0]}} </h2>
+                <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
+                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
                 <!--<p>{{bot.name}}</p>-->
-            <!--</div>-->
-            <input id="answer" v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
-
-                <button id="submitButton" @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-                <audio ref="audioTest" src="/testAudio.wav"></audio>
-                <Timer id="timer" ref="myTimer"/>
-
-
+                <!--</div>-->
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+                <div>
+                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
+                    <audio ref="audioTest" src="/testAudio.wav"></audio>
+                </div>
+                <Timer ref="myTimer"/>
+            </div>
         </div>
+
 
     </div>
 </template>
@@ -32,15 +34,17 @@
           }
         },
         methods: {
-            startGame() {               
-                //this.$store.commit('startGame');
-                //this.$refs.myTimer.startTimer();
-                this.$store.dispatch("startGame");      // Anropar action istället för mutation
+            startGame() {
+                this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                //this.$store.commit('submitAnswer');
-                this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);      // Anropar action istället för mutation                
+                if(this.isGameRunning){
+                    this.$refs.audioTest.play();
+                    this.$store.dispatch("submitAnswer", a);
+                }
+
+
+
             },
             add(){
               this.number++;
@@ -49,35 +53,41 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
-            // submitAnswer(a) {
-            //     this.$refs.audioTest.play();
-            //     this.$store.commit('submitAnswer', a);
-            // },
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
+                
+                if(this.isGameRunning){
+                    setTimeout(function () {
 
-                setTimeout(function () {
-                    let guess = bot.guess(int)
-                    submitGuessFunction(guess)
-                    loopFunction();
-                }, 2000)
+                        let guess = bot.guess(int)
+                        submitGuessFunction(guess)
+                        loopFunction();
+
+                    }, 2000)
+                }
+
+
+
 
             },
             guess(){
+
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else{
+                }else {
                     this.playerTurn = false;
-                    console.log("yehaaw");
                     this.botGuess(this.activePlayer);
                 }
             }
         },
         computed: {
+            isGameRunning(){
+              return this.$store.getters.getIsGameRunning;
+            },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
             },
@@ -115,11 +125,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isRunning() {
-                return this.$store.getters.getIsRunning;
-            },
-            startStage() {
-                return this.$store.getters.getStartStage;
+            startTimer() {
+                return this.$store.getters.getStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -133,26 +140,25 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
-            jumpToNextPlayer() {
-                return this.$store.getters.getTimeIsUp;
-            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
+            },
+            isTimerZero(){
+                return this.$store.getters.getIsTimerZero;
             }
         },
         watch: {
-            startStage(){
+            startTimer(){
+                this.$refs.myTimer.stopTimer();
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
             },
-
-            jumpToNextPlayer() {
-                console.log("jumpToNextPlayer");
-                
-                this.$store.commit("jumpToNextPlayer");
-                
+            isTimerZero(){
+                this.submitAnswer(0);
+                this.guess();
             }
+
 
 
         },
@@ -164,118 +170,6 @@
     }
 </script>
 <style scoped>
-    @media only screen and (min-width: 900px) {
-        .gameContainer {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-        }
-
-        .infoContainer {
-            grid-row: 2;
-            grid-column: 2;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(4, 1fr)
-        }
-
-        #question {
-            grid-column: 2;
-            grid-row: 1;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        #highGuess {
-            grid-row: 1;
-            grid-column: 1 / span 2;
-        }
-
-        #lowGuess {
-            grid-row: 1;
-            grid-column: 4 / span 5;
-        }
-
-        #players {
-            grid-row: 4;
-        }
-
-        #timer {
-            grid-row: 1;
-            grid-column: 3;
-        }
-
-        #answer {
-            grid-row: 2;
-            grid-column: 3;
-        }
-
-        #submitButton {
-            grid-row: 3;
-            grid-column: 3;
-        }
-
-        .activePlayer {
-            background-color: red;
-        }
-    }
-    @media only screen and (max-width: 899px) {
-        .gameContainer {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(3, 1fr);
-        }
-
-        .infoContainer {
-            grid-row: 1;
-            grid-column: 2;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(4, 1fr)
-        }
-
-        #head {
-            grid-row: 3;
-            grid-column: 2;
-        }
-
-        #question {
-            grid-column: 2;
-            grid-row: 1;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        #highGuess {
-            grid-row: 2;
-            grid-column: 1 / span 2;
-        }
-
-        #lowGuess {
-            grid-row: 2;
-            grid-column: 4 / span 5;
-        }
-
-        #players {
-            grid-row: 4;
-        }
-
-        #timer {
-            grid-row: 3;
-            grid-column: 1;
-            font-weight: bold;
-        }
-
-        #answer {
-            grid-row: 2;
-            grid-column: 3;
-        }
-
-        #submitButton {
-            grid-row: 3;
-            grid-column: 3;
-        }
-    }
 
 .activePlayer {
     background-color: red;
