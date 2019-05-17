@@ -14,7 +14,8 @@
     watch: {
       $route(to, from){
         if(from.name === "game"){
-          this.$store.commit("stopGame")
+          this.$store.commit("stopGame");
+          this.$store.commit("breakOutOfBotLoop")
         }
       }
     }

@@ -36,7 +36,8 @@ const state = {
     ],
 
     isGameRunning: false,
-    displayGameCompleteResults: false
+    displayGameCompleteResults: false,
+    botLoopTimeoutFunction: ""
 
 }
 
@@ -81,11 +82,17 @@ const getters = {
     },
     getIsGameRunning: state => {
         return state.isGameRunning;
-    }
+    },
+    getBotLoopTimeoutFunction: state => {
+        return state.botLoopTimeoutFunction;
+}
 }
 
 const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+
+    breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
+    setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
 
     startGame: state => {
         state.isGameRunning = true;
