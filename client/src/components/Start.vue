@@ -7,11 +7,11 @@
         <button @click="displaySettings = !displaySettings">Change Game Settings</button>
 
         <div v-show="displaySettings">
-            <!-- <br> -->
-            <h3>Questions</h3>
+            <input v-model="shuffleOrder" type="checkbox" name="shuffle" value="true">Shuffle start order
+            <br><h3>Questions</h3>
 
             <p>Number of players:</p>                   <!-- Ändrade "Amount" till "Number". /Daniel -->
-            
+
             <div class="selectDiv">
                 <select v-model="playerNr">
                     <option v-for="(playersAmount, index) in playersAmount" :value="++index">
@@ -123,11 +123,13 @@
                     category: 0
                 },
                 selectedAvailableBotIndex: "",
-                selectedPlayingBotIndex: ""
+                selectedPlayingBotIndex: "",
+                shuffleOrder: false
             }
         },
         methods: {
             startGame() {
+                console.log(this.shuffleOrder);
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
             },
             addAvailableBotToPlayingBots(){
@@ -141,6 +143,8 @@
                     this.playingBots[this.selectedPlayingBotIndex].isPlaying = false;
             },
             createPlayers(amount){
+                this.$store.commit("resetPlayersBeforeNewGames");
+
                 for(var i = 1; i <= amount; i++){
                     var player = {
                         name: 'Player '+i,
@@ -154,6 +158,17 @@
                 }
 
                 this.$store.commit('updateActivePlayers', this.playingBots);
+                if(this.shuffleOrder){
+                    this.shuffle(this.activePlayers);
+                }
+            },
+            shuffle(array){
+                for(var i = array.length - 1; i >= 0; i--){
+                    var rand = Math.floor(Math.random() * i);
+                    var temp = array[i];
+                    array[i] = array[rand];
+                    array[rand] = temp;
+                }
             }
         },
         computed: {
