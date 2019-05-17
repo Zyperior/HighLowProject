@@ -7,6 +7,7 @@
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
+            <input v-model="shuffleOrder" type="checkbox" name="shuffle" value="true">Shuffle start order
             <br><h3>Questions</h3>
 
             <p>Amount of players:</p>
@@ -90,11 +91,13 @@
                     category: 1
                 },
                 selectedAvailableBotIndex: "",
-                selectedPlayingBotIndex: ""
+                selectedPlayingBotIndex: "",
+                shuffleOrder: false
             }
         },
         methods: {
             startGame() {
+                console.log(this.shuffleOrder);
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
             },
             addAvailableBotToPlayingBots(){
@@ -123,6 +126,17 @@
                 }
 
                 this.$store.commit('updateActivePlayers', this.playingBots);
+                if(this.shuffleOrder){
+                    this.shuffle(this.activePlayers);
+                }
+            },
+            shuffle(array){
+                for(var i = array.length - 1; i >= 0; i--){
+                    var rand = Math.floor(Math.random() * i);
+                    var temp = array[i];
+                    array[i] = array[rand];
+                    array[rand] = temp;
+                }
             }
         },
         computed: {

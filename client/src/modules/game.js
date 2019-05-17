@@ -185,6 +185,7 @@ const mutations = {
 
     resetPlayersBeforeNewGames: (state) => {
         state.players = [];
+        state.activePlayers = [];
         state.activePlayers.forEach(activePlayer => activePlayer.answer = "");
     },
 
