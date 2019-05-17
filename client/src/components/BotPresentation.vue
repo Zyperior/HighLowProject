@@ -14,7 +14,7 @@
             <p>Correct answer percentage: {{percentage}}%</p> <!-- Gt this from DB -->
             <p>Total of games played: {{botInfo.gamesPlayed}}</p>
             <p>Total amount of guesses: {{botInfo.guessCounter}}</p>
-            <p>Total amount of points: {{botInfo.guessCounter}}</p>
+            <p>Total amount of points: {{botInfo.points}}</p>
 
         </div>
     </div>
@@ -37,8 +37,9 @@
         },
         computed: {
             percentage(){
-                if(this.botInfo.guessCounter > 0)
-                    return Math.round(this.botInfo.correctAnswers / this.botInfo.guessCounter );
+                if(this.botInfo.guessCounter > 0) {
+                     return (this.botInfo.correctAnswers / this.botInfo.guessCounter) * 100;
+                }
                 else
                     return 0;
             }
