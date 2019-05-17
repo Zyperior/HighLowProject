@@ -115,6 +115,7 @@ const mutations = {
         player.guessCount++;
 
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
+            state.lastGuess = '';
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
 
@@ -169,7 +170,7 @@ const mutations = {
 
             }
             state.playerTurn += 1;
-            state.lastGuess = '';
+
             if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
 
