@@ -57,7 +57,7 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-                
+                let randTime = Math.floor(Math.random() * 5000);
                 if(this.isGameRunning){
                     setTimeout(function () {
 
@@ -65,7 +65,7 @@
                         submitGuessFunction(guess)
                         loopFunction();
 
-                    }, 2000)
+                    }, randTime)
                 }
 
 

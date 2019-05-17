@@ -101,22 +101,18 @@ const mutations = {
     },
     submitAnswer: (state, a) => {
         a = parseInt(a);
+        var player = state.activePlayers[state.playerTurn];
         state.lastGuess = a;
-        state.activePlayers[state.playerTurn].answer = a;
+        player.answer = a;
         state.answer = "";
+        player.guessCount++;
 
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             var audioCorrectAnswer = new Audio('/correctAnswer.wav');
             audioCorrectAnswer.play();
-            state.lastGuess = '';
-            state.activePlayers[state.playerTurn].guessCount += 1;
+
+            player.correctAnswer += 1;
             state.questionCounter++;
-            // if (state.questionCounter === state.questions.length) {
-            //     state.questionCounter = 0;
-            // }
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
 
             state.lowAnswers = [];
             state.highAnswers = [];
@@ -126,20 +122,23 @@ const mutations = {
                 state.isGameRunning = false;
                 state.questionCounter = 0;
                 store.dispatch('generalStats/postDBData', [1, 2]);
+                state.activePlayers.forEach(p => {
+                    if(!(p.isHuman)){
+                        store.dispatch('botStats/updateBotStats', [p.name, p.score, 1, p.guessCount, p.correctAnswer])
+                    }else{
+                        //store player data
+                    }
+                })
+
                 router.push('/complete');
                 state.displayGameCompleteResults = true;
             }
 
-            state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
 
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
 
         }
         else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
-            state.activePlayers[state.playerTurn].guessCount += 1;
 
             state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
@@ -148,12 +147,6 @@ const mutations = {
                 return 0;
             });
 
-            state.playerTurn += 1;
-
-            
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
         }
         else if (state.activePlayers[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
 
@@ -167,12 +160,14 @@ const mutations = {
                 return 0;
             });
 
+            }
             state.playerTurn += 1;
-
-            
+            state.lastGuess = '';
             if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
-            }
+
+
+
         }
 
 

@@ -11,7 +11,7 @@ const bot1 = {
         return interval.lowestGuess + 1;
     },
     guessAbove: function(interval) {
-        return interval.lowestGuess - 1;
+        return interval.lowestGuess + 1;
     },
     unfair: false,
     difficulty: 'easy',
