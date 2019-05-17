@@ -20,14 +20,7 @@
 
 <style scoped>
 
-    /* #navBarContainer {
-        width: 100%;
-        
-        text-align: center;
-    } */
-
-
-    #navBar {
+     #navBar {
         margin: auto;
         width: 90%;
         display: grid;
@@ -39,7 +32,5 @@
         /* font-size: 3vw; */
         padding: 1em;
     }
-
-
 
 </style>
