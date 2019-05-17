@@ -14,6 +14,7 @@
                 <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                 <audio ref="audioTest" src="/testAudio.wav"></audio>
             </div>
+            <chat-message/>
             <Timer ref="myTimer"/>
         </div>
 
@@ -21,6 +22,7 @@
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
+    import ChatMessage from "./ChatMessage";
 
     export default {
         data(){
@@ -37,6 +39,8 @@
             submitAnswer(a) {
                 this.$refs.audioTest.play();
                 this.$store.dispatch("submitAnswer", a);
+                let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                this.$store.dispatch("chat", chatPayload);
             },
             add(){
               this.number++;
@@ -83,7 +87,13 @@
                     isInInterval: function () {
                         return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
                     },
-                    lastGuess: this.lastGuess
+                    lastGuess: this.lastGuess,
+                    isBadGuess: function() {
+                        return (this.lastGuess < this.lowestGuess || this.lastGuess > this.highestGuess)
+                    },
+                    isCorrect: function() {
+                        return (this.lastGuess === this.correctAnswer);
+                    }
                 }
                 if (typeof interval.lowestGuess === 'undefined')
                     interval.lowestGuess = 0;
@@ -146,6 +156,7 @@
 
         },
         components: {
+            ChatMessage,
             Timer
         }      
 

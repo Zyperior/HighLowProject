@@ -4,7 +4,7 @@ import game from './modules/game'
 import botLogic from './modules/botlogic'
 import generalStats from './modules/generalStats'
 import timer from "./modules/timer"
-
+import chat from "./modules/chat"
 
 
 
@@ -18,6 +18,7 @@ export default new Vuex.Store({
         game,
         botLogic,
         generalStats,
-        timer
+        timer,
+        chat,
     }
 });

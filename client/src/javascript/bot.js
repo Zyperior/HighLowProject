@@ -504,13 +504,6 @@ const bot14 = {
             bratHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
-
-    },
-    inIntervalGuess: function(interval) {
-        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess * 2;
     },
     unfair: true,
     difficulty: 'medium',
