@@ -30,7 +30,7 @@
           return {
               playerTurn: true,
               number: 0,
-              activePlayer: {}
+              activePlayer: {},
           }
         },
         methods: {
@@ -38,6 +38,7 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
+                
                 if(this.isGameRunning){
                     this.$refs.audioTest.play();
                     this.$store.dispatch("submitAnswer", a);
@@ -53,13 +54,14 @@
                 this.number = 0;
                 this.playerTurn = true;
             },
+
             botGuess(bot){
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
                 let randTime = Math.floor(Math.random() * 5000);
                 if(this.isGameRunning){
-                    setTimeout(function () {
+                    this.botLoopTimeoutFunction = setTimeout(function () {
 
                         let guess = bot.guess(int)
                         submitGuessFunction(guess)
@@ -67,10 +69,6 @@
 
                     }, randTime)
                 }
-
-
-
-
             },
             guess(){
 
@@ -87,6 +85,15 @@
         computed: {
             isGameRunning(){
               return this.$store.getters.getIsGameRunning;
+            },
+            botLoopTimeoutFunction: {
+                get(){
+                    return this.$store.getters.getBotLoopTimeoutFunction;
+                },
+                set(timeoutFunction){
+                    this.$store.commit("setBotTimeoutFunction", timeoutFunction)
+                }
+
             },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
