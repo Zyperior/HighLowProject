@@ -1,8 +1,9 @@
 <template>
-    <div v-show="startStage" id="startStage">
+    <div id="startStage">
         <h1>Start Page</h1>
 
-        <button @click="startGame(); createPlayers(playerNr);">Start Game</button><br>
+        <router-link to="game"><button @click="startGame(); createPlayers(playerNr);">Start Game</button></router-link>
+        <br>
         <button @click="displaySettings = !displaySettings">Change game settings</button>
 
         <div v-show="displaySettings">
@@ -128,9 +129,6 @@
             }
         },
         computed: {
-            startStage(){
-                return this.$store.getters.getStartStage;
-            },
             availableBots(){
                 return this.$store.getters.availableBots;
             },

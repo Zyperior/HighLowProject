@@ -12,12 +12,11 @@ const state = {
     ],
     players: [
       ],
-   // currentQuestion: "",
+    currentQuestion: "",
     currQ: {
       question: "", currQAnswer: "", points: 0
     },
-    startStage: true,
-    isRunning: false,
+    isStartButtonClicked: false,
     answerAttempts: 0,
     answer: "",
     questionCounter: 0,
@@ -36,6 +35,7 @@ const state = {
     answers: [
 
     ]
+
 }
 
 const getters = {
@@ -54,11 +54,9 @@ const getters = {
     getAnswer: state => {
         return state.answer;
     },
-    getIsRunning: state => {
-        return state.isRunning;
-    },
-    getStartStage: state => {
-        return state.startStage;
+
+    getIsStartButtonClicked: state => {
+        return state.isStartButtonClicked;
     },
     getLowGuess: state => {
         return state.lowAnswers;
@@ -125,6 +123,11 @@ const mutations = {
                 state.lowAnswers = [];
                 state.highAnswers = [];
 
+            if(state.questionCounter === state.questions.length){
+                state.questionCounter = 0;
+                store.dispatch('generalStats/postDBData', [1, 2]);
+                router.push('/complete');
+            }
 
                 state.playerTurn += 1;
                 state.currentQuestion = state.questions[state.questionCounter].question;
@@ -137,8 +140,6 @@ const mutations = {
         else if (state.activePlayers[state.playerTurn].answer < state.currQ.currQAnswer) {
             console.log('Your answer is to low');
             state.activePlayers[state.playerTurn].guessCount += 1;
-            state.answerAttempts ++;
-            state.currQ.points -= Math.ceil(state.currQ.points * (state.roundGuessCounter * 0.01));
 
             state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
@@ -179,11 +180,11 @@ const mutations = {
     updateAnswer: (state, a) => {
         state.answer = a;
     },
-    
+
     jumpToNextPlayer: state => {
 
         state.playerTurn += 1;
-            
+
         if(state.playerTurn === 2){
             state.playerTurn = 0;
         }

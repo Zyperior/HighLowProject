@@ -28,6 +28,18 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
+    },
+    answer: 0,
+    guessCount: 0,
+    correctAnswer: 0,
+    isHuman: false,
+    score: 0,
+    imgSrc: "botImg/olle.jpg",
+    description: {
+        dislikes: 'Reading rules',
+        likes: 'Yelling',
+        type: 'Confused',
+        blurb: "A very confused man. Why is he even here?"
     }
 }
 
@@ -69,7 +81,15 @@ const bot2 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/kerstin.jpg',
+    description: {
+        dislikes: 'Mean people',
+        likes: 'Baking pies, hard candy, pinching cheeks',
+        type: "Retired ol' woman",
+        blurb: "Sweet old lady that wishes you well"
+    }
 }
 
 const bot3 = {
@@ -106,7 +126,15 @@ const bot3 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/deLaBossen.jpg',
+    description: {
+        dislikes: 'Snitches, disrespect',
+        likes: 'Family, his business, a nice cigar',
+        type: 'Boss',
+        blurb: 'Mafia boss with style, has contacts all over Italy'
+    }
 }
 
 const bot4 = {
@@ -143,7 +171,15 @@ const bot4 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/bo.jpg',
+    description: {
+        dislikes: 'When his children are too busy to visit their old man',
+        likes: 'Having fun, watching Jeopardy, fishing',
+        type: "Retired ol' man",
+        blurb: "An old man that's just happy to be here"
+    }
 }
 
 const bot5 = {
@@ -173,7 +209,15 @@ const bot5 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/botinski.png',
+    description: {
+        dislikes: 'Capitalist swine, when bear attack botinski house',
+        likes: 'When мама make Borscht-soup, bear traps',
+        type: 'Comrade',
+        blurb: 'Slightly drunk but proud Soviet citizen'
+    }
 }
 
 const bot6 =  {
@@ -211,7 +255,15 @@ const bot6 =  {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/submarine.jpg',
+    description: {
+        dislikes: 'Not going fast underwater',
+        likes: 'Going fast underwater',
+        type: 'Submarine',
+        blurb: 'Is literally a submarine'
+    }
 }
 
 const bot7 = {
@@ -261,7 +313,15 @@ const bot7 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/segelBot.jpg',
+    description: {
+        dislikes: 'Scurvy',
+        likes: 'Treasure chests, singing songs, friendship',
+        type: 'Pirate',
+        blurb: 'A thief of the sea, living the high-life with a bottle of rum'
+    }
 }
 
 const bot8 = {
@@ -287,20 +347,28 @@ const bot8 = {
     isPlaying: false,
     phrases: {
         guessing: [
-            "Jag är ingen bot",
-            "Ingen kan slå våran bot."
+            "I'm not a bot",
+            "Unts-unts-unts"
         ],
-        badGuess: "Det svaret är väldigt främmande för mig.",
-        otherCorrect: "Det finns inget som behöver förklaras.",
-        thisBotCorrect: "Jag är en väldigt, väldigt vacker tjej.",
-        otherWinGame: "Jag kan banna, banna dig så hårt.",
-        thisBotWinGame: "Det finns ingen take-over som lyckas."
+        badGuess: "No take-overs allowed!",
+        otherCorrect: "I can ban you...",
+        thisBotCorrect: "",
+        otherWinGame: "",
+        thisBotWinGame: "No one can beat our bot"
     },
     behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/anna.jpg',
+    description: {
+        dislikes: 'Trolls',
+        likes: 'Banning, watching over her channel',
+        type: 'Moderator',
+        blurb: 'A very, very beautiful girl that can ban you so hard'
+    }
 }
 
 const bot9 = {
@@ -338,7 +406,15 @@ const bot9 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/abbot.jpg',
+    description: {
+        dislikes: 'Sinners, paying taxes',
+        likes: 'The good book, a nice sunday dinner',
+        type: 'Preacher',
+        blurb: 'A man of faith preaching to his flock'
+    }
 }
 
 const bot10 = {
@@ -369,7 +445,15 @@ const bot10 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/inbotstjuven.jpg',
+    description: {
+        dislikes: 'Alarms, the Police',
+        likes: 'Unlocked car-doors, crowbars',
+        type: 'Burglar',
+        blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
+    }
 }
 
 const bot11 = {
@@ -411,7 +495,15 @@ const bot11 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/copyBot.jpg',
+    description: {
+        dislikes: 'Water, dreaming',
+        likes: 'Algorithms, wires, copying you',
+        type: 'Robot',
+        blurb: "01001001 00100000 01100001 01101101 00100000 01110010 01101111 01100010 01101111 01110100"
+    }
 }
 
 const bot12 = {
@@ -440,7 +532,15 @@ const bot12 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/dungeonMaster.png',
+    description: {
+        dislikes: 'Critical failures, interrupted game nights',
+        likes: "Nat 20's, Pizza rolls, cool robes",
+        type: 'Dice thrower',
+        blurb: "Rolls his dice and lets faith decide"
+    }
 }
 
 
@@ -484,7 +584,15 @@ const bot13 = {
     answer: 0,
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/humanBot.jpg',
+    description: {
+        dislikes: 'Not breathing, diseases',
+        likes: 'Food, water, watching the big game',
+        type: 'Human',
+        blurb: 'A very normal human that is in no way a bot'
+    }
 }
 
 const bot14 = {
