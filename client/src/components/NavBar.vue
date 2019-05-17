@@ -29,7 +29,6 @@
 
 
     #navBar div {
-        /* font-size: 3vw; */
         padding: 1em;
     }
 
