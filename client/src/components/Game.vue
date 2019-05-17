@@ -1,22 +1,25 @@
 <template>
     <div>
         <h1>Game Page</h1>
-        <p>{{currentQuestion}}</p>
-        <div>
-            <h2>Highest Guess: {{highGuess[0]}} </h2>
-            <h2>Lowest Guess: {{lowGuess[0]}} </h2>
-            <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
-            <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
-                <!--<p>{{bot.name}}</p>-->
-            <!--</div>-->
-            <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+        <div v-show="isGameRunning">
+            <p>{{currentQuestion}}</p>
             <div>
-                <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-                <audio ref="audioTest" src="/testAudio.wav"></audio>
+                <h2>Highest Guess: {{highGuess[0]}} </h2>
+                <h2>Lowest Guess: {{lowGuess[0]}} </h2>
+                <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
+                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
+                <!--<p>{{bot.name}}</p>-->
+                <!--</div>-->
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+                <div>
+                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
+                    <audio ref="audioTest" src="/testAudio.wav"></audio>
+                </div>
+                <chat-message/>
+                <Timer ref="myTimer"/>
             </div>
-            <chat-message/>
-            <Timer ref="myTimer"/>
         </div>
+
 
     </div>
 </template>
@@ -29,7 +32,7 @@
           return {
               playerTurn: true,
               number: 0,
-              activePlayer: {}
+              activePlayer: {},
           }
         },
         methods: {
@@ -37,10 +40,16 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                this.$refs.audioTest.play();
-                this.$store.dispatch("submitAnswer", a);
-                let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
-                this.$store.dispatch("chat", chatPayload);
+
+                if(this.isGameRunning){
+                    this.$refs.audioTest.play();
+                    this.$store.dispatch("submitAnswer", a);
+                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                    this.$store.dispatch("chat", chatPayload);
+                }
+
+
+
             },
             add(){
               this.number++;
@@ -53,26 +62,41 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
+                let randTime = Math.floor(Math.random() * 5000);
+                if(this.isGameRunning){
+                    this.botLoopTimeoutFunction = setTimeout(function () {
 
-                setTimeout(function () {
-                    let guess = bot.guess(int)
-                    submitGuessFunction(guess)
-                    loopFunction();
-                }, 2000)
+                        let guess = bot.guess(int)
+                        submitGuessFunction(guess)
+                        loopFunction();
 
+                    }, randTime)
+                }
             },
             guess(){
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else{
+                }else {
                     this.playerTurn = false;
                     this.botGuess(this.activePlayer);
                 }
             }
         },
         computed: {
+            isGameRunning(){
+              return this.$store.getters.getIsGameRunning;
+            },
+            botLoopTimeoutFunction: {
+                get(){
+                    return this.$store.getters.getBotLoopTimeoutFunction;
+                },
+                set(timeoutFunction){
+                    this.$store.commit("setBotTimeoutFunction", timeoutFunction)
+                }
+
+            },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
             },
@@ -116,8 +140,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isStartButtonClicked() {
-                return this.$store.getters.getIsStartButtonClicked;
+            startTimer() {
+                return this.$store.getters.getStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -131,9 +155,6 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
-            jumpToNextPlayer() {
-                return this.$store.getters.getTimeIsUp;
-            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
             },
@@ -142,7 +163,8 @@
             }
         },
         watch: {
-            isStartButtonClicked(){
+            startTimer(){
+                this.$refs.myTimer.stopTimer();
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();

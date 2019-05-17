@@ -7,8 +7,8 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/start',
-      name: 'start',
+      path: '/',
+      name: 'home',
       component: () => import("./components/Start")
     },
     {
@@ -25,6 +25,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: () => import('./views/About.vue')
+    },
+    {
+      path: '/bots',
+      name: 'botPresentation',
+      component: () => import('./views/BotsProfile.vue')
     }
   ]
 })
