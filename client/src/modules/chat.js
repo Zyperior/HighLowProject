@@ -27,16 +27,15 @@ const actions = {
             } else {
                 methods.guessingChat(players, activePlayer);
             }
-            store.dispatch('removeChatMessage');   //Removes message after 2850ms.
+            store.dispatch('removeChatMessage');   //Removes message after a while.
         } else {
-            console.log('no chat this round')
         }
 
     },
     removeChatMessage(state) {
         setTimeout(() => {
             store.commit('removeFirstChatMessage');
-        }, 2850);
+        }, 2850); //2.85s to remove messages
     }
 };
 

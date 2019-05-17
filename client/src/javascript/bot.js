@@ -624,6 +624,18 @@ const bot14 = {
         thisBotCorrect: "l2p",
         otherWinGame: "fml",
         thisBotWinGame: "lmao haxzorz"
+    },
+    answer: "",
+    guessCount: 0,
+    isHuman: false,
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/brat.jpg',
+    description: {
+        dislikes: 'When you steal his frags, cooties, old people music.',
+        likes: 'Candy, stealing your frags, screaming.',
+        type: 'Brat',
+        blurb: "Like, whatever, you're not my mom!"
     }
 }
 
