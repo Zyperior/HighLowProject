@@ -94,7 +94,7 @@ const mutations = {
         state.activePlayers[state.playerTurn].answer = a;
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             if (!state.muteSound){
-                var audioCorrectAnswer = new Audio('/Soundfx/correctAnswer.wav');
+                let audioCorrectAnswer = new Audio('/soundfx/correctAnswer.wav');
                 audioCorrectAnswer.play();
             }
             state.lastGuess = '';
