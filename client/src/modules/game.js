@@ -33,7 +33,8 @@ const state = {
     ],
     answers: [
 
-    ]
+    ],
+    muteSound: false
 
 }
 
@@ -71,6 +72,9 @@ const getters = {
     },
     getActivePlayers: state => {
         return state.activePlayers.reverse();
+    },
+    getMuteSound: state => {
+        return state.muteSound;
     }
 }
 
@@ -89,8 +93,10 @@ const mutations = {
         state.lastGuess = a;
         state.activePlayers[state.playerTurn].answer = a;
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
-            var audioCorrectAnswer = new Audio('/correctAnswer.wav');
-            audioCorrectAnswer.play();
+            if (!state.muteSound){
+                var audioCorrectAnswer = new Audio('/Soundfx/correctAnswer.wav');
+                audioCorrectAnswer.play();
+            }
             state.lastGuess = '';
             state.activePlayers[state.playerTurn].guessCount += 1;
             state.questionCounter++;
@@ -166,6 +172,9 @@ const mutations = {
 
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
+    },
+    muteSound: state => {
+        state.muteSound = !state.muteSound;
     }
 
 
