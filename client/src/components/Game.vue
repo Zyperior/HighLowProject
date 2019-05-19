@@ -49,9 +49,16 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
+                let audio = new Audio();
+                if(!this.muteSounds){
+                    audio.src = bot.soundFx[0];
+                    audio.play();
+                }
+                
 
                 setTimeout(function () {
                     let guess = bot.guess(int)
+                    
                     submitGuessFunction(guess)
                     loopFunction();
                 }, 2000)

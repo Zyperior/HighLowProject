@@ -29,6 +29,7 @@ const bot1 = {
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
     },
+    soundFx: ['/soundfx/botTest1.wav', '/soundfx/botTest2.wav'],
     answer: 0,
     guessCount: 0,
     correctAnswer: 0,
@@ -78,6 +79,7 @@ const bot2 = {
         otherWinGame: "",
         thisBotWinGame: ""
     },
+    soundFx: ['/soundfx/botTest1.wav', '/soundfx/botTest2.wav'],
     answer: 0,
     guessCount: 0,
     isHuman: false,
@@ -310,6 +312,7 @@ const bot7 = {
         thisBotWinGame: "Shiver me timbers!"
     },
     behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
+    soundFx: ['/soundfx/botTest1.wav', '/soundfx/botTest2.wav'],
     answer: 0,
     guessCount: 0,
     isHuman: false,
