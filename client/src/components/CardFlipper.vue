@@ -1,21 +1,21 @@
 <template>
     <div id="card-div">
 
-        <div :class="{upperCard: flipCards && cardsInfo.length > 3, upperCardThreePlayers: flipCards && cardsInfo.length === 3}">
-            <p v-if="cardsInfo.length > 3">{{ cardsInfo[cardsInfo.length - 1] }}</p>
-            <p v-else>{{ cardsInfo[2] }}</p>
+        <div id="hidden" :class="{hiddenCard: flipCards}" v-if="cardsInfo.length > 3">
+            <p>{{ cardsInfo[2] }}</p>
         </div>
 
-        <div :class="{centerCard: flipCards}">
-            <p>{{ cardsInfo[0] }}</p>
-        </div>
-
-        <div :class="{lowerCard: flipCards}">
+        <div id="upper" :class="{upperCard: flipCards}">
             <p>{{ cardsInfo[1] }}</p>
         </div>
 
-        <div :class="{hiddenCard: flipCards}" v-if="cardsInfo.length > 3">
-            <p>{{ cardsInfo[2] }}</p>
+        <div id="center" :class="{centerCard: flipCards && cardsInfo.length > 2, centerCardTwoPlayers: flipCards && cardsInfo.length === 2}">
+            <p>{{ cardsInfo[0] }}</p>
+        </div>
+
+        <div id="lower" :class="{lowerCard: flipCards && cardsInfo.length > 3, lowerCardThreePlayers: flipCards && cardsInfo.length === 3}"  v-if="cardsInfo.length > 2">
+            <p v-if="cardsInfo.length > 3">{{ cardsInfo[cardsInfo.length - 1] }}</p>
+            <p v-else>{{ cardsInfo[2] }}</p>
         </div>
 
 
@@ -31,6 +31,10 @@
 
 <script>
 export default {
+
+    props: {
+
+    },
     
     methods: {
         
