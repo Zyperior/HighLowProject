@@ -54,11 +54,9 @@
                     audio.src = bot.soundFx[0];
                     audio.play();
                 }
-                
 
                 setTimeout(function () {
                     let guess = bot.guess(int)
-                    
                     submitGuessFunction(guess)
                     loopFunction();
                 }, 2000)
