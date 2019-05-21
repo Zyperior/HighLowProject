@@ -1,11 +1,32 @@
 const router = require("express").Router();
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
+const passport = require("passport");
+const {ensureAuthenticated} = require("../../config/authentication");
 
 
 
-router.get("/login", (req, res) => {
-    res.send("login")
+//passport.authenticate imports the strategy setup in passport.js
+router.post("/login", (req, res, next) => {
+    passport.authenticate("local", {
+        successRedirect: "/users/testsuccess", //This connects to backend routes, how to connect to frontend routes?
+        failureRedirect: "/users/testfail"
+    })(req, res, next);
+});
+
+router.get("/logout", (req, res) => {
+   req.logout(); //passport middleware gives this function
+   res.redirect("/users/testsuccess")
+});
+
+router.get("/testsuccess", (req, res) => {
+   res.send("testsuccess")
+});
+router.get("/testfail", (req, res) => {
+    res.send("testfail")
+});
+router.get("/testauth", ensureAuthenticated, (req, res) => {
+    res.send("testauth")
 });
 
 router.post("/register", (req, res) => {
@@ -14,7 +35,7 @@ router.post("/register", (req, res) => {
         res.status(500).send("All fields must be entered")
     } else {
 
-        User.findOne({email: req.body.email})
+        User.findOne({userName: req.body.userName})
             .then(user => {
                 if(user){
                     res.status(500).send("There is already an account with the email")
@@ -36,7 +57,7 @@ router.post("/register", (req, res) => {
                             //flash stores a message in the session and displays it after a redirect
                             newUser.save()
                                 .then(user => {
-                                    res.redirect("/users/login")
+                                    res.redirect("/users/testsuccess")
                                 })
                                 .catch(error => console.log(error))
                         })
@@ -51,7 +72,7 @@ router.post("/register", (req, res) => {
 });
 
 
-//Get all users. Using this for testing.
+
 router.get("/", (req, res) => {
 
 });

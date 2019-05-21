@@ -2,11 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-//const flash = require("connect-flash");
-//const session = require("express-session"); //flash needs this to work
+const passport = require("passport");
+const session = require("express-session");
+
 
 const app = express();
 
+require("./config/passport")(passport);
 
 mongoose.connect(require("./config/databaseURI"), {useNewUrlParser: true})
     .then(() => console.log("Success connecting to the database"))
@@ -16,13 +18,14 @@ mongoose.connect(require("./config/databaseURI"), {useNewUrlParser: true})
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
 
-// app.use(session({
-//     secret: "very secret",
-//     resave: false,
-//     saveUninitialized: true
-// }));
-// app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
