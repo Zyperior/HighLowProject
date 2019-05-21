@@ -203,10 +203,6 @@ const mutations = {
 
 }
 
-//Some voice recognition.
-var recognition = new webkitSpeechRecognition() || SpeechRecognition();
-recognition.lang ="sv-SE";
-
 const actions = {
 
     async loadQuestionsAndStartGame({commit}, settings) {
@@ -215,19 +211,6 @@ const actions = {
         );
         commit('setQuestions', response.data);
         commit("startGame");
-    },
-    startVoiceRecording: ({commit}) => {
-        let voiceResult = "";
-        recognition.start();
-        recognition.onresult = function(event) {
-            for (var i = event.resultIndex; i < event.results.length; i++) {
-                if(event.results[i].isFinal) {
-                    voiceResult = event.results[i][0].transcript;
-                    console.log(voiceResult);
-                    commit('updateAnswer', voiceResult);
-                }
-            }
-        }
     },
 
     updateAnswer: ({commit}, a) => {
