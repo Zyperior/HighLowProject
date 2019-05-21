@@ -1,27 +1,27 @@
 <template>
     <div id="card-div">
 
-        <div id="hidden" :class="{hiddenCard: flipCards}" v-if="playerArray.length > 3">
-            <p>{{ playerArray[2] }}</p>
+        <div id="hidden" :class="{hiddenCard: flipCards}" v-if="activePlayers.length > 3">
+            <p>{{ activePlayers[2].name }}, {{ activePlayers[2].answer }}</p>
         </div>
 
         <div id="upper" :class="{upperCard: flipCards}">
-            <p>{{ playerArray[1] }}</p>
+            <p>{{ activePlayers[1].name }}, {{ activePlayers[1].answer }}</p>
         </div>
 
-        <div id="center" :class="{centerCard: flipCards && playerArray.length > 2, centerCardTwoPlayers: flipCards && playerArray.length === 2}">
-            <p>{{ playerArray[0] }}</p>
+        <div id="center" :class="{centerCard: flipCards && activePlayers.length > 2, centerCardTwoPlayers: flipCards && activePlayers.length === 2}">
+            <p>{{ activePlayers[0].name }}, {{ activePlayers[0].answer }}</p>
         </div>
 
-        <div id="lower" :class="{lowerCard: flipCards && playerArray.length > 3, lowerCardThreePlayers: flipCards && playerArray.length === 3}"  v-if="cardsInfo.length > 2">
-            <p v-if="playerArray.length > 3">{{ playerArray[cardsIplayerArraynfo.length - 1] }}</p>
-            <p v-else>{{ playerArray[2] }}</p>
+        <div id="lower" :class="{lowerCard: flipCards && activePlayers.length > 3, lowerCardThreePlayers: flipCards && activePlayers.length === 3}"  v-if="activePlayers.length > 2">
+            <p v-if="activePlayers.length > 3">{{ activePlayers[activePlayers.length - 1].name }}, {{ activePlayers[activePlayers.length - 1].answer }}</p>
+            <p v-else>{{ activePlayers[2].name }}, {{ activePlayers[2].answer }}</p>
         </div>
 
 
+        <!-- <br>
         <br>
-        <br>
-        <button @click="startFlipCards">Flip</button>
+        <button @click="startFlipCards">Flip</button> -->
 
     </div>
 </template>
@@ -34,15 +34,24 @@ export default {
 
     props: [
 
-        "playerArray"
+        "activePlayers"
 
     ],
     
     methods: {
+
+        flipCards: function() {
+            console.log("Array length = " + arrayLength);
+            this.$store.commit("flipCards", this.activePlayers.length);            
+        }
         
     },
 
     computed: {
+
+        getIndexCurrentPlayer() {
+            return this.$store.getters.getIndexCurrentPlayer;
+        }
         
     }
     
@@ -57,17 +66,23 @@ export default {
 
 <style scoped>
 
-    #cardholder-div {
+    * {
+    box-sizing: border-box;
+    }
+
+    /* #cardholder-div {
     height: 29vw;
     width: 21vw;
     margin: auto;
     text-align: center;
-    }
+    } */
 
 
     #card-div {
+    width: 100%;
     text-align: center;
     position: relative;
+    border: 1px solid red;
     }
 
     #card-div div {
