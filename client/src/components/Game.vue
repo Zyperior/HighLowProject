@@ -14,6 +14,7 @@
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                     <audio ref="audioTest" src="/testAudio.wav"></audio>
+                    <button @click="startVoiceRecording">Push To Talk</button>
                 </div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
@@ -51,6 +52,13 @@
 
 
             },
+            startVoiceRecording() {
+                if(this.playerTurn) {
+                    this.$store.dispatch('startVoiceRecording');
+                } else {
+                    console.log('Not player turn')
+                }
+            },
             add(){
               this.number++;
             },
@@ -73,6 +81,7 @@
                     }, randTime)
                 }
             },
+
             guess(){
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
