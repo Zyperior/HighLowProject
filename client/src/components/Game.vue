@@ -14,17 +14,19 @@
             <Timer ref="myTimer"/>
         </div>
 
+
     </div>
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
+    import ChatMessage from "./ChatMessage";
 
     export default {
         data(){
           return {
               playerTurn: true,
               number: 0,
-              activePlayer: {}
+              activePlayer: {},
           }
         },
         methods: {
@@ -32,11 +34,19 @@
                 this.$store.dispatch("startGame");
             },
             submitAnswer(a) {
-                if(!this.muteSounds){
+
+                if(this.isGameRunning){
+                    if(!this.muteSounds){
                     let answerSound = new Audio('/soundfx/testAudio.wav');
                     answerSound.play();
+                    }
+                    this.$store.dispatch("submitAnswer", a);
+                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                    this.$store.dispatch("chat", chatPayload);
                 }
-                this.$store.dispatch("submitAnswer", a);
+
+
+
             },
             add(){
               this.number++;
@@ -54,26 +64,41 @@
                     audio.src = bot.soundFx[0];
                     audio.play();
                 }
+                let randTime = Math.floor(Math.random() * 5000);
+                if(this.isGameRunning){
+                    this.botLoopTimeoutFunction = setTimeout(function () {
 
-                setTimeout(function () {
-                    let guess = bot.guess(int)
-                    submitGuessFunction(guess)
-                    loopFunction();
-                }, 2000)
+                        let guess = bot.guess(int)
+                        submitGuessFunction(guess)
+                        loopFunction();
 
+                    }, randTime)
+                }
             },
             guess(){
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
-                }else{
+                }else {
                     this.playerTurn = false;
                     this.botGuess(this.activePlayer);
                 }
             }
         },
         computed: {
+            isGameRunning(){
+              return this.$store.getters.getIsGameRunning;
+            },
+            botLoopTimeoutFunction: {
+                get(){
+                    return this.$store.getters.getBotLoopTimeoutFunction;
+                },
+                set(timeoutFunction){
+                    this.$store.commit("setBotTimeoutFunction", timeoutFunction)
+                }
+
+            },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
             },
@@ -88,7 +113,13 @@
                     isInInterval: function () {
                         return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
                     },
-                    lastGuess: this.lastGuess
+                    lastGuess: this.lastGuess,
+                    isBadGuess: function() {
+                        return (this.lastGuess < this.lowestGuess || this.lastGuess > this.highestGuess)
+                    },
+                    isCorrect: function() {
+                        return (this.lastGuess === this.correctAnswer);
+                    }
                 }
                 if (typeof interval.lowestGuess === 'undefined')
                     interval.lowestGuess = 0;
@@ -111,8 +142,8 @@
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
-            isStartButtonClicked() {
-                return this.$store.getters.getIsStartButtonClicked;
+            startTimer() {
+                return this.$store.getters.getStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -126,9 +157,6 @@
             correctAnswer(){
                 return this.$store.getters.correctAnswer;
             },
-            jumpToNextPlayer() {
-                return this.$store.getters.getTimeIsUp;
-            },
             activePlayers(){
                 return this.$store.getters.getActivePlayers;
             },
@@ -140,7 +168,8 @@
             }
         },
         watch: {
-            isStartButtonClicked(){
+            startTimer(){
+                this.$refs.myTimer.stopTimer();
                 this.$refs.myTimer.startTimer();
                 this.activePlayer = this.players[this.playerCounter]
                 this.guess();
@@ -154,6 +183,7 @@
 
         },
         components: {
+            ChatMessage,
             Timer
         }      
 

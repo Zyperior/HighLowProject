@@ -30,7 +30,7 @@ router.put("/", (req, res) => {
 
     Bot.findOneAndUpdate(
         {name : req.body.name},
-        {$inc:{points: req.body.points, gamesPlayed: 1, guessCounter: req.body.guessCounter, correctAnswers : req.body.correctAnswers }},
+        {$inc:{points: req.body.points, gamesPlayed: req.body.gamesPlayed, guessCounter: req.body.guessCounter, correctAnswers : req.body.correctAnswers }},
         {new:true},
         (error, response )=>{
             if(error){res.status(500).json({message : error.toString()})}
