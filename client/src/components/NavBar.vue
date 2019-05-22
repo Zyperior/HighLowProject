@@ -8,7 +8,10 @@
         </div>
         <div>
             <router-link to="/bots">Bots</router-link>
-        </div>        
+        </div>
+        <div>
+            <router-link to="/login">Login</router-link>
+        </div>
     </div>
 </template>
 
