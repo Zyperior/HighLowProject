@@ -35,6 +35,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: () => import('./components/Login.vue')
+    },
+    {
+      path: '/secret',
+      name: 'secret',
+      component: () => import('./components/OnlyAuthorizedCanSeeThis.vue')
     }
   ]
 })

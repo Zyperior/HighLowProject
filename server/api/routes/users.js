@@ -5,44 +5,53 @@ const passport = require("passport");
 const {ensureAuthenticated} = require("../../config/authentication");
 
 
+router.post("/login",
+    passport.authenticate("local"),
+    function (req, res) {
+        //if this function is called, auth was successful
+        //req.user contains the authenticated user
+        console.log("logged in")
+        res.send("logged in successfully");
+    });
+
 
 //passport.authenticate imports the strategy setup in passport.js
-router.post("/login", (req, res, next) => {
-    passport.authenticate("local", {
-        successRedirect: "/users/testsuccess", //This connects to backend routes, how to connect to frontend routes?
-        failureRedirect: "/users/testfail"
-    })(req, res, next);
-});
+// router.post("/login", (req, res, next) => {
+//     passport.authenticate("local", {
+//         successRedirect: "/users/testsuccess", //This connects to backend routes, how to connect to frontend routes?
+//         failureRedirect: "/users/testfail"
+//     })(req, res, next);
+// });
 
 router.get("/logout", (req, res) => {
    req.logout(); //passport middleware gives this function
-   res.redirect("/users/testsuccess")
+   res.send("logged out successfully")
 });
 
-router.get("/testsuccess", (req, res) => {
-   res.send("testsuccess")
-});
-router.get("/testfail", (req, res) => {
-    res.send("testfail")
-});
+// router.get("/testsuccess", (req, res) => {
+//    res.send("testsuccess")
+// });
+// router.get("/testfail", (req, res) => {
+//     res.send("testfail")
+// });
 router.get("/testauth", ensureAuthenticated, (req, res) => {
-    res.send("testauth")
+    res.send("access to authenticated endpoint successful")
 });
 
 router.post("/register", (req, res) => {
     //If no fields are empty
-    if(!req.body.userName || !req.body.email || !req.body.password){
+    if(/*!req.body.userName || */!req.body.email || !req.body.password){
         res.status(500).send("All fields must be entered")
     } else {
 
-        User.findOne({userName: req.body.userName})
+        User.findOne({email: req.body.email})
             .then(user => {
                 if(user){
                     res.status(500).send("There is already an account with the email")
                 }
                 else{
                     const newUser = new User({
-                        userName: req.body.userName,
+                        //userName: req.body.userName,
                         email: req.body.email,
                         password: req.body.password
                     });
@@ -57,7 +66,7 @@ router.post("/register", (req, res) => {
                             //flash stores a message in the session and displays it after a redirect
                             newUser.save()
                                 .then(user => {
-                                    res.redirect("/users/testsuccess")
+                                    res.send("Registration successful, you can now login")
                                 })
                                 .catch(error => console.log(error))
                         })

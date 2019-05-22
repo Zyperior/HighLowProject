@@ -12,6 +12,9 @@
         <div>
             <router-link to="/login">Login</router-link>
         </div>
+        <div>
+            <router-link to="/secret">Secret</router-link>
+        </div>
     </div>
 </template>
 
