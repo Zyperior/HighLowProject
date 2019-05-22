@@ -4,7 +4,6 @@ import store from '../store'
 import GameComplete from "../components/GameComplete";
 import router from "../router";
 
-
 const state = {
     activePlayers: [],
     questions: [
@@ -213,6 +212,7 @@ const mutations = {
 }
 
 const actions = {
+
     async loadQuestionsAndStartGame({commit}, settings) {
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`

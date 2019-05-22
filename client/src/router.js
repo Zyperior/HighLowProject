@@ -4,7 +4,9 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+
+
+export const router = new Router({
   routes: [
     {
       path: '/',
@@ -30,6 +32,18 @@ export default new Router({
       path: '/bots',
       name: 'botPresentation',
       component: () => import('./views/BotsProfile.vue')
-    }
+    },
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
 })

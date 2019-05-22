@@ -8,10 +8,15 @@
             <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
             <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
                 <!--<p>{{bot.name}}</p>-->
-            <!--</div>-->
-            <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
-            <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-            <Timer ref="myTimer"/>
+                <!--</div>-->
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+                <div>
+                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
+                    <button @click="startVoiceRecording">Push To Talk</button>
+                </div>
+                <chat-message/>
+                <Timer ref="myTimer"/>
+            </div>
         </div>
 
 
@@ -20,6 +25,10 @@
 <script>
     import Timer from '@/components/Timer.vue'
     import ChatMessage from "./ChatMessage";
+
+    //Some voice recognition.
+    var recognition = new webkitSpeechRecognition() || SpeechRecognition();
+    recognition.lang ="sv-SE";
 
     export default {
         data(){
@@ -48,6 +57,25 @@
 
 
             },
+            startVoiceRecording() {
+                if(this.playerTurn) {
+                    var that = this;
+                    let voiceResult = "";
+                    recognition.start();
+                    recognition.onresult = function(event) {
+                        for (var i = event.resultIndex; i < event.results.length; i++) {
+                            if(event.results[i].isFinal) {
+                                voiceResult = event.results[i][0].transcript;
+                                console.log(voiceResult);
+                                that.$store.commit('submitAnswer', voiceResult);
+                                that.guess();
+                            }
+                        }
+                    }
+                } else {
+                    console.log('Not player turn')
+                }
+            },
             add(){
               this.number++;
             },
@@ -75,6 +103,7 @@
                     }, randTime)
                 }
             },
+
             guess(){
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
