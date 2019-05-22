@@ -1,12 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-
 Vue.use(Router)
 
-
-
-export const router = new Router({
+export default new Router({
   routes: [
     {
       path: '/',
@@ -36,14 +33,3 @@ export const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next()
-      return
-    }
-    next('/login')
-  } else {
-    next()
-  }
-})

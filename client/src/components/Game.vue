@@ -19,8 +19,6 @@
             </div>
         </div>
 
-
-    </div>
 </template>
 <script>
     import Timer from '@/components/Timer.vue'
