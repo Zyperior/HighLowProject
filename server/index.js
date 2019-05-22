@@ -8,6 +8,9 @@ const session = require("express-session");
 
 const app = express();
 
+app.use(cors());
+app.use(bodyParser.json());
+
 require("./config/passport")(passport);
 
 mongoose.connect(require("./config/databaseURI"), {useNewUrlParser: true})
@@ -15,8 +18,7 @@ mongoose.connect(require("./config/databaseURI"), {useNewUrlParser: true})
     .catch(error => console.log(error));
 
 
-app.use(cors());
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
 
 app.use(session({
     secret: 'secret',

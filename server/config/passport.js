@@ -2,34 +2,30 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-//https://www.sitepoint.com/local-authentication-using-passport-node-js/
 
 const User = require("../api/model/User");
 
 module.exports = function(passport){
     passport.use(
-        new LocalStrategy({userNameField: "userName"}, (userName, email, password, done) => {
-            User.findOne({userName: userName})
+        new LocalStrategy({usernameField: "email"}, (email, password, done) => {
+            User.findOne({email: email})
                 .then(foundUser => {
-                    console.log("helllo")
-
                     if(!foundUser){
                         //done takes in the parameters (error, user, options)
-                        return done(null, false, {message: "Username is not registered"})
+                        return done(null, false, {message: "email is not registered"})
                     }
 
-                    bcrypt.compare(foundUser.password, password), (error, isMatching) => {
+                    bcrypt.compare(password, foundUser.password, (error, isMatching) => {
                         if (error){
                             throw error;
                         }
                         if(isMatching){
-
                             return done(null, foundUser)
                         }
                         else {
                             return done(null, false, {message: "The password is incorrect"})
                         }
-                    };
+                    });
                 })
                 .catch(error => console.log(error))
         })
