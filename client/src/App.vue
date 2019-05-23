@@ -26,7 +26,7 @@
 
 
   body {
-    margin: 0px;
+    margin: 0.5em;
     background-color: var(--backGroundColor);
     box-sizing: border-box;
   }
