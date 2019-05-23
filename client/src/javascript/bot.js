@@ -29,6 +29,14 @@ const bot1 = {
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     correctAnswer: 0,
@@ -78,6 +86,14 @@ const bot2 = {
         otherWinGame: "Well done!",
         thisBotWinGame: "Oh, dearie me, that was fun!"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -98,10 +114,10 @@ const bot3 = {
         let bossLow = interval.correctAnswer * 0.9;
         let bossHigh = interval.correctAnswer * 1.1;
 
-        if(bossLow < interval.lowestGuess) {
+        if(bossLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bossLow = interval.lowestGuess;
         }
-        if(bossHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bossHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bossHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
@@ -122,6 +138,14 @@ const bot3 = {
         thisBotCorrect: "Nothing personal, it’s just business.",
         otherWinGame: "You wanna play rough? Okay. Say hello to my little friend!",
         thisBotWinGame: "Veni, vidi, vici."
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -168,6 +192,14 @@ const bot4 = {
         otherWinGame: "Hallå eller. Änna bra gjort!",
         thisBotWinGame: "Änna görkul detta!"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -206,6 +238,14 @@ const bot5 = {
         thisBotWinGame: "Radost.",
     },
     behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -252,6 +292,14 @@ const bot6 =  {
         thisBotWinGame: "Out of your depth."
     },
     behavior: 'The smaller the interval is the smaller its guesses are',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -310,6 +358,14 @@ const bot7 = {
         thisBotWinGame: "Shiver me timbers!"
     },
     behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -357,6 +413,14 @@ const bot8 = {
         thisBotWinGame: "No one can beat our bot"
     },
     behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -403,6 +467,14 @@ const bot9 = {
         otherWinGame: "Ezekiel 25:17",
         thisBotWinGame: "Exodus 20:17"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -441,6 +513,14 @@ const bot10 = {
         otherCorrect: "...",
         otherWinGame: "...",
         thisBotWinGame: "B&E!"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -492,6 +572,14 @@ const bot11 = {
         otherWinGame: "01010111 01010100 01000110",
         thisBotWinGame: "01001100 00110010 01010000"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -528,6 +616,14 @@ const bot12 = {
         otherCorrect: "Random encounter!",
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -581,6 +677,14 @@ const bot13 = {
         otherWinGame: "Congrats",
         thisBotWinGame: "Horray!"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -601,10 +705,10 @@ const bot14 = {
         let bratLow = interval.correctAnswer * 0.75;
         let bratHigh = interval.correctAnswer * 1.25;
 
-        if(bratLow < interval.lowestGuess) {
+        if(bratLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bratLow = interval.lowestGuess;
         }
-        if(bratHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bratHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bratHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
@@ -624,6 +728,14 @@ const bot14 = {
         thisBotCorrect: "l2p",
         otherWinGame: "fml",
         thisBotWinGame: "lmao haxzorz"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,

@@ -1,7 +1,8 @@
 import store from '../store'
 
 const state =  {
-    messages: []
+    messages: [],
+    audio: new Audio()
 };
 
 const actions = {
@@ -66,6 +67,10 @@ const methods = {
         let speakerIndex = Math.floor(Math.random() * players.length);
         let speaker = players[speakerIndex];
         if (!speaker.isHuman) {
+            if (!store.getters.getMuteSound) {
+                state.audio.src = speaker.soundFx.badGuessSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess})
         } else if(speaker.isHuman) {
             this.badGuessChat(players);
@@ -81,6 +86,10 @@ const methods = {
         }
         if (!nextPlayer.isHuman) {
             let phraseIndex = Math.floor(Math.random() * (nextPlayer.phrases.guessing.length));
+            if (!store.getters.getMuteSound) {
+                state.audio.src = nextPlayer.soundFx.guessingSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: nextPlayer.name, text: nextPlayer.phrases.guessing[phraseIndex]});
         }
     },
@@ -88,8 +97,16 @@ const methods = {
         //Random winGame. If human, recursive.
         let randomSpeaker = players[Math.floor(Math.random() * players.length)];
         if(randomSpeaker == activePlayer && !randomSpeaker.isHuman) {
+            if (!store.getters.getMuteSound) {
+                state.audio.src = randomSpeaker.soundFx.thisBotWinGameSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.thisBotWinGame});
         } else if(!randomSpeaker.isHuman) {
+            if (!store.getters.getMuteSound) {
+                state.audio.src = randomSpeaker.soundFx.otherWinGameSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.otherWinGame});
         } else {
             this.winChat(players, activePlayer);
@@ -99,8 +116,16 @@ const methods = {
         //Random correct guess. If human, recursive.
         let randomSpeaker = players[Math.floor(Math.random() * players.length)];
         if(randomSpeaker == activePlayer && !randomSpeaker.isHuman) {
+            if (!store.getters.getMuteSound) {
+                state.audio.src = randomSpeaker.soundFx.thisBotCorrectSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.thisBotCorrect});
         } else if(!randomSpeaker.isHuman) {
+            if (!store.getters.getMuteSound) {
+                state.audio.src = randomSpeaker.soundFx.otherCorrectSfx;
+                state.audio.play();
+            }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.otherCorrect});
         } else {
             this.correctChat(players, activePlayer);

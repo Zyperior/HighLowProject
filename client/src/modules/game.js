@@ -4,8 +4,6 @@ import store from '../store';
 import GameComplete from "../components/GameComplete";
 import router from "../router";
 
-
-
 const state = {
     activePlayers: [],
     questions: [
@@ -35,10 +33,12 @@ const state = {
     answers: [
 
     ],
-
+    muteSound: false,
     isGameRunning: false,
     displayGameCompleteResults: false,
-    botLoopTimeoutFunction: ""
+    botLoopTimeoutFunction: "",
+    chattyBots: true,
+    speechToTextLanguage: ""
 
 }
 
@@ -77,6 +77,9 @@ const getters = {
     getActivePlayers: state => {
         return state.activePlayers.reverse();
     },
+    getMuteSound: state => {
+        return state.muteSound;
+    },
 
     getDisplayGameCompleteResults: state => {
         return state.displayGameCompleteResults;
@@ -107,6 +110,12 @@ const mutations = {
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
         state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
     },
+    setLanguage: (state, selectedLanguage) => {
+      state.speechToTextLanguage = selectedLanguage;
+    },
+    isBotsChatty: (state, chattyBots) => {
+      state.chattyBots = chattyBots;
+    },
     submitAnswer: (state, a) => {
         a = parseInt(a);
         var player = state.activePlayers[state.playerTurn];
@@ -117,8 +126,10 @@ const mutations = {
 
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
             state.lastGuess = '';
-            var audioCorrectAnswer = new Audio('/correctAnswer.wav');
-            audioCorrectAnswer.play();
+            if (!state.muteSound){
+                let audioCorrectAnswer = new Audio('/soundfx/correctAnswer.wav');
+                audioCorrectAnswer.play();
+            }
 
             player.correctAnswer += 1;
             state.questionCounter++;
@@ -191,6 +202,9 @@ const mutations = {
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
     },
+    muteSound: state => {
+        state.muteSound = !state.muteSound
+    },
 
     resetPlayersBeforeNewGames: (state) => {
         state.players = [];
@@ -206,6 +220,7 @@ const mutations = {
 }
 
 const actions = {
+
     async loadQuestionsAndStartGame({commit}, settings) {
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
@@ -237,7 +252,8 @@ const actions = {
 
         context.commit("startTimer", {root: true});
 
-    }
+    },
+
     
 }
 
