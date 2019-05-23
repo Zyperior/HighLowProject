@@ -195,7 +195,7 @@ const mutations = {
         state.activePlayers = state.players.concat(players);
     },
     muteSound: state => {
-        state.muteSound = !state.muteSound;
+        state.muteSound = !state.muteSound
     },
 
     resetPlayersBeforeNewGames: (state) => {

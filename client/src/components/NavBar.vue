@@ -9,7 +9,7 @@
         <div>
             <router-link to="/bots">Bots</router-link>
         </div>
-        <button @click="muteSound()">Mute Sound</button>        
+        <button @click="muteSound()">{{ mute }}</button>        
     </div>
 </template>
 
@@ -18,7 +18,13 @@
         name: "NavBar",
         methods: {
             muteSound() {
-                this.$store.commit('muteSound');
+                this.$store.commit('muteSound')
+            }
+        },
+        computed: {
+            mute() {
+                return this.$store.getters.getMuteSound
+                ? 'Enable sound' : 'Mute sound'
             }
         }
     }
