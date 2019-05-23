@@ -50,6 +50,16 @@
                 </select>
             </div>
 
+            <p>Speech-to-text language:</p>
+
+            <div class="selectDiv">
+                <select v-model="selectedLanguage">
+                    <option v-for="(speechToTextLanguageOption, index) in speechToTextLanguageOptions">
+                        {{speechToTextLanguageOption}}
+                    </option>
+                </select>
+            </div>
+
             
             <!-- <br><br> -->
             <h3>Bots</h3>
@@ -96,6 +106,7 @@
                     </option>
                 </select>
             </div>
+            <input v-model="chattyBots" type="checkbox" name="chattyBots" value="true">Chatty bots
 
         </div>
     </div>
@@ -124,13 +135,23 @@
                 },
                 selectedAvailableBotIndex: "",
                 selectedPlayingBotIndex: "",
-                shuffleOrder: false
+                shuffleOrder: false,
+                chattyBots: true,
+                speechToTextLanguageOptions: [
+                    "sv-SE", "en-US", "no-NO"
+                ],
+                selectedLanguage: "sv-SE"
             }
         },
         methods: {
             startGame() {
                 console.log(this.shuffleOrder);
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
+
+                //Inte nöjd med att de ligger här. Finns mer elegant sätt?
+                //Borde alla settings kanske ligga i store ist. för data?
+                this.$store.commit("setLanguage", this.selectedLanguage);
+                this.$store.commit("isBotsChatty", this.chattyBots);
             },
             addAvailableBotToPlayingBots(){
                 if(typeof this.availableBots[this.selectedAvailableBotIndex] !== "undefined"

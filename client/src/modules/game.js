@@ -36,7 +36,9 @@ const state = {
     muteSound: false,
     isGameRunning: false,
     displayGameCompleteResults: false,
-    botLoopTimeoutFunction: ""
+    botLoopTimeoutFunction: "",
+    chattyBots: true,
+    speechToTextLanguage: ""
 
 }
 
@@ -107,6 +109,12 @@ const mutations = {
         state.currQ.question = state.questions[state.questionCounter].question;
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
         state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
+    },
+    setLanguage: (state, selectedLanguage) => {
+      state.speechToTextLanguage = selectedLanguage;
+    },
+    isBotsChatty: (state, chattyBots) => {
+      state.chattyBots = chattyBots;
     },
     submitAnswer: (state, a) => {
         a = parseInt(a);
@@ -250,7 +258,8 @@ const actions = {
 
         context.commit("startTimer", {root: true});
 
-    }
+    },
+
     
 }
 
