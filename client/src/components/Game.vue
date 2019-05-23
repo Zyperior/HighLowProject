@@ -37,6 +37,7 @@
               playerTurn: true,
               number: 0,
               activePlayer: {},
+              recording: false
           }
         },
         methods: {
@@ -59,22 +60,23 @@
             },
             startVoiceRecording() {
                 if(this.playerTurn) {
-                    recognition.lang = this.$store.state.game.speechToTextLanguage;
-                    var that = this;
-                    let voiceResult = "";
-                    recognition.start();
-                    recognition.onresult = function(event) {
-                        for (var i = event.resultIndex; i < event.results.length; i++) {
-                            if(event.results[i].isFinal) {
-                                voiceResult = event.results[i][0].transcript;
-                                console.log(voiceResult);
-                                that.$store.commit('submitAnswer', voiceResult);
-                                that.guess();
+                    if(!this.recording) {
+                        this.recording = !this.recording;
+                        let that = this;
+                        let voiceResult = 0;
+                        recognition.lang = this.$store.state.game.speechToTextLanguage;
+                        recognition.start();
+                        recognition.onresult = function (event) {
+                            for (var i = event.resultIndex; i < event.results.length; i++) {
+                                if (event.results[i].isFinal) {
+                                    voiceResult = event.results[i][0].transcript;
+                                    that.$store.commit('submitAnswer', voiceResult);
+                                    that.guess();
+                                    that.recording = false;
+                                }
                             }
                         }
                     }
-                } else {
-                    console.log('Not player turn')
                 }
             },
             add(){
