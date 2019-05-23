@@ -25,14 +25,11 @@ module.exports = function(passport){
         }, (jwt_payload, done) => {
             User.findOne({email: jwt_payload.id})
                 .then(foundUser => {
-                    console.log("running jwt strategy")
-                    console.log(foundUser)
                     if(foundUser){
-                        console.log("jwt strategy found user in db while decoding token")
+                        //done takes in the parameters (error, user, options)
                         done(null, foundUser)
                     }
                     else {
-                        console.log("jwt strategy did not find user in db while decoding token")
                         done(null, false)
                     }
                 })
@@ -42,13 +39,11 @@ module.exports = function(passport){
 
 
 
-
+        //not necessarily needed anymore since not relying on cookies anymore. refactor code.
         passport.use( "local", new LocalStrategy({usernameField: "email"}, (email, password, done) => {
             User.findOne({email: email})
                 .then(foundUser => {
-                    console.log("running local strategy")
                     if(!foundUser){
-                        //done takes in the parameters (error, user, options)
                         return done(null, false, {message: "email is not registered"})
                     }
 
@@ -72,17 +67,12 @@ module.exports = function(passport){
 
 
 
-    //is this needed when cookies are no longer used?
-
-    //serialize and deserialize.
-    //The credentials used to authenticate the user is only sent during login.
-    //If authentication succeeds, a session is created and a cookie is set in the browser.
-    //Each request after that look at the cookie rather than the credentials to identify the session.
+    //cookie stuff. local strategy. session
     passport.serializeUser((user, done) => {
         done(null, user.id);
     });
 
-    passport.deserializeUser((id, done) => { //deserialize only called when using postman but not browser?
+    passport.deserializeUser((id, done) => {
         User.findById(id, (err, user) => {
             done(err, user);
         });

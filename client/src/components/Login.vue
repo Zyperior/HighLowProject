@@ -13,7 +13,7 @@
             <br>
             <button @click="login">Login</button>
             <p>Don't have an account?</p>
-            <button class="smallerButton" @click="displayLogin = false">Sign up</button>
+            <button class="smallerButton" @click="displayLogin = false; failMessage=''">Sign up</button>
         </div>
 
         <div v-show="!displayLogin">
@@ -34,7 +34,7 @@
             <br>
             <button @click="register">Sign up</button>
             <p>Already have an account?</p>
-            <button class="smallerButton" @click="displayLogin = true">Login</button>
+            <button class="smallerButton" @click="displayLogin = true; failMessage=''">Login</button>
         </div>
 
         <br><br><br><br>
@@ -99,8 +99,6 @@
             },
             logout(){
                 localStorage.clear();
-                //also have collection in db about currently logged in users so it's not possible to log in from multiple computers at once?
-                //how does jwt expire work?
 
                 // axios.get("http://localhost:5000/users/logout")
                 //     .then(() => {

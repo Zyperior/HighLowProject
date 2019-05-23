@@ -4,8 +4,7 @@ import axios from "axios"
 
 Vue.use(Router)
 
-//before changing:
-//export default new Router({
+
 
 const router = new Router({
   routes: [
@@ -67,26 +66,17 @@ router.beforeEach((to, from, next) => {
     }
   })
   .then((response) => {
-
     //If not logged in but it's required, redirect to the login page
     if(!response.data.isLoggedIn && loginRequired){
       return next("/login");
     }
-
     //else if logged in but it the page require admin rights, also redirect to the login page
     else if(adminRequired && response.data.authRole !== "ADMIN"){
       return next("/login");
     }
-
     next();
-
-
   })
   .catch((error) => console.log(error));
-
-
-
-
 
 });
 
