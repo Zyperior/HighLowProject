@@ -37,6 +37,7 @@ const state = {
     isGameRunning: false,
     displayGameCompleteResults: false,
     botLoopTimeoutFunction: "",
+    chattyBots: true,
     speechToTextLanguage: ""
 
 }
@@ -108,6 +109,9 @@ const mutations = {
     },
     setLanguage: (state, selectedLanguage) => {
       state.speechToTextLanguage = selectedLanguage;
+    },
+    isBotsChatty: (state, chattyBots) => {
+      state.chattyBots = chattyBots;
     },
     submitAnswer: (state, a) => {
         a = parseInt(a);

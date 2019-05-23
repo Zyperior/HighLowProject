@@ -106,6 +106,7 @@
                     </option>
                 </select>
             </div>
+            <input v-model="chattyBots" type="checkbox" name="chattyBots" value="true">Chatty bots
 
         </div>
     </div>
@@ -135,6 +136,7 @@
                 selectedAvailableBotIndex: "",
                 selectedPlayingBotIndex: "",
                 shuffleOrder: false,
+                chattyBots: true,
                 speechToTextLanguageOptions: [
                     "sv-SE", "en-US", "no-NO"
                 ],
@@ -145,7 +147,11 @@
             startGame() {
                 console.log(this.shuffleOrder);
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
-                this.$store.commit("setLanguage", this.selectedLanguage)
+
+                //Inte nöjd med att de ligger här. Finns mer elegant sätt?
+                //Borde alla settings kanske ligga i store ist. för data?
+                this.$store.commit("setLanguage", this.selectedLanguage);
+                this.$store.commit("isBotsChatty", this.chattyBots);
             },
             addAvailableBotToPlayingBots(){
                 if(typeof this.availableBots[this.selectedAvailableBotIndex] !== "undefined"

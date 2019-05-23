@@ -49,7 +49,9 @@
                     this.$refs.audioTest.play();
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
-                    this.$store.dispatch("chat", chatPayload);
+                    if(this.$store.state.game.chattyBots) {
+                        this.$store.dispatch("chat", chatPayload);
+                    }
                 }
 
 
