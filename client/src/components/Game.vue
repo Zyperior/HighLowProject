@@ -30,7 +30,6 @@
 
     //Some voice recognition.
     var recognition = new webkitSpeechRecognition() || SpeechRecognition();
-    recognition.lang ="sv-SE";
 
     export default {
         data(){
@@ -58,6 +57,7 @@
             },
             startVoiceRecording() {
                 if(this.playerTurn) {
+                    recognition.lang = this.$store.state.game.speechToTextLanguage;
                     var that = this;
                     let voiceResult = "";
                     recognition.start();

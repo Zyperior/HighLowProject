@@ -50,6 +50,16 @@
                 </select>
             </div>
 
+            <p>Speech-to-text language:</p>
+
+            <div class="selectDiv">
+                <select v-model="selectedLanguage">
+                    <option v-for="(speechToTextLanguageOption, index) in speechToTextLanguageOptions">
+                        {{speechToTextLanguageOption}}
+                    </option>
+                </select>
+            </div>
+
             
             <!-- <br><br> -->
             <h3>Bots</h3>
@@ -124,13 +134,18 @@
                 },
                 selectedAvailableBotIndex: "",
                 selectedPlayingBotIndex: "",
-                shuffleOrder: false
+                shuffleOrder: false,
+                speechToTextLanguageOptions: [
+                    "sv-SE", "en-US", "no-NO"
+                ],
+                selectedLanguage: "sv-SE"
             }
         },
         methods: {
             startGame() {
                 console.log(this.shuffleOrder);
                 this.$store.dispatch("loadQuestionsAndStartGame", this.questionSettings); //promise error?
+                this.$store.commit("setLanguage", this.selectedLanguage)
             },
             addAvailableBotToPlayingBots(){
                 if(typeof this.availableBots[this.selectedAvailableBotIndex] !== "undefined"
