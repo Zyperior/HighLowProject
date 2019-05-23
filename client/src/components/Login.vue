@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!--vue router.beforeEach((to, from, next) =>    something like this in vue router? can test if user is admin etc-->
 
         <div v-show="displayLogin">
             <h1>Login</h1>
@@ -33,12 +34,15 @@
 
         <br><br><br><br>
         <button class="smallerButton" @click="logout">Logout</button>
+        <button @click="testIfLoggedInAndAuthenticated">Magic button</button>
 
     </div>
 </template>
 
 <script>
     import axios from "axios/index"
+    axios.defaults.withcredentials = true;
+
 
     export default {
         name: "Login",
@@ -61,7 +65,7 @@
                     password: this.passwordField
                     })
                 .then(() => {
-                    this.$router.push("/")
+                    //this.$router.push("/")
                 })
                 .catch((error) => {
                     this.failMessage = `Error: ${error}`
@@ -80,13 +84,20 @@
                     this.successMessage = response.data;
                 })
                 .catch((error) => {
-                    this.failMessage = `Error: ${error}`
+                    this.failMessage = error;
                 })
             },
             logout(){
                 axios.get("http://localhost:5000/users/logout")
                     .then(() => {
                         this.$router.push("/")
+                    })
+                    .catch((error) => console.log(error))
+            },
+            testIfLoggedInAndAuthenticated(){
+                axios.get("http://localhost:5000/users/testauth")
+                    .then((response) => {
+                        console.log(response.data)
                     })
                     .catch((error) => console.log(error))
             }

@@ -3,16 +3,37 @@ const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const {ensureAuthenticated} = require("../../config/authentication");
+const jwt = require("jsonwebtoken");
+const jwtSecret = require("../../config/jwtconfig")
 
+//works with insomnia but not browser. axios.get('url',{withCrendentials:true})
+//req.session.passport is undefined?
+//axios.defaults.withCrendentails
 
-router.post("/login",
-    passport.authenticate("local"),
-    function (req, res) {
+//login should return a token. vue saves the token in its storage. Then vue router can do before each and check the token
+
+router.post("/login", passport.authenticate("local"), (req, res) => {
+
         //if this function is called, auth was successful
         //req.user contains the authenticated user
         console.log("logged in")
-        res.send("logged in successfully");
+
+        const token = jwt.sign({id: req.body.email}, jwtSecret.secret); //secret needs to be passed in as object? passport can also use secret to decode jwt
+        res.status(200).send({
+           auth: true,
+           token: token, //token till be sent in header, contain email and secret. contain roles too
+           message: "logged in successfully"
+        });
+
     });
+
+router.get("/testauth2", passport.authenticate("jwt", {session: false}), function(req, res) {
+    console.log("testauth2 success")
+    res.status(200).send({
+        auth: true,
+        message: "testauth2 success"
+    })
+});
 
 
 //passport.authenticate imports the strategy setup in passport.js
@@ -37,6 +58,27 @@ router.get("/logout", (req, res) => {
 router.get("/testauth", ensureAuthenticated, (req, res) => {
     res.send("access to authenticated endpoint successful")
 });
+
+//
+// router.get("/testauth2", (req, res, next) => {
+//    passport.authenticate("customNameJWT", {session: false}, (error, user, info) => {
+//        if(error){
+//            console.log(error);
+//        }
+//        else {
+//            console.log("no error")
+//            res.status(200).send({
+//                auth: true,
+//                message: "testauth2 success"
+//            })
+//        }
+//    })
+// });
+
+
+
+
+
 
 router.post("/register", (req, res) => {
     //If no fields are empty
