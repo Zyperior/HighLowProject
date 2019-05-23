@@ -114,10 +114,10 @@ const bot3 = {
         let bossLow = interval.correctAnswer * 0.9;
         let bossHigh = interval.correctAnswer * 1.1;
 
-        if(bossLow < interval.lowestGuess) {
+        if(bossLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bossLow = interval.lowestGuess;
         }
-        if(bossHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bossHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bossHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
@@ -705,10 +705,10 @@ const bot14 = {
         let bratLow = interval.correctAnswer * 0.75;
         let bratHigh = interval.correctAnswer * 1.25;
 
-        if(bratLow < interval.lowestGuess) {
+        if(bratLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bratLow = interval.lowestGuess;
         }
-        if(bratHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bratHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bratHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
