@@ -14,10 +14,13 @@ const User = require("../api/model/User");
 
 module.exports = function(passport){
 
-
+    //For insomnia/postman:
+    //jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
+    //For axios in vue:
+    //jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme("JWT")
 
     passport.use("jwt", new JWTStrategy({
-            jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme("JWT"),
             secretOrKey: jwtSecret.secret
         }, (jwt_payload, done) => {
             User.findOne({email: jwt_payload.id})

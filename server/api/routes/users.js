@@ -6,6 +6,12 @@ const {ensureAuthenticated} = require("../../config/authentication");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig")
 
+//current logic. Login creates and sends a token in the response if login is successful.
+//Client should use token in the header when sending requests
+//save token in database that holds currently logged in users
+
+//in before each route, do a backend check that sends in the localstaorage token, depending on role it returns if authenticated
+
 //works with insomnia but not browser. axios.get('url',{withCrendentials:true})
 //req.session.passport is undefined?
 //axios.defaults.withCrendentails
@@ -16,6 +22,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
         //if this function is called, auth was successful
         //req.user contains the authenticated user
+
         console.log("logged in")
 
         const token = jwt.sign({id: req.body.email}, jwtSecret.secret); //secret needs to be passed in as object? passport can also use secret to decode jwt
@@ -27,22 +34,40 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
     });
 
-router.get("/testauth2", passport.authenticate("jwt", {session: false}), function(req, res) {
-    console.log("testauth2 success")
-    res.status(200).send({
-        auth: true,
-        message: "testauth2 success"
-    })
+
+router.get("/testauth2", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
+        console.log("testauth2 success")
+        console.log(user)
+        //if success. do it in the way that the user is returned and then check if the user is authorized
+        if(user !== false){
+            res.status(200).send({
+                isAuthenticated: true,
+                message: "testauth2 success"
+            })
+        }
+        else{
+            res.send({
+                isAuthenticated: false,
+                message: "not logged in or authenticated"
+            })
+        }
+
+    })(req, res, next);
 });
 
 
-//passport.authenticate imports the strategy setup in passport.js
-// router.post("/login", (req, res, next) => {
-//     passport.authenticate("local", {
-//         successRedirect: "/users/testsuccess", //This connects to backend routes, how to connect to frontend routes?
-//         failureRedirect: "/users/testfail"
-//     })(req, res, next);
+// router.get("/testauth2", passport.authenticate("jwt", {session: false}), function(req, res) {
+//     console.log("testauth2 success")
+//     //if success. do it in the way that the user is returned and then check if the user is authorized
+//     res.status(200).send({
+//         auth: true,
+//         message: "testauth2 success"
+//     })
 // });
+
+
+
 
 router.get("/logout", (req, res) => {
    req.logout(); //passport middleware gives this function

@@ -34,7 +34,7 @@
 
         <br><br><br><br>
         <button class="smallerButton" @click="logout">Logout</button>
-        <button @click="testIfLoggedInAndAuthenticated">Magic button</button>
+        <button @click="testIfLoggedInAndAuthenticated">Console log test if authenticated</button>
 
     </div>
 </template>
@@ -52,7 +52,8 @@
                 passwordField: "",
                 successMessage: "",
                 failMessage: "",
-                displayLogin: true
+                displayLogin: true,
+                //token: ""
             }
         },
         methods: {
@@ -64,8 +65,11 @@
                     email: this.usernameField,
                     password: this.passwordField
                     })
-                .then(() => {
+                .then((response) => {
+                    //this.token = response.data.token
                     //this.$router.push("/")
+                    //localStorage.token = response.data.token;
+                    localStorage.setItem("token", response.data.token)
                 })
                 .catch((error) => {
                     this.failMessage = `Error: ${error}`
@@ -88,14 +92,23 @@
                 })
             },
             logout(){
-                axios.get("http://localhost:5000/users/logout")
-                    .then(() => {
-                        this.$router.push("/")
-                    })
-                    .catch((error) => console.log(error))
+                localStorage.setItem("token", "");
+                // axios.get("http://localhost:5000/users/logout")
+                //     .then(() => {
+                //         //localStorage.setItem("token")
+                //         //this.$router.push("/")
+                //     })
+                //     .catch((error) => console.log(error))
             },
             testIfLoggedInAndAuthenticated(){
-                axios.get("http://localhost:5000/users/testauth")
+                axios.get("http://localhost:5000/users/testauth2", {
+                    headers: {
+                        //Authorization: `JWT ${this.token}`
+                        //store this in localstorage
+                        //localstorage stores info on the browser
+                        Authorization: `JWT ${localStorage.getItem("token")}`
+                    }
+                })
                     .then((response) => {
                         console.log(response.data)
                     })

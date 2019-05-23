@@ -39,7 +39,7 @@ export default new Router({
     {
       path: '/secret',
       name: 'secret',
-      component: () => import('./components/OnlyAuthorizedCanSeeThis.vue')
+      component: () => import('./components/OnlyForLoggedInUsers.vue')
     }
   ]
 })
