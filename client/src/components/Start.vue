@@ -103,6 +103,8 @@
 
 <script>
 
+    import PlayerCards from '@/components/PlayerCards.vue';
+
     export default {
         name: "Start",
         data(){
@@ -158,6 +160,9 @@
                 }
 
                 this.$store.commit('updateActivePlayers', this.playingBots);
+
+                this.$store.commit("createPlayerIndexes");
+
                 if(this.shuffleOrder){
                     this.shuffle(this.activePlayers);
                 }
