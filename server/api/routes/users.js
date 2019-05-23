@@ -38,15 +38,17 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 router.get("/testauth2", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         console.log("testauth2 success")
-        console.log(user)
+        //console.log(user)
         //if success. do it in the way that the user is returned and then check if the user is authorized
         if(user !== false){
+            console.log("SENDING TRUE")
             res.status(200).send({
                 isAuthenticated: true,
                 message: "testauth2 success"
             })
         }
         else{
+            console.log("SENDING FALSE")
             res.send({
                 isAuthenticated: false,
                 message: "not logged in or authenticated"

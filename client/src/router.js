@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import axios from "axios"
 
 Vue.use(Router)
 
-export default new Router({
+//before changing:
+//export default new Router({
+
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -42,4 +45,31 @@ export default new Router({
       component: () => import('./components/OnlyForLoggedInUsers.vue')
     }
   ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+   const pagesThatRequireLoggedIn = ["/secret"];
+   const authRequired = pagesThatRequireLoggedIn.includes(to.path);
+
+
+
+  axios.get("http://localhost:5000/users/testauth2", {
+    headers: {
+      Authorization: `JWT ${localStorage.getItem("token")}`
+    }
+  })
+  .then((response) => {
+    if(authRequired && !response.data.isAuthenticated){
+      return next("/login")
+    }
+    next();
+  })
+  .catch((error) => console.log(error));
+
+
+
+
+
+});
+
+export default router;
