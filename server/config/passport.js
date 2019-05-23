@@ -72,7 +72,7 @@ module.exports = function(passport){
 
 
 
-
+    //is this needed when cookies are no longer used?
 
     //serialize and deserialize.
     //The credentials used to authenticate the user is only sent during login.

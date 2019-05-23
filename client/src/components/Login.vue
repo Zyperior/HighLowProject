@@ -1,13 +1,14 @@
 <template>
     <div>
-        <!--vue router.beforeEach((to, from, next) =>    something like this in vue router? can test if user is admin etc-->
+
+        <!--create two components instead-->
 
         <div v-show="displayLogin">
             <h1>Login</h1>
             <p class="successMessage">{{successMessage}}</p>
             <p class="failMessage">{{failMessage}}</p>
-            <p>Username</p>
-            <input v-model="usernameField">
+            <p>Email</p>
+            <input v-model="emailField">
             <br>
             <p>Password</p>
             <input v-model="passwordField" type="password">
@@ -21,11 +22,17 @@
             <h1>Sign up</h1>
             <p class="successMessage">{{successMessage}}</p>
             <p class="failMessage">{{failMessage}}</p>
+            <p>Email</p>
+            <input v-model="emailField">
+            <br>
             <p>Username</p>
             <input v-model="usernameField">
             <br>
             <p>Password</p>
             <input v-model="passwordField" type="password">
+            <br>
+            <p>Repeat password</p>
+            <input v-model="repeatPasswordField" type="password">
             <br>
             <button @click="register">Sign up</button>
             <p>Already have an account?</p>
@@ -34,7 +41,6 @@
 
         <br><br><br><br>
         <button class="smallerButton" @click="logout">Logout</button>
-        <button @click="testIfLoggedInAndAuthenticated">Console log test if authenticated</button>
 
     </div>
 </template>
@@ -50,19 +56,20 @@
             return {
                 usernameField: "",
                 passwordField: "",
+                repeatPasswordField: "",
+                emailField: "",
                 successMessage: "",
                 failMessage: "",
                 displayLogin: true,
-                //token: ""
             }
         },
         methods: {
-            login(){
+            login(){ //add password check here and then rest of checks in backend
                 this.successMessage = "";
                 this.failMessage = "";
 
                 axios.post("http://localhost:5000/users/login", {
-                    email: this.usernameField,
+                    email: this.emailField,
                     password: this.passwordField
                     })
                 .then((response) => {
@@ -80,11 +87,12 @@
                 this.failMessage = "";
 
                 axios.post("http://localhost:5000/users/register", {
-                    email: this.usernameField,
+                    username: this.usernameField,
+                    email: this.emailField,
                     password: this.passwordField
                 })
                 .then((response) => {
-                    this.displayLogin = true;
+                    //this.displayLogin = true;
                     this.successMessage = response.data;
                 })
                 .catch((error) => {
@@ -99,20 +107,6 @@
                 //         //this.$router.push("/")
                 //     })
                 //     .catch((error) => console.log(error))
-            },
-            testIfLoggedInAndAuthenticated(){
-                axios.get("http://localhost:5000/users/testauth2", {
-                    headers: {
-                        //Authorization: `JWT ${this.token}`
-                        //store this in localstorage
-                        //localstorage stores info on the browser
-                        Authorization: `JWT ${localStorage.getItem("token")}`
-                    }
-                })
-                    .then((response) => {
-                        console.log(response.data)
-                    })
-                    .catch((error) => console.log(error))
             }
 
         }
