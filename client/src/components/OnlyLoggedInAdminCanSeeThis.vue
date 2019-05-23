@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>You are logged in as an admin and can therefore see this!</p>
+        <p>Work in progress</p>
     </div>
 </template>
 

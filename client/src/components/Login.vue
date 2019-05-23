@@ -1,8 +1,6 @@
 <template>
     <div>
 
-        <!--create two components instead-->
-
         <div v-show="displayLogin">
             <h1>Login</h1>
             <p class="successMessage">{{successMessage}}</p>
@@ -47,8 +45,6 @@
 
 <script>
     import axios from "axios/index"
-    axios.defaults.withcredentials = true;
-
 
     export default {
         name: "Login",
@@ -64,7 +60,7 @@
             }
         },
         methods: {
-            login(){ //add password check here and then rest of checks in backend
+            login(){
                 this.successMessage = "";
                 this.failMessage = "";
 
@@ -73,40 +69,58 @@
                     password: this.passwordField
                     })
                 .then((response) => {
-                    //this.token = response.data.token
-                    //this.$router.push("/")
-                    //localStorage.token = response.data.token;
+                    this.successMessage = "Logged in successfully";
                     localStorage.setItem("token", response.data.token)
                 })
                 .catch((error) => {
-                    this.failMessage = `Error: ${error}`
+                    this.failMessage = "Email and password do not match an existing user";
+                    console.log(error)
                 })
             },
             register(){
                 this.successMessage = "";
                 this.failMessage = "";
 
-                axios.post("http://localhost:5000/users/register", {
-                    username: this.usernameField,
-                    email: this.emailField,
-                    password: this.passwordField
-                })
-                .then((response) => {
-                    //this.displayLogin = true;
-                    this.successMessage = response.data;
-                })
-                .catch((error) => {
-                    this.failMessage = error;
-                })
+                if(this.validateInput()){
+                    axios.post("http://localhost:5000/users/register", {
+                        username: this.usernameField,
+                        email: this.emailField,
+                        password: this.passwordField
+                    })
+                    .then(() => {
+                        this.displayLogin = true;
+                        this.successMessage = "Registration successful, you can now login"
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+                }
             },
             logout(){
-                localStorage.setItem("token", "");
+                localStorage.clear();
+                //also have collection in db about currently logged in users so it's not possible to log in from multiple computers at once?
+                //how does jwt expire work?
+
                 // axios.get("http://localhost:5000/users/logout")
                 //     .then(() => {
-                //         //localStorage.setItem("token")
+                //         //localStorage.clear();
                 //         //this.$router.push("/")
                 //     })
                 //     .catch((error) => console.log(error))
+            },
+            validateInput(){
+                //This can easily be filled with more criteria
+
+                if(!this.emailField || !this.usernameField || !this.passwordField || !this.repeatPasswordField){
+                    this.failMessage = "All fields must be entered"
+                }
+
+                if(this.passwordField !== this.repeatPasswordField) {
+                    this.failMessage = "Password fields do not match";
+                }
+
+
+                return this.failMessage === "";
             }
 
         }
