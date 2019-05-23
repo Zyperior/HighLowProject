@@ -6,11 +6,16 @@
             <div>
                 <h2>Highest Guess: {{highGuess[0]}} </h2>
                 <h2>Lowest Guess: {{lowGuess[0]}} </h2>
-                <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p>
+                <!-- <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
+
+                <div id="playerCardsDiv">
+                    <PlayerCards :active-players="activePlayers" ref="myPlayerCards"></PlayerCards>
+                </div>
+
                 <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
                 <!--<p>{{bot.name}}</p>-->
                 <!--</div>-->
-                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn">
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn" autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer); guess();">
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                     <audio ref="audioTest" src="/testAudio.wav"></audio>
@@ -24,8 +29,9 @@
     </div>
 </template>
 <script>
-    import Timer from '@/components/Timer.vue'
+    import Timer from '@/components/Timer.vue';    
     import ChatMessage from "./ChatMessage";
+    import PlayerCards from '@/components/PlayerCards.vue';
 
     export default {
         data(){
@@ -36,9 +42,13 @@
           }
         },
         methods: {
-            startGame() {
-                this.$store.dispatch("startGame");
-            },
+            // startGame() {
+            //     console.log("Start game!");
+                
+            //     this.$refs.myPlayerCards.initIndexes();
+            //     this.$store.dispatch("startGame");
+                
+            // },
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -46,11 +56,20 @@
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
                     this.$store.dispatch("chat", chatPayload);
+                    this.$refs.myPlayerCards.flipCards();
                 }
 
+            },
 
+
+            submitAnswerWithEnter(answer) {
+
+                this.submitAnswer(answer);                
 
             },
+
+
+
             add(){
               this.number++;
             },
@@ -62,19 +81,19 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-                let randTime = Math.floor(Math.random() * 5000);
+                let randTime = Math.floor(Math.random() * 5000) + this.animationTime + 200;
                 if(this.isGameRunning){
                     this.botLoopTimeoutFunction = setTimeout(function () {
 
-                        let guess = bot.guess(int)
-                        submitGuessFunction(guess)
+                        let guess = bot.guess(int);
+                        submitGuessFunction(guess);
                         loopFunction();
 
                     }, randTime)
                 }
             },
             guess(){
-                this.activePlayer = this.activePlayers[this.playerCounter]
+                this.activePlayer = this.activePlayers[this.playerCounter];
 
                 if(this.activePlayer.isHuman){
                     this.playerTurn = true;
@@ -160,7 +179,12 @@
             },
             isTimerZero(){
                 return this.$store.getters.getIsTimerZero;
+            },
+
+            animationTime() {
+                return this.$store.getters.getAnimationTime;
             }
+
         },
         watch: {
             startTimer(){
@@ -179,7 +203,8 @@
         },
         components: {
             ChatMessage,
-            Timer
+            Timer,
+            PlayerCards
         }      
 
 
@@ -187,8 +212,20 @@
 </script>
 <style scoped>
 
+* {
+    box-sizing: border-box;
+}
+
 .activePlayer {
     background-color: red;
+}
+
+#playerCardsDiv {
+    width: 21vw;
+    height: 32vw;
+    margin: auto;
+    text-align: center;
+    /* border: 1px solid black; */
 }
 
 
