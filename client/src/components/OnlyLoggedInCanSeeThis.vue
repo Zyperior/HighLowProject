@@ -8,7 +8,7 @@
 
 
     export default {
-        name: "OnlyForLoggedInUsers"
+        name: "OnlyLoggedInCanSeeThis"
 
     }
 

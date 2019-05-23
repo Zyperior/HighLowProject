@@ -43,14 +43,14 @@ router.get("/testauth2", (req, res, next) => {
         if(user !== false){
             console.log("SENDING TRUE")
             res.status(200).send({
-                isAuthenticated: true,
+                isLoggedIn: true,
                 message: "testauth2 success"
             })
         }
         else{
             console.log("SENDING FALSE")
             res.send({
-                isAuthenticated: false,
+                isLoggedIn: false,
                 message: "not logged in or authenticated"
             })
         }

@@ -40,16 +40,25 @@ const router = new Router({
       component: () => import('./components/Login.vue')
     },
     {
-      path: '/secret',
-      name: 'secret',
-      component: () => import('./components/OnlyForLoggedInUsers.vue')
+      path: '/secret-page',
+      name: 'secret-page',
+      component: () => import('./components/OnlyLoggedInCanSeeThis.vue')
+    },
+    {
+      path: '/super-secret-page',
+      name: 'super-secret-page',
+      component: () => import('./components/OnlyLoggedInAdminCanSeeThis.vue')
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-   const pagesThatRequireLoggedIn = ["/secret"];
+
+   const pagesThatRequireLoggedIn = ["/secret-page"];
    const authRequired = pagesThatRequireLoggedIn.includes(to.path);
+
+   const adminOnlyPages = ["/super-secret-page"];
+   const adminRequired = adminOnlyPages.includes(to.path);
 
 
 
@@ -59,7 +68,8 @@ router.beforeEach((to, from, next) => {
     }
   })
   .then((response) => {
-    if(authRequired && !response.data.isAuthenticated){
+
+    if(authRequired && !response.data.isLoggedIn){
       return next("/login")
     }
     next();
