@@ -1,8 +1,9 @@
 import { stat } from "fs";
 import axios from "axios";
-import store from '../store'
+import store from '../store';
 import GameComplete from "../components/GameComplete";
 import router from "../router";
+
 
 
 const state = {
@@ -221,9 +222,6 @@ const actions = {
 
     startGame(context) {
 
-        console.log("actions startGame");
-        
-
         context.commit("startGame");
 
         context.commit("startTimer", {root:true});
@@ -231,10 +229,7 @@ const actions = {
     },
 
 
-    submitAnswer(context, a) {
-
-
-        
+    submitAnswer(context, a) {        
 
         context.commit("submitAnswer", a);
 
