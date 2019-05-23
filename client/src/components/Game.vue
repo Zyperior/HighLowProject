@@ -69,12 +69,14 @@
                             for (var i = event.resultIndex; i < event.results.length; i++) {
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
-                                    that.$store.commit('submitAnswer', voiceResult);
-                                    that.guess();
-                                    that.recording = false;
+                                    if(this.playerTurn) {
+                                        that.$store.commit('submitAnswer', voiceResult);
+                                        that.guess();
+                                    }
                                 }
                             }
                         }
+                        this.recording = false;
                     }
                 }
             },
