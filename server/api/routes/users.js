@@ -2,7 +2,6 @@ const router = require("express").Router();
 const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-const {ensureAuthenticated} = require("../../config/authentication");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig")
 
@@ -37,43 +36,33 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
     });
 
 
-router.get("/testauth2", (req, res, next) => {
+router.get("/authenticate", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
-        console.log("testauth2 success")
-        //console.log(user)
-        //if success. do it in the way that the user is returned and then check if the user is authorized
+        //This code runs if the authentication in passport.js was successful
         if(user !== false){
-            console.log("SENDING TRUE")
             res.status(200).send({
                 isLoggedIn: true,
-                message: "testauth2 success"
+                authRole: user.role
             })
         }
         else{
-            console.log("SENDING FALSE")
             res.send({
                 isLoggedIn: false,
-                message: "not logged in or authenticated"
             })
         }
-
     })(req, res, next);
 });
 
 
 
 
-//change logout entirely, remove the authentication.js?
+//to do. change logout. keep track of logged in users to prevent logging in from multiple computers.
 
 router.get("/logout", (req, res) => {
-   req.logout(); //passport middleware gives this function
+   //req.logout(); //only works with passport local
    res.send("logged out successfully")
 });
 
-
-router.get("/testauth", ensureAuthenticated, (req, res) => {
-    res.send("access to authenticated endpoint successful")
-});
 
 
 
@@ -83,7 +72,7 @@ router.post("/register", (req, res) => {
     if(!req.body.username || !req.body.email || !req.body.password){
         res.status(500).send("All fields must be entered") //fix better status codes
     } else {
-        console.log("req.body ", req.body)
+
         User.findOne({email: req.body.email})
             .then(user => {
                 if(user){
@@ -93,9 +82,10 @@ router.post("/register", (req, res) => {
                     const newUser = new User({
                         username: req.body.username,
                         email: req.body.email,
-                        password: req.body.password
+                        password: req.body.password,
+                        role: "USER"
                     });
-                    console.log("newuser ", newUser)
+
 
                     //bcrypt takes the password and salt and gives a hashed password in return
                     bcrypt.genSalt(10, (error, salt) => {
@@ -106,7 +96,7 @@ router.post("/register", (req, res) => {
                             newUser.password = hashedPassword;
                             newUser.save()
                                 .then(() => {
-                                    res.status(201).send("Registration successful, you can now login")
+                                    res.status(201).send("Registration successful")
                                 })
                                 .catch(error => console.log(error))
                         })

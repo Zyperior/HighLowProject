@@ -38,6 +38,7 @@
         </div>
 
         <br><br><br><br>
+        <p>Or use an existing account by entering "user" or "admin" in both fields without quotation marks</p>
         <button class="smallerButton" @click="logout">Logout</button>
 
     </div>

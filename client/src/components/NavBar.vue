@@ -13,7 +13,7 @@
             <router-link to="/login">Login</router-link>
         </div>
         <div>
-            <router-link to="/secret-page">OnlyLoggedInCanAccessThis</router-link>
+            <router-link to="/secret-page">OnlyLoggedInUsersCanAccessThis</router-link>
         </div>
 
         <div>

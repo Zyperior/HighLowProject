@@ -54,25 +54,33 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
 
-   const pagesThatRequireLoggedIn = ["/secret-page"];
-   const authRequired = pagesThatRequireLoggedIn.includes(to.path);
+  const pagesThatRequireLogin = ["/secret-page", "/super-secret-page"];
+  const adminPages = ["/super-secret-page"];
 
-   const adminOnlyPages = ["/super-secret-page"];
-   const adminRequired = adminOnlyPages.includes(to.path);
+  const loginRequired = pagesThatRequireLogin.includes(to.path);
+  const adminRequired = adminPages.includes(to.path);
 
 
-
-  axios.get("http://localhost:5000/users/testauth2", {
+  axios.get("http://localhost:5000/users/authenticate", {
     headers: {
       Authorization: `JWT ${localStorage.getItem("token")}`
     }
   })
   .then((response) => {
 
-    if(authRequired && !response.data.isLoggedIn){
-      return next("/login")
+    //If not logged in but it's required, redirect to the login page
+    if(!response.data.isLoggedIn && loginRequired){
+      return next("/login");
     }
+
+    //else if logged in but it the page require admin rights, also redirect to the login page
+    else if(adminRequired && response.data.authRole !== "ADMIN"){
+      return next("/login");
+    }
+
     next();
+
+
   })
   .catch((error) => console.log(error));
 

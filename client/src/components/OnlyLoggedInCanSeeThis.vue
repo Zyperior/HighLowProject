@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>You are logged in and can therefore see this!</p>
+        <p>Only logged in users can see this!</p>
     </div>
 </template>
 
