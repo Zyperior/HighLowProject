@@ -30,6 +30,12 @@ export default new Router({
       path: '/bots',
       name: 'botPresentation',
       component: () => import('./views/BotsProfile.vue')
+    },
+    {
+      path: '/rules',
+      name: 'rules',
+      component: () => import('./views/Rules.vue')
     }
+
   ]
 })

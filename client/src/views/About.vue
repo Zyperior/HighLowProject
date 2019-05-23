@@ -68,7 +68,6 @@
     }
 
     .statsTitle{
-        /* margin-top: 50%; */
         margin-top: 2em;
     }
 

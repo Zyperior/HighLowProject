@@ -4,11 +4,14 @@
             <router-link to="/">Home</router-link>
         </div>
         <div>
+            <router-link to="/rules">Rules</router-link>
+        </div>
+        <div>
             <router-link to="/about">About</router-link>
         </div>
         <div>
             <router-link to="/bots">Bots</router-link>
-        </div>        
+        </div>
     </div>
 </template>
 
@@ -24,7 +27,7 @@
         margin: auto;
         width: 90%;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
 
