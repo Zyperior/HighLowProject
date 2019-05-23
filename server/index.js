@@ -18,9 +18,10 @@ app.use("/questions", questionsRouter);
 const statsRouter = require("./api/routes/generalStats.js");
 app.use("/stats", statsRouter);
 
+const botRouter = require("./api/routes/bot.js");
+app.use("/bots", botRouter);
+
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log("server started on port: " + PORT));
-
-

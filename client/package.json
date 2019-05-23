@@ -5,11 +5,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "test": "./node_modules/.bin/jest"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel": "^6.23.0",
     "core-js": "^2.6.5",
+    "express": "^4.17.0",
+    "express-ejs-layouts": "^2.5.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue-touch-keyboard": "^0.3.1",
@@ -22,6 +26,9 @@
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
+    "vue-jest": "^3.0.4",
     "vue-template-compiler": "^2.5.21"
   },
   "postcss": {
@@ -43,7 +50,7 @@
     "transform": {
       "^.+\\.vue$": "vue-jest",
       ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.(js|jsx)?$": "<rootDir>/node_modules/babel-jest"
     },
     "transformIgnorePatterns": [
       "/node_modules/"
@@ -55,7 +62,8 @@
       "jest-serializer-vue"
     ],
     "testMatch": [
-      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
+      "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)",
+      "**/tests/unit/**/*.test.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
     ],
     "testURL": "http://localhost/",
     "watchPlugins": [

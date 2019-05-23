@@ -11,7 +11,7 @@ const bot1 = {
         return interval.lowestGuess + 1;
     },
     guessAbove: function(interval) {
-        return interval.lowestGuess - 1;
+        return interval.lowestGuess + 1;
     },
     unfair: false,
     difficulty: 'easy',
@@ -28,6 +28,26 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
+    guessCount: 0,
+    correctAnswer: 0,
+    isHuman: false,
+    score: 0,
+    imgSrc: "botImg/olle.jpg",
+    description: {
+        dislikes: 'Reading rules',
+        likes: 'Yelling',
+        type: 'Confused',
+        blurb: "A very confused man. Why is he even here?"
     }
 }
 
@@ -66,10 +86,26 @@ const bot2 = {
         otherWinGame: "Well done!",
         thisBotWinGame: "Oh, dearie me, that was fun!"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/kerstin.jpg',
+    description: {
+        dislikes: 'Mean people',
+        likes: 'Baking pies, hard candy, pinching cheeks',
+        type: "Retired ol' woman",
+        blurb: "Sweet old lady that wishes you well"
+    }
 }
 
 const bot3 = {
@@ -78,10 +114,10 @@ const bot3 = {
         let bossLow = interval.correctAnswer * 0.9;
         let bossHigh = interval.correctAnswer * 1.1;
 
-        if(bossLow < interval.lowestGuess) {
+        if(bossLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bossLow = interval.lowestGuess;
         }
-        if(bossHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bossHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bossHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
@@ -103,10 +139,26 @@ const bot3 = {
         otherWinGame: "You wanna play rough? Okay. Say hello to my little friend!",
         thisBotWinGame: "Veni, vidi, vici."
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/deLaBossen.jpg',
+    description: {
+        dislikes: 'Snitches, disrespect',
+        likes: 'Family, his business, a nice cigar',
+        type: 'Boss',
+        blurb: 'Mafia boss with style, has contacts all over Italy'
+    }
 }
 
 const bot4 = {
@@ -140,10 +192,26 @@ const bot4 = {
         otherWinGame: "Hallå eller. Änna bra gjort!",
         thisBotWinGame: "Änna görkul detta!"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/bo.jpg',
+    description: {
+        dislikes: 'When his children are too busy to visit their old man',
+        likes: 'Having fun, watching Jeopardy, fishing',
+        type: "Retired ol' man",
+        blurb: "An old man that's just happy to be here"
+    }
 }
 
 const bot5 = {
@@ -170,10 +238,26 @@ const bot5 = {
         thisBotWinGame: "Radost.",
     },
     behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/botinski.png',
+    description: {
+        dislikes: 'Capitalist swine, when bear attack botinski house',
+        likes: 'When мама make Borscht-soup, bear traps',
+        type: 'Comrade',
+        blurb: 'Slightly drunk but proud Soviet citizen'
+    }
 }
 
 const bot6 =  {
@@ -208,10 +292,26 @@ const bot6 =  {
         thisBotWinGame: "Out of your depth."
     },
     behavior: 'The smaller the interval is the smaller its guesses are',
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/submarine.jpg',
+    description: {
+        dislikes: 'Not going fast underwater',
+        likes: 'Going fast underwater',
+        type: 'Submarine',
+        blurb: 'Is literally a submarine'
+    }
 }
 
 const bot7 = {
@@ -258,10 +358,26 @@ const bot7 = {
         thisBotWinGame: "Shiver me timbers!"
     },
     behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/segelBot.jpg',
+    description: {
+        dislikes: 'Scurvy',
+        likes: 'Treasure chests, singing songs, friendship',
+        type: 'Pirate',
+        blurb: 'A thief of the sea, living the high-life with a bottle of rum'
+    }
 }
 
 const bot8 = {
@@ -290,17 +406,33 @@ const bot8 = {
             "Jag är ingen bot",
             "Ingen kan slå våran bot."
         ],
-        badGuess: "Det svaret är väldigt främmande för mig.",
-        otherCorrect: "Det finns inget som behöver förklaras.",
-        thisBotCorrect: "Jag är en väldigt, väldigt vacker tjej.",
-        otherWinGame: "Jag kan banna, banna dig så hårt.",
-        thisBotWinGame: "Det finns ingen take-over som lyckas."
+        badGuess: "No take-overs allowed!",
+        otherCorrect: "I can ban you...",
+        thisBotCorrect: "",
+        otherWinGame: "",
+        thisBotWinGame: "No one can beat our bot"
     },
     behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/anna.jpg',
+    description: {
+        dislikes: 'Trolls, spambots',
+        likes: "Banning, watching over her channel, mid-2000's pop songs",
+        type: 'Moderator',
+        blurb: 'A very, very beautiful girl that can ban you very, very hard'
+    }
 }
 
 const bot9 = {
@@ -335,10 +467,26 @@ const bot9 = {
         otherWinGame: "Ezekiel 25:17",
         thisBotWinGame: "Exodus 20:17"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/abbot.jpg',
+    description: {
+        dislikes: 'Sinners, paying taxes',
+        likes: 'The good book, a nice sunday dinner',
+        type: 'Preacher',
+        blurb: 'A man of faith preaching to his flock'
+    }
 }
 
 const bot10 = {
@@ -366,10 +514,26 @@ const bot10 = {
         otherWinGame: "...",
         thisBotWinGame: "B&E!"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '/botImg/inbotstjuven.jpg',
+    description: {
+        dislikes: 'Alarms, the Police',
+        likes: 'Unlocked car-doors, crowbars',
+        type: 'Burglar',
+        blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
+    }
 }
 
 const bot11 = {
@@ -408,10 +572,26 @@ const bot11 = {
         otherWinGame: "01010111 01010100 01000110",
         thisBotWinGame: "01001100 00110010 01010000"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/copyBot.jpg',
+    description: {
+        dislikes: 'Water, dreaming',
+        likes: 'Algorithms, wires, copying you',
+        type: 'Robot',
+        blurb: "01001001 00100000 01100001 01101101 00100000 01110010 01101111 01100010 01101111 01110100"
+    }
 }
 
 const bot12 = {
@@ -437,10 +617,26 @@ const bot12 = {
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/dungeonMaster.png',
+    description: {
+        dislikes: 'Critical failures, interrupted game nights',
+        likes: "Nat 20's, Pizza rolls, cool robes",
+        type: 'Dice thrower',
+        blurb: "Rolls his dice and lets faith decide"
+    }
 }
 
 
@@ -481,10 +677,26 @@ const bot13 = {
         otherWinGame: "Congrats",
         thisBotWinGame: "Horray!"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/humanBot.jpg',
+    description: {
+        dislikes: 'Not breathing, diseases',
+        likes: 'Food, water, watching the big game',
+        type: 'Human',
+        blurb: 'A very normal human that is in no way a bot'
+    }
 }
 
 const bot14 = {
@@ -493,20 +705,13 @@ const bot14 = {
         let bratLow = interval.correctAnswer * 0.75;
         let bratHigh = interval.correctAnswer * 1.25;
 
-        if(bratLow < interval.lowestGuess) {
+        if(bratLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
             bratLow = interval.lowestGuess;
         }
-        if(bratHigh > interval.highestGuess && interval.highestGuess != 0) {
+        if(bratHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
             bratHigh = interval.highestGuess;
         }
         return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
-
-    },
-    inIntervalGuess: function(interval) {
-        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess * 2;
     },
     unfair: true,
     difficulty: 'medium',
@@ -524,11 +729,27 @@ const bot14 = {
         otherWinGame: "fml",
         thisBotWinGame: "lmao haxzorz"
     },
-    answer: 0,
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
+    answer: "",
     guessCount: 0,
     isHuman: false,
-    score: 0
+    score: 0,
+    correctAnswer: 0,
+    imgSrc: '../botImg/brat.jpg',
+    description: {
+        dislikes: 'When you steal his frags, cooties, old people music.',
+        likes: 'Candy, stealing your frags, screaming.',
+        type: 'Brat',
+        blurb: "Like, whatever, you're not my mom!"
+    }
 }
 
 export default
- [bot1, bot2, bot3, bot4, bot5, bot11, bot6, bot7, bot8, bot9, bot10, bot12, bot13, bot14]
+ [bot1, bot2, bot3, bot4, bot5, bot6, bot7, bot8, bot9, bot10, bot11, bot12, bot13, bot14]
