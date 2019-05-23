@@ -14,6 +14,7 @@
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
                     <audio ref="audioTest" src="/testAudio.wav"></audio>
+                    <button @click="startVoiceRecording">Push To Talk</button>
                 </div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
@@ -26,6 +27,10 @@
 <script>
     import Timer from '@/components/Timer.vue'
     import ChatMessage from "./ChatMessage";
+
+    //Some voice recognition.
+    var recognition = new webkitSpeechRecognition() || SpeechRecognition();
+    recognition.lang ="sv-SE";
 
     export default {
         data(){
@@ -51,6 +56,25 @@
 
 
             },
+            startVoiceRecording() {
+                if(this.playerTurn) {
+                    var that = this;
+                    let voiceResult = "";
+                    recognition.start();
+                    recognition.onresult = function(event) {
+                        for (var i = event.resultIndex; i < event.results.length; i++) {
+                            if(event.results[i].isFinal) {
+                                voiceResult = event.results[i][0].transcript;
+                                console.log(voiceResult);
+                                that.$store.commit('submitAnswer', voiceResult);
+                                that.guess();
+                            }
+                        }
+                    }
+                } else {
+                    console.log('Not player turn')
+                }
+            },
             add(){
               this.number++;
             },
@@ -73,6 +97,7 @@
                     }, randTime)
                 }
             },
+
             guess(){
                 this.activePlayer = this.activePlayers[this.playerCounter]
 
