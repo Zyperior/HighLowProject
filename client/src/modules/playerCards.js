@@ -1,73 +1,17 @@
+
+import store from '../store';
+
+
 const state =  {
 
     flipCards: false,
 
-    indexCurrentPlayer: 0,
+    indexes: [],
 
-    indexes: []
-
-};
-
-
-
-const mutations = {
-
-    flipCards: state => {        
-
-        state.flipCards = true;
-            
-            let i = 0;
-
-            let interval = setInterval(function() {
-
-                i++;
-
-                if (i === 1) {
-
-                    state.flipCards = false;     
-                    
-                    state.indexCurrentPlayer++;
-
-                    // if (state.indexCurrentPlayer === arrayLength - 1) {
-
-                    //     state.indexCurrentPlayer = 0;
-
-                    // }
-
-                    // else {
-
-                    //     state.indexCurrentPlayer++;
-
-                    // }
-
-                    console.log(state.indexCurrentPlayer);
-                    
-
-                    clearInterval(interval);
-
-                }
-
-            }, 1500);
-
-    },
-
-    initIndexes: state => {
-
-        console.log("Init indexes!");
-        
-
-        state.indexes = [];
-
-        for (let index = 0; index < arrayLength; index++) {
-
-            state.indexes.push(index);
-            
-        }
-
-    }
-
+    animationTime: 1000
 
 };
+
 
 
 const getters = {
@@ -79,9 +23,15 @@ const getters = {
     },
 
 
-    playerIndexes: state => {
+    getPlayerIndexes: state => {
 
-        return state.playerIndexes;        
+        return state.indexes;
+
+    },
+
+    getAnimationTime: state => {
+
+        return state.animationTime;
 
     }
 
@@ -89,6 +39,57 @@ const getters = {
 
 
 
+const mutations = {
+
+    flipCards: state => {        
+
+        state.flipCards = true;
+
+        if (state.indexes.length === 0) {
+
+            let arrayLength = store.getters.getActivePlayers.length;
+
+            for (let index = 0; index < arrayLength; index++) {
+
+                state.indexes.push(index);
+                
+            }
+
+        }
+
+        setTimeout(function() {
+
+            state.indexes.push(state.indexes.shift());
+
+            state.flipCards = false;
+
+        }, state.animationTime);
+
+    },
+
+
+    initPlayerCards: state => {
+
+        state.indexes = [];
+
+    },
+
+
+    createPlayerIndexes: state => {
+
+        state.indexes = [];
+
+        let arrayLength = store.getters.getActivePlayers.length;
+
+            for (let index = 0; index < arrayLength; index++) {
+
+                state.indexes.push(index);
+                
+            }
+
+    }
+
+};
 
 
 
