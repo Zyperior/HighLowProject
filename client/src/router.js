@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +29,7 @@ export default new Router({
       path: '/bots',
       name: 'botPresentation',
       component: () => import('./views/BotsProfile.vue')
-    }
+    },
   ]
 })
+

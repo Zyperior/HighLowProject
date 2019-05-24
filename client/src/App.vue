@@ -1,4 +1,3 @@
-
 <template>
   <div id="app">
     <NavBar class="topnav"/>
@@ -15,7 +14,8 @@
     watch: {
       $route(to, from){
         if(from.name === "game"){
-          this.$store.commit("stopGame")
+          this.$store.commit("stopGame");
+          this.$store.commit("breakOutOfBotLoop")
         }
       }
     }
@@ -23,31 +23,48 @@
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-/* Style the navigation menu */
-.topnav {
-  width: 100%;
-  min-height: 7vh;
-}
 
 
-.topnav .logoPlaceholder{
-  margin-top: 1.9vh;
-}
+  body {
+    margin: 0.5em;
+    background-color: var(--backGroundColor);
+    box-sizing: border-box;
+  }
 
-.topnav a{
-  padding: 14px 16px;
-}
+  #app {
+    font-family: var(--fonts);
+    color: var(--defaultFontColor);
+    text-align: center;
+    font-size: var(--defaultFontSizeMobile);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button {
+    font-family: var(--fonts);
+    color: var(--defaultFontColor);
+    background-color: var(--buttonColor);
+    width: 80%;
+    font-size: var(--defaultFontSizeMobile);
+    padding: 1em;
+    border-radius: 1em;
+    border-style: outset;
+    border-width: 8px;
+    border-color: var(--buttonBorderColor);
+    margin: 1em 1em 0em 1em;
+  }
+
+  @media (min-width: 768px) {
+
+    #app {
+      font-size: var(--defaultFontSize);
+    }
+
+    button {
+      font-size: var(--defaultFontSize);
+      width: 20%;
+    }
 
 
-
-
+  }
 </style>
-

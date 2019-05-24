@@ -1,9 +1,8 @@
 import { stat } from "fs";
 import axios from "axios";
-import store from '../store'
+import store from '../store';
 import GameComplete from "../components/GameComplete";
 import router from "../router";
-
 
 const state = {
     activePlayers: [],
@@ -34,9 +33,12 @@ const state = {
     answers: [
 
     ],
-
+    muteSound: false,
     isGameRunning: false,
-    displayGameCompleteResults: false
+    displayGameCompleteResults: false,
+    botLoopTimeoutFunction: "",
+    chattyBots: true,
+    speechToTextLanguage: ""
 
 }
 
@@ -75,17 +77,26 @@ const getters = {
     getActivePlayers: state => {
         return state.activePlayers.reverse();
     },
+    getMuteSound: state => {
+        return state.muteSound;
+    },
 
     getDisplayGameCompleteResults: state => {
         return state.displayGameCompleteResults;
     },
     getIsGameRunning: state => {
         return state.isGameRunning;
-    }
+    },
+    getBotLoopTimeoutFunction: state => {
+        return state.botLoopTimeoutFunction;
+}
 }
 
 const mutations = {
     setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+
+    breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
+    setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
 
     startGame: state => {
         state.isGameRunning = true;
@@ -99,24 +110,29 @@ const mutations = {
         state.currQ.currQAnswer = state.questions[state.questionCounter].answer;
         state.currQ.points = state.questions[state.questionCounter].difficulty * 100;
     },
+    setLanguage: (state, selectedLanguage) => {
+      state.speechToTextLanguage = selectedLanguage;
+    },
+    isBotsChatty: (state, chattyBots) => {
+      state.chattyBots = chattyBots;
+    },
     submitAnswer: (state, a) => {
         a = parseInt(a);
+        var player = state.activePlayers[state.playerTurn];
         state.lastGuess = a;
-        state.activePlayers[state.playerTurn].answer = a;
+        player.answer = a;
         state.answer = "";
+        player.guessCount++;
 
         if (state.activePlayers[state.playerTurn].answer == state.questions[state.questionCounter].answer) {
-            var audioCorrectAnswer = new Audio('/correctAnswer.wav');
-            audioCorrectAnswer.play();
             state.lastGuess = '';
-            state.activePlayers[state.playerTurn].guessCount += 1;
-            state.questionCounter++;
-            // if (state.questionCounter === state.questions.length) {
-            //     state.questionCounter = 0;
-            // }
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
+            if (!state.muteSound){
+                let audioCorrectAnswer = new Audio('/soundfx/correctAnswer.wav');
+                audioCorrectAnswer.play();
             }
+
+            player.correctAnswer += 1;
+            state.questionCounter++;
 
             state.lowAnswers = [];
             state.highAnswers = [];
@@ -126,20 +142,23 @@ const mutations = {
                 state.isGameRunning = false;
                 state.questionCounter = 0;
                 store.dispatch('generalStats/postDBData', [1, 2]);
+                state.activePlayers.forEach(p => {
+                    if(!(p.isHuman)){
+                        store.dispatch('botStats/updateBotStats', [p.name, p.score, 1, p.guessCount, p.correctAnswer])
+                    }else{
+                        //store player data
+                    }
+                })
+
                 router.push('/complete');
                 state.displayGameCompleteResults = true;
             }
 
-            state.playerTurn += 1;
             state.currentQuestion = state.questions[state.questionCounter].question;
 
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
 
         }
         else if (state.activePlayers[state.playerTurn].answer < state.questions[state.questionCounter].answer) {
-            state.activePlayers[state.playerTurn].guessCount += 1;
 
             state.lowAnswers.push(state.activePlayers[state.playerTurn].answer);
             state.lowAnswers.sort((a, b) => {
@@ -148,12 +167,6 @@ const mutations = {
                 return 0;
             });
 
-            state.playerTurn += 1;
-
-            
-            if(state.playerTurn === state.activePlayers.length){
-                state.playerTurn = 0;
-            }
         }
         else if (state.activePlayers[state.playerTurn].answer > state.questions[state.questionCounter].answer) {
 
@@ -167,12 +180,14 @@ const mutations = {
                 return 0;
             });
 
+            }
             state.playerTurn += 1;
 
-            
             if(state.playerTurn === state.activePlayers.length){
                 state.playerTurn = 0;
-            }
+
+
+
         }
 
 
@@ -187,9 +202,13 @@ const mutations = {
     updateActivePlayers: (state, players) => {
         state.activePlayers = state.players.concat(players);
     },
+    muteSound: state => {
+        state.muteSound = !state.muteSound
+    },
 
     resetPlayersBeforeNewGames: (state) => {
         state.players = [];
+        state.activePlayers = [];
         state.activePlayers.forEach(activePlayer => activePlayer.answer = "");
     },
 
@@ -201,6 +220,7 @@ const mutations = {
 }
 
 const actions = {
+
     async loadQuestionsAndStartGame({commit}, settings) {
         const response = await axios.get(
             `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
@@ -217,9 +237,6 @@ const actions = {
 
     startGame(context) {
 
-        console.log("actions startGame");
-        
-
         context.commit("startGame");
 
         context.commit("startTimer", {root:true});
@@ -227,10 +244,7 @@ const actions = {
     },
 
 
-    submitAnswer(context, a) {
-
-
-        
+    submitAnswer(context, a) {        
 
         context.commit("submitAnswer", a);
 
@@ -238,7 +252,8 @@ const actions = {
 
         context.commit("startTimer", {root: true});
 
-    }
+    },
+
     
 }
 
@@ -251,5 +266,6 @@ export default {
     state,
     getters,
     mutations,
-    actions
+    actions,
+
 }

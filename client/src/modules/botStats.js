@@ -38,12 +38,10 @@ export default {
          * @returns {Promise<void>}
          */
         async updateBotStats({commit}, dataArray){
-
             if(dataArray){
-
                 const response = await axios.put(
-                    'http://localhost:5000/stats/',
-                    {name: dataArray[0], points : dataArray[1], guessCounter: dataArray[2], correctAnswers: dataArray[3]}
+                    'http://localhost:5000/bots/',
+                    {name: dataArray[0], points : dataArray[1], gamesPlayed: dataArray[2], guessCounter: dataArray[3], correctAnswers: dataArray[4]}
                 );
 
             }
