@@ -25,11 +25,6 @@ mongoose.connect(require("./config/databaseURI"), {useNewUrlParser: true})
 
 app.use(express.urlencoded({extended: true}));
 
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
 
 app.use(passport.initialize());
 app.use(passport.session());

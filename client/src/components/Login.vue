@@ -5,24 +5,21 @@
             <h1>Login</h1>
             <p class="successMessage">{{successMessage}}</p>
             <p class="failMessage">{{failMessage}}</p>
-            <p>Email</p>
-            <input v-model="emailField">
+            <p>Username</p>
+            <input v-model="usernameField">
             <br>
             <p>Password</p>
             <input v-model="passwordField" type="password">
             <br>
             <button @click="login">Login</button>
             <p>Don't have an account?</p>
-            <button class="smallerButton" @click="displayLogin = false; failMessage=''">Sign up</button>
+            <button class="smallerButton" @click="displayLogin = false; failMessage=''; successMessage='';">Sign up</button>
         </div>
 
         <div v-show="!displayLogin">
             <h1>Sign up</h1>
             <p class="successMessage">{{successMessage}}</p>
             <p class="failMessage">{{failMessage}}</p>
-            <p>Email</p>
-            <input v-model="emailField">
-            <br>
             <p>Username</p>
             <input v-model="usernameField">
             <br>
@@ -34,7 +31,7 @@
             <br>
             <button @click="register">Sign up</button>
             <p>Already have an account?</p>
-            <button class="smallerButton" @click="displayLogin = true; failMessage=''">Login</button>
+            <button class="smallerButton" @click="displayLogin = true; failMessage=''; successMessage='';">Login</button>
         </div>
 
         <br><br><br><br>
@@ -54,7 +51,6 @@
                 usernameField: "",
                 passwordField: "",
                 repeatPasswordField: "",
-                emailField: "",
                 successMessage: "",
                 failMessage: "",
                 displayLogin: true,
@@ -66,15 +62,16 @@
                 this.failMessage = "";
 
                 axios.post("http://localhost:5000/users/login", {
-                    email: this.emailField,
+                    username: this.usernameField,
                     password: this.passwordField
                     })
                 .then((response) => {
+                    console.log("response: ", response)
                     this.successMessage = "Logged in successfully";
                     localStorage.setItem("token", response.data.token)
                 })
                 .catch((error) => {
-                    this.failMessage = "Email and password do not match an existing user";
+                    this.failMessage = "Username and password do not match an existing user";
                     console.log(error)
                 })
             },
@@ -85,7 +82,6 @@
                 if(this.validateInput()){
                     axios.post("http://localhost:5000/users/register", {
                         username: this.usernameField,
-                        email: this.emailField,
                         password: this.passwordField
                     })
                     .then(() => {
@@ -93,6 +89,7 @@
                         this.successMessage = "Registration successful, you can now login"
                     })
                     .catch((error) => {
+                        this.failMessage = "The username is already taken";
                         console.log(error)
                     })
                 }
@@ -110,14 +107,13 @@
             validateInput(){
                 //This can easily be filled with more criteria
 
-                if(!this.emailField || !this.usernameField || !this.passwordField || !this.repeatPasswordField){
+                if(!this.usernameField || !this.passwordField || !this.repeatPasswordField){
                     this.failMessage = "All fields must be entered"
                 }
 
                 if(this.passwordField !== this.repeatPasswordField) {
                     this.failMessage = "Password fields do not match";
                 }
-
 
                 return this.failMessage === "";
             }
