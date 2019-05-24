@@ -12,12 +12,15 @@
         <div>
             <router-link to="/login">Login</router-link>
         </div>
-        <div>
-            <router-link to="/secret-page">OnlyLoggedInUsersCanAccessThis</router-link>
-        </div>
 
         <div>
-            <router-link to="/super-secret-page">OnlyLoggedInAdminCanAccessThis</router-link>
+            <router-link to="/auth-test">AuthenticationTest</router-link>
+        </div>
+        <div>
+            <router-link to="/secret-page">OnlyLoggedInUsersCanSeeThis</router-link>
+        </div>
+        <div>
+            <router-link to="/super-secret-page">OnlyLoggedInAdminCanSeeThis</router-link>
         </div>
     </div>
 </template>

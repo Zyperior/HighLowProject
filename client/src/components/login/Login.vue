@@ -38,6 +38,9 @@
         <p>Or use an existing account by entering "user" or "admin" in both fields without quotation marks</p>
         <button class="smallerButton" @click="logout">Logout</button>
 
+        <p v-show="true">logged in user</p>
+        <p v-show="true">logged in admin</p>
+
     </div>
 </template>
 
@@ -53,7 +56,7 @@
                 repeatPasswordField: "",
                 successMessage: "",
                 failMessage: "",
-                displayLogin: true,
+                displayLogin: true
             }
         },
         methods: {
@@ -66,9 +69,11 @@
                     password: this.passwordField
                     })
                 .then((response) => {
-                    console.log("response: ", response)
                     this.successMessage = "Logged in successfully";
-                    localStorage.setItem("token", response.data.token)
+                    localStorage.setItem("token", response.data.token);
+                    //localStorage.setItem("viewAdminPages", response.data.viewAdminPages)
+
+
                 })
                 .catch((error) => {
                     this.failMessage = "Username and password do not match an existing user";
@@ -96,6 +101,7 @@
             },
             logout(){
                 localStorage.clear();
+
 
                 // axios.get("http://localhost:5000/users/logout")
                 //     .then(() => {

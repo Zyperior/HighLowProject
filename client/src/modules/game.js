@@ -36,7 +36,9 @@ const state = {
 
     isGameRunning: false,
     displayGameCompleteResults: false,
-    botLoopTimeoutFunction: ""
+    botLoopTimeoutFunction: "",
+
+
 
 }
 
@@ -84,7 +86,8 @@ const getters = {
     },
     getBotLoopTimeoutFunction: state => {
         return state.botLoopTimeoutFunction;
-}
+    }
+
 }
 
 const mutations = {

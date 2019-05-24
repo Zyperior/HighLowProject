@@ -18,6 +18,14 @@
           this.$store.commit("breakOutOfBotLoop")
         }
       }
+    },
+    mounted() {
+      console.log(localStorage)
+      console.log(localStorage.getItem("viewAdminPages") == "true")
+      this.$store.commit("updateWhichPagesThatShouldBeDisplayedToTheUser", {
+        loggedInUser: false,
+        admin: localStorage.getItem("viewAdminPages") == "true"
+      })
     }
   }
 </script>

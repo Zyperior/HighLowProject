@@ -44,8 +44,6 @@ router.post("/register", (req, res) => {
             })
             .catch(error => console.log(error));
     }
-
-
 });
 
 
@@ -70,7 +68,8 @@ router.post("/login",  (req, res) => {
                             //secret must be the same as the one used to decrypt the token in passport.js
                             const token = jwt.sign({id: req.body.username}, jwtSecret.secret);
                             res.status(200).send({
-                                token: token
+                                token: token,
+                                viewAdminPages: foundUser.role === "ADMIN"
                             });
                         }
                         else {
@@ -84,22 +83,26 @@ router.post("/login",  (req, res) => {
 });
 
 
-
-
-router.get("/authenticate", (req, res, next) => {
-
+router.get("/auth-test-logged-in", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         //This code runs if the authentication in passport.js was successful
         if(user !== false){
-            res.status(200).send({
-                isLoggedIn: true,
-                authRole: user.role
-            })
+            res.status(200).send("Authentication successful")
         }
         else{
-            res.send({
-                isLoggedIn: false,
-            })
+            res.status(401).send("Authentication failed")
+        }
+    })(req, res, next);
+});
+
+
+router.get("/auth-test-logged-in-admin", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
+        if(user !== false && user.role === "ADMIN"){
+            res.status(200).send("Authentication successful")
+        }
+        else{
+            res.status(401).send("Authentication failed")
         }
     })(req, res, next);
 });
@@ -107,8 +110,9 @@ router.get("/authenticate", (req, res, next) => {
 
 
 
+
 router.get("/logout", (req, res) => {
-   //req.logout(); //passport local thing. cookies. not needed anymore
+   //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
    res.send("todo")
 });
 
