@@ -11,6 +11,11 @@ export default new Router({
       component: () => import("./components/Start")
     },
     {
+      path: '/rules',
+      name: 'rules',
+      component: () => import("./components/Rules")
+    },
+    {
       path: '/game',
       name: 'game',
       component: () => import("./components/Game")
