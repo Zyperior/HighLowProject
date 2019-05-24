@@ -24,6 +24,47 @@
 
 <style>
 
+  .logoPlaceholder{
+    display: block;
+    color: white;
+  }
+
+  /* Style the navigation menu */
+  .topnav {
+    overflow: hidden;
+    position: absolute;
+    background-color: #333;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+
+  /* Hide the links inside the navigation menu (except for logo/home) */
+  .topnav #myLinks {
+    display: block;
+  }
+  /* Style navigation menu links */
+  .topnav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Style the hamburger menu */
+  .topnav a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  /* Add a grey background color on mouse-over */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
 
   body {
     margin: 0.5em;
@@ -64,6 +105,9 @@
       font-size: var(--defaultFontSize);
       width: 20%;
     }
+
+
+
 
 
   }
