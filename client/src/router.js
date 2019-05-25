@@ -67,6 +67,10 @@ router.beforeEach((to, from, next) => {
   const loginRequired = pagesThatRequireLogin.includes(to.path);
   const adminRequired = adminPages.includes(to.path);
 
+  if(to.path === "/login" && localStorage.getItem("token")){
+    return next("/")
+  }
+
   if(!localStorage.getItem("token") && loginRequired){
     return next("/login");
   }

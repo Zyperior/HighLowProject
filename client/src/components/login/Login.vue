@@ -36,7 +36,6 @@
 
         <br><br><br><br>
         <p>Or use an existing account by entering "user" or "admin" in both fields without quotation marks</p>
-        <button class="smallerButton" @click="logout">Logout</button>
 
     </div>
 </template>
@@ -67,13 +66,13 @@
                     password: this.passwordField
                     })
                 .then((response) => {
-                    this.successMessage = "Logged in successfully";
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("viewAdminPages", response.data.viewAdminPages);
                     this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
                         loggedInUser: true,
                         admin: response.data.viewAdminPages
-                    })
+                    });
+                    this.$router.push("/")
                 })
                 .catch((error) => {
                     this.failMessage = "Username and password do not match an existing user";
@@ -99,21 +98,7 @@
                     })
                 }
             },
-            logout(){
-                localStorage.clear();
 
-                this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
-                    loggedInUser: false,
-                    admin: false
-                })
-
-                // axios.get("http://localhost:5000/users/logout")
-                //     .then(() => {
-                //         //localStorage.clear();
-                //         //this.$router.push("/")
-                //     })
-                //     .catch((error) => console.log(error))
-            },
             validateInput(){
                 //This can easily be filled with more criteria
 

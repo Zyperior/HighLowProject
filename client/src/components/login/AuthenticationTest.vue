@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>Temporary test component.</p>
-        <p>Click on the buttons to check your current authorization levels. They return an answer if the request was accepted or not.</p>
+        <p>Click on the buttons to check your current authorization levels. They return an answer if the request to the backend was accepted or not.</p>
 
         <button @click="button1">Logged in users (including admins) can make this request</button>
         <p>{{message1}}</p>

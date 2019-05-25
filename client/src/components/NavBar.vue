@@ -9,18 +9,23 @@
         <div>
             <router-link to="/bots">Bots</router-link>
         </div>
-        <div>
-            <router-link to="/login">Login</router-link>
-        </div>
 
         <div>
             <router-link to="/auth-test">AuthenticationTest</router-link>
         </div>
-        <div v-show="this.$store.getters.displayExclusivePages.loggedInUser">
+        <div v-show="displayExclusivePages.loggedInUser">
             <router-link to="/secret-page">OnlyLoggedInUsersCanSeeThis</router-link>
         </div>
-        <div v-show="this.$store.getters.displayExclusivePages.admin">
+        <div v-show="displayExclusivePages.loggedInAdmin">
             <router-link to="/super-secret-page">OnlyLoggedInAdminCanSeeThis</router-link>
+        </div>
+
+
+        <div v-show="!displayExclusivePages.loggedInUser">
+            <router-link to="/login">Login</router-link>
+        </div>
+        <div v-show="displayExclusivePages.loggedInUser">
+            <button id="logout-button" @click="logout">Logout button</button>
         </div>
 
 
@@ -29,7 +34,34 @@
 
 <script>
     export default {
-        name: "NavBar"
+        name: "NavBar",
+        computed: {
+            displayExclusivePages(){
+                return {
+                    loggedInUser: this.$store.getters.displayExclusivePages.loggedInUser,
+                    loggedInAdmin: this.$store.getters.displayExclusivePages.admin
+                }
+            }
+        },
+        methods: {
+            logout(){
+                localStorage.clear();
+
+                this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
+                    loggedInUser: false,
+                    admin: false
+                })
+
+                this.$router.push("/login")
+
+                // axios.get("http://localhost:5000/users/logout")
+                //     .then(() => {
+                //         //localStorage.clear();
+                //         //this.$router.push("/")
+                //     })
+                //     .catch((error) => console.log(error))
+            },
+        }
     }
 </script>
 
@@ -46,5 +78,19 @@
     #navBar div {
         padding: 1em;
     }
+
+
+     #logout-button{
+         background: cornflowerblue;
+         color: white;
+         border-style: none;
+         border-radius: 0;
+         margin: 0;
+         padding: 3px;
+         width: auto;
+     }
+     #logout-button:hover{
+         cursor: pointer;
+     }
 
 </style>
