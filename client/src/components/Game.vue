@@ -16,9 +16,10 @@
                 <!--<p>{{bot.name}}</p>-->
                 <!--</div>-->
                 <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn" autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer); guess();">
+                
                 <div>
-                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-                    <button @click="startVoiceRecording">Push To Talk</button>
+                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
+                    <button @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Push To Talk</button>
                 </div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
@@ -74,7 +75,11 @@
 
             submitAnswerWithEnter(answer) {
 
-                this.submitAnswer(answer);                
+                if (answer.length != 0) {
+
+                    this.submitAnswer(answer);
+
+                }
 
             },
             startVoiceRecording() {
@@ -266,6 +271,12 @@
     margin: auto;
     text-align: center;
     /* border: 1px solid black; */
+}
+
+
+.buttonDisabled{
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 
