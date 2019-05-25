@@ -57,8 +57,8 @@
 
                 if(this.isGameRunning){
                     if(!this.muteSounds){
-                    let answerSound = new Audio('/soundfx/testAudio.wav');
-                    answerSound.play();
+                        let answerSound = new Audio('/soundfx/testAudio.wav');
+                        answerSound.play();
                     }
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
@@ -82,6 +82,7 @@
                 }
 
             },
+
             startVoiceRecording() {
                 if(this.playerTurn) {
                     if(!this.recording) {
@@ -134,15 +135,28 @@
             },
 
             guess(){
-                this.activePlayer = this.activePlayers[this.playerCounter];
 
-                if(this.activePlayer.isHuman){
-                    this.playerTurn = true;
-                }else {
+                if (this.playerTurn) {
                     this.playerTurn = false;
-                    this.botGuess(this.activePlayer);
                 }
+
+                let thisComponent = this;
+
+                setTimeout(function() {
+
+                    thisComponent.activePlayer = thisComponent.activePlayers[thisComponent.playerCounter];
+
+                    if(thisComponent.activePlayer.isHuman){
+                        thisComponent.playerTurn = true;
+                    }else {
+                        thisComponent.playerTurn = false;
+                        thisComponent.botGuess(thisComponent.activePlayer);
+                    }
+
+                }, thisComponent.animationTime);
+
             }
+
         },
         computed: {
             isGameRunning(){
