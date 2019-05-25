@@ -34,7 +34,7 @@
     import PlayerCards from '@/components/PlayerCards.vue';
 
     //Some voice recognition.
-    var recognition = new webkitSpeechRecognition() || SpeechRecognition();
+    //var recognition = new webkitSpeechRecognition() || SpeechRecognition();
 
     export default {
         data(){
