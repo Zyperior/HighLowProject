@@ -47,10 +47,6 @@
     width: 80%;
     font-size: var(--defaultFontSizeMobile);
     padding: 1em;
-    border-radius: 1em;
-    border-style: outset;
-    border-width: 8px;
-    border-color: var(--buttonBorderColor);
     margin: 1em 1em 0em 1em;
   }
 
