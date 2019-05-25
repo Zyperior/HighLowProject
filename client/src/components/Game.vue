@@ -78,9 +78,9 @@
                 if (answer.length != 0) {
 
                     this.submitAnswer(answer);
-                },
+                }
 
-            }
+            },
 
 
             startVoiceRecording() {
