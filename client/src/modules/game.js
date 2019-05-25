@@ -113,7 +113,7 @@ export default {
 
         stopGame: state => { state.isGameRunning = false },
 
-        displayResults: state => { state.displayGameCompleteResults = true; },
+        displayResults: state => { state.gameCompleted = true; },
 
         //Vet ej vad dessa två gör, låter dem ligga tills vidare /Andreas
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
