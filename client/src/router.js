@@ -35,6 +35,11 @@ export default new Router({
       name: 'botPresentation',
       component: () => import('./views/BotsProfile.vue')
     },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('./views/Settings.vue')
+    }
   ]
 })
 

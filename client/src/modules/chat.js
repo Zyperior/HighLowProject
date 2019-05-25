@@ -1,4 +1,4 @@
-import store from '../store'
+ import store from '../store'
 
 const state =  {
     messages: [],
@@ -67,7 +67,7 @@ const methods = {
         let speakerIndex = Math.floor(Math.random() * players.length);
         let speaker = players[speakerIndex];
         if (!speaker.isHuman) {
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = speaker.soundFx.badGuessSfx;
                 state.audio.play();
             }
@@ -86,7 +86,7 @@ const methods = {
         }
         if (!nextPlayer.isHuman) {
             let phraseIndex = Math.floor(Math.random() * (nextPlayer.phrases.guessing.length));
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = nextPlayer.soundFx.guessingSfx;
                 state.audio.play();
             }
@@ -97,13 +97,13 @@ const methods = {
         //Random winGame. If human, recursive.
         let randomSpeaker = players[Math.floor(Math.random() * players.length)];
         if(randomSpeaker == activePlayer && !randomSpeaker.isHuman) {
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = randomSpeaker.soundFx.thisBotWinGameSfx;
                 state.audio.play();
             }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.thisBotWinGame});
         } else if(!randomSpeaker.isHuman) {
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = randomSpeaker.soundFx.otherWinGameSfx;
                 state.audio.play();
             }
@@ -116,13 +116,13 @@ const methods = {
         //Random correct guess. If human, recursive.
         let randomSpeaker = players[Math.floor(Math.random() * players.length)];
         if(randomSpeaker == activePlayer && !randomSpeaker.isHuman) {
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = randomSpeaker.soundFx.thisBotCorrectSfx;
                 state.audio.play();
             }
             store.commit('addMessage', {name: randomSpeaker.name, text: randomSpeaker.phrases.thisBotCorrect});
         } else if(!randomSpeaker.isHuman) {
-            if (!store.getters.getMuteSound) {
+            if (!store.getters.isMuteSound) {
                 state.audio.src = randomSpeaker.soundFx.otherCorrectSfx;
                 state.audio.play();
             }

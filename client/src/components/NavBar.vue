@@ -12,6 +12,9 @@
         <div>
             <router-link to="/bots">Bots</router-link>
         </div>
+        <div>
+            <router-link to="/settings">Settings</router-link>
+        </div>
         <mute-sound-button />
     </div>
 </template>

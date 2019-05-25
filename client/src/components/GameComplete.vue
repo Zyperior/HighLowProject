@@ -1,5 +1,5 @@
 <template>
-    <div v-show="displayGameCompleteResults">
+    <div v-show="gameCompleted">
         <div v-for="player in players">
             {{ player.name }} guessed {{ player.guessCount}} times this match
             {{ player.name }} earned {{ player.score}} points
@@ -13,14 +13,14 @@
         name: 'GameComplete',
         computed: {
             players(){
-                return this.$store.getters.getActivePlayers.sort((p1, p2) => {
+                return this.$store.getters.getPlayers.sort((p1, p2) => {
                     if(p1.score > p2.score) return -1;
                     if(p1.score < p2.score) return 1;
                     return 0;
                 })
             },
-            displayGameCompleteResults(){
-                return this.$store.getters.getDisplayGameCompleteResults;
+            gameCompleted(){
+                return this.$store.getters.isGameCompleted;
             }
         },
 

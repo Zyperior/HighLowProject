@@ -4,9 +4,9 @@
         <div v-show="isGameRunning">
             <p>{{currentQuestion}}</p>
             <div>
-                <h2>Highest Guess: {{highGuess[0]}} </h2>
-                <h2>Lowest Guess: {{lowGuess[0]}} </h2>
-                <!-- <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
+                <h2>Highest Guess: {{highGuess}} </h2>
+                <h2>Lowest Guess: {{lowGuess}} </h2>
+                <!-- <p v-for="player in players" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
 
                 <div id="playerCardsDiv">
                     <PlayerCards :active-players="activePlayers" ref="myPlayerCards"></PlayerCards>
@@ -16,7 +16,7 @@
                 <!--<p>{{bot.name}}</p>-->
                 <!--</div>-->
                 <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn" autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer); guess();">
-                
+
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
                     <button @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Push To Talk</button>
@@ -29,7 +29,7 @@
 
 </template>
 <script>
-    import Timer from '@/components/Timer.vue';    
+    import Timer from '@/components/Timer.vue';
     import ChatMessage from "./ChatMessage";
     import PlayerCards from '@/components/PlayerCards.vue';
 
@@ -48,10 +48,10 @@
         methods: {
             // startGame() {
             //     console.log("Start game!");
-                
+
             //     this.$refs.myPlayerCards.initIndexes();
             //     this.$store.dispatch("startGame");
-                
+
             // },
             submitAnswer(a) {
 
@@ -64,7 +64,7 @@
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
 
                     this.$refs.myPlayerCards.flipCards();
-                    
+
                     if(this.$store.state.game.chattyBots) {
                         this.$store.dispatch("chat", chatPayload);
                     }
@@ -78,10 +78,10 @@
                 if (answer.length != 0) {
 
                     this.submitAnswer(answer);
+                },
 
-                }
+            }
 
-            },
 
             startVoiceRecording() {
                 if(this.playerTurn) {
@@ -160,7 +160,7 @@
         },
         computed: {
             isGameRunning(){
-              return this.$store.getters.getIsGameRunning;
+              return this.$store.getters.isGameRunning;
             },
             botLoopTimeoutFunction: {
                 get(){
@@ -179,8 +179,8 @@
             },
             interval(){
                 let interval = {
-                    lowestGuess: this.lowGuess[0],
-                    highestGuess: this.highGuess[0],
+                    lowestGuess: this.lowGuess,
+                    highestGuess: this.highGuess,
                     correctAnswer: this.correctAnswer,
                     isInInterval: function () {
                         return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
@@ -205,17 +205,14 @@
             },
             answer: {
                 get() {
-                    return this.$store.getters.getAnswer;
-                },
-                set(answer) {
-                    this.$store.dispatch('updateAnswer', answer);
+                    return this.$store.getters.getCurrentAnswer;
                 }
             },
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;
             },
             startTimer() {
-                return this.$store.getters.getStartTimer;
+                return this.$store.getters.isStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -227,10 +224,10 @@
                 return this.$store.getters.getPlayers;
             },
             correctAnswer(){
-                return this.$store.getters.correctAnswer;
+                return this.$store.getters.getCorrectAnswer;
             },
             activePlayers(){
-                return this.$store.getters.getActivePlayers;
+                return this.$store.getters.getPlayers;
             },
             isTimerZero(){
                 return this.$store.getters.getIsTimerZero;
@@ -241,7 +238,7 @@
             },
 
             muteSounds(){
-                return this.$store.getters.getMuteSound;
+                return this.$store.getters.isMuteSound;
             }
 
         },
@@ -264,7 +261,7 @@
             ChatMessage,
             Timer,
             PlayerCards
-        }      
+        }
 
 
     }
