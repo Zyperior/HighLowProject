@@ -6,6 +6,7 @@ import generalStats from './modules/generalStats'
 import timer from "./modules/timer"
 import botStats from './modules/botStats'
 import chat from "./modules/chat"
+import authconfig from "./modules/authconfig"
 
 
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         generalStats,
         botStats,
         timer,
-        chat
+        chat,
+        authconfig
     }
 });

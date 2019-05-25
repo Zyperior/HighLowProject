@@ -20,10 +20,8 @@
       }
     },
     mounted() {
-      console.log(localStorage)
-      console.log(localStorage.getItem("viewAdminPages") == "true")
-      this.$store.commit("updateWhichPagesThatShouldBeDisplayedToTheUser", {
-        loggedInUser: false,
+      this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
+        loggedInUser: localStorage.getItem("token"),
         admin: localStorage.getItem("viewAdminPages") == "true"
       })
     }

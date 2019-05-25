@@ -59,33 +59,22 @@ const router = new Router({
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//
-//   const pagesThatRequireLogin = ["/secret-page", "/super-secret-page"];
-//   const adminPages = ["/super-secret-page"];
-//
-//   const loginRequired = pagesThatRequireLogin.includes(to.path);
-//   const adminRequired = adminPages.includes(to.path);
-//
-//
-//   axios.get("http://localhost:5000/users/authenticate", {
-//     headers: {
-//       Authorization: `JWT ${localStorage.getItem("token")}`
-//     }
-//   })
-//   .then((response) => {
-//     //If not logged in but it's required, redirect to the login page
-//     if(!response.data.isLoggedIn && loginRequired){
-//       return next("/login");
-//     }
-//     //else if logged in but it the page require admin rights, also redirect to the login page
-//     else if(adminRequired && response.data.authRole !== "ADMIN"){
-//       return next("/login");
-//     }
-//     next();
-//   })
-//   .catch((error) => console.log(error));
-//
-// });
+router.beforeEach((to, from, next) => {
+
+  const pagesThatRequireLogin = ["/secret-page", "/super-secret-page"];
+  const adminPages = ["/super-secret-page"];
+
+  const loginRequired = pagesThatRequireLogin.includes(to.path);
+  const adminRequired = adminPages.includes(to.path);
+
+  if(!localStorage.getItem("token") && loginRequired){
+    return next("/login");
+  }
+  else if(adminRequired && localStorage.getItem("viewAdminPages") != "true"){
+    return next("/login");
+  }
+  next();
+
+});
 
 export default router;

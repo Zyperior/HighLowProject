@@ -16,12 +16,14 @@
         <div>
             <router-link to="/auth-test">AuthenticationTest</router-link>
         </div>
-        <div>
+        <div v-show="this.$store.getters.displayExclusivePages.loggedInUser">
             <router-link to="/secret-page">OnlyLoggedInUsersCanSeeThis</router-link>
         </div>
-        <div>
+        <div v-show="this.$store.getters.displayExclusivePages.admin">
             <router-link to="/super-secret-page">OnlyLoggedInAdminCanSeeThis</router-link>
         </div>
+
+
     </div>
 </template>
 
