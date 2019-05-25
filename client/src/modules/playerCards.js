@@ -47,7 +47,7 @@ const mutations = {
 
         if (state.indexes.length === 0) {
 
-            let arrayLength = store.getters.getActivePlayers.length;
+            let arrayLength = store.getters.getPlayers.length;
 
             for (let index = 0; index < arrayLength; index++) {
 
@@ -70,9 +70,13 @@ const mutations = {
 
     initPlayerCards: state => {
 
-        state.indexes = [...Array(store.getters.getActivePlayers.length).keys()];
+        state.indexes = []
 
     },
+
+    createPlayerIndexes: state => {
+        state.indexes = [...Array(store.getters.getPlayers.length).keys()]
+    }
 
 };
 
