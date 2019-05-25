@@ -41,7 +41,7 @@ const getters = {
 
 const mutations = {
 
-    flipCards: state => {        
+    flipCards: state => {
 
         state.flipCards = true;
 
@@ -52,7 +52,7 @@ const mutations = {
             for (let index = 0; index < arrayLength; index++) {
 
                 state.indexes.push(index);
-                
+
             }
 
         }
@@ -70,24 +70,9 @@ const mutations = {
 
     initPlayerCards: state => {
 
-        state.indexes = [];
+        state.indexes = [...Array(store.getters.getActivePlayers.length).keys()];
 
     },
-
-
-    createPlayerIndexes: state => {
-
-        state.indexes = [];
-
-        let arrayLength = store.getters.getActivePlayers.length;
-
-            for (let index = 0; index < arrayLength; index++) {
-
-                state.indexes.push(index);
-                
-            }
-
-    }
 
 };
 
