@@ -289,7 +289,7 @@
 
 
 .buttonDisabled{
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
