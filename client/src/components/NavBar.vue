@@ -1,4 +1,4 @@
-<template>    
+<template>
     <div id="navBar">
         <div>
             <router-link to="/">Home</router-link>
@@ -12,25 +12,20 @@
         <div>
             <router-link to="/bots">Bots</router-link>
         </div>
-        <button @click="muteSound()">{{ mute }}</button>        
+        <mute-sound-button />
     </div>
 </template>
 
 <script>
+    import MuteSoundButton from './MuteSoundButton'
+
     export default {
         name: "NavBar",
-        methods: {
-            muteSound() {
-                this.$store.commit('muteSound')
-            }
-        },
-        computed: {
-            mute() {
-                return this.$store.getters.getMuteSound
-                ? 'Enable sound' : 'Mute sound'
-            }
+        components:{
+            'mute-sound-button': MuteSoundButton
         }
     }
+
 </script>
 
 <style scoped>
