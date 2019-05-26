@@ -120,6 +120,52 @@ router.post("/suggest-question", (req, res, next) => {
 
 
 
+router.get("/suggested-questions", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
+        if(user !== false && user.role === "ADMIN"){
+            PendingQuestion.find()
+                .then(allPendingQuestions => {
+                    res.status(200).send(allPendingQuestions)
+                })
+                .catch(error => console.log(error))
+
+        }
+        else{
+            res.status(401).send("Authentication failed")
+        }
+    })(req, res, next);
+});
+
+
+router.delete("/delete-pending-questions", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
+        if(user !== false && user.role === "ADMIN"){
+            res.status(200).send("success")
+            console.log("success")
+        }
+        else{
+            res.status(401).send("Authentication failed")
+        }
+    })(req, res, next);
+});
+
+
+router.post("/add-pending-questions-to-used-questions", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
+        if(user !== false && user.role === "ADMIN"){
+            res.status(200).send("success")
+            console.log("success")
+
+        }
+        else{
+            res.status(401).send("Authentication failed")
+        }
+    })(req, res, next);
+});
+
+
+
+
 
 
 router.get("/logout", (req, res) => {
