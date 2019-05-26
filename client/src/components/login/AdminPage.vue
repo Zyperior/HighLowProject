@@ -57,7 +57,6 @@
                     this.pendingQuestions.forEach(pendingQuestion => {
                         pendingQuestion.acceptOrDeny = "Remain pending"
                     })
-                     console.log(this.pendingQuestions)
                 })
                 .catch((error) => {
                     console.log(error)
@@ -65,39 +64,29 @@
             },
 
             acceptOrDenyPendingQuestions(){
-                const acceptedQuestions =
-                    this.pendingQuestions.filter(pendingQuestion => pendingQuestion.acceptOrDeny === "Accept");
-                const deniedQuestions =
-                    this.pendingQuestions.filter(pendingQuestion => pendingQuestion.acceptOrDeny === "Deny");
+                console.log(this.pendingQuestions)
 
-                this.deletePendingQuestions(deniedQuestions);
-                this.deletePendingQuestions(acceptedQuestions);
-                this.addPendingQuestionsToUsedQuestions(acceptedQuestions);
-            },
+                const questionsToSend = this.pendingQuestions.filter(pendingQuestion =>
+                    pendingQuestion.acceptOrDeny !== "Remain pending");
 
-            addPendingQuestionsToUsedQuestions(questionArray){
-                axios.post("http://localhost:5000/users/add-pending-questions-to-used-questions", {
-                    questionsToAdd: questionArray
+
+
+                axios.post("http://localhost:5000/users/accept-or-deny-pending-questions", {
+                    questions: questionsToSend
                 }, {
                     headers: {
                         Authorization: `JWT ${localStorage.getItem("token")}`
                     }
                 })
-                .then()
-                .catch()
+                .then(() => {
+                    this.fetchAllPendingQuestions();
+                })
+                .catch(error => console.log(error))
+
+
             },
 
-            deletePendingQuestions(questionArray){
-                axios.delete("http://localhost:5000/users/delete-pending-questions", {
-                    questionsToDelete: questionArray
-                }, {
-                    headers: {
-                        Authorization: `JWT ${localStorage.getItem("token")}`
-                    }
-                })
-                .then()
-                .catch()
-            }
+
         }
 
     }

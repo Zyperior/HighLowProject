@@ -3,9 +3,11 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig");
+const mongoose = require("mongoose");
 
 const User = require("../model/User");
-const PendingQuestion = require("../model/PendingQuestion")
+const PendingQuestion = require("../model/PendingQuestion");
+const Question = require("../model/question")
 
 
 
@@ -86,6 +88,7 @@ router.post("/login",  (req, res) => {
 
 
 
+//todo move the suggest question related endpoints to its own route file and then improve url names
 
 router.post("/suggest-question", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
@@ -119,7 +122,6 @@ router.post("/suggest-question", (req, res, next) => {
 });
 
 
-
 router.get("/suggested-questions", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         if(user !== false && user.role === "ADMIN"){
@@ -137,25 +139,29 @@ router.get("/suggested-questions", (req, res, next) => {
 });
 
 
-router.delete("/delete-pending-questions", (req, res, next) => {
+router.post("/accept-or-deny-pending-questions", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         if(user !== false && user.role === "ADMIN"){
-            res.status(200).send("success")
-            console.log("success")
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
+            req.body.questions.forEach(question => {
+                PendingQuestion.findOneAndDelete({suggestedBy: question.suggestedBy})
+                    .then(() => {
+                        if(question.acceptOrDeny === "Accept"){
+                            let newQuestion = new Question({
+                                _id: new mongoose.Types.ObjectId(),
+                                question: question.question,
+                                answer: question.answer,
+                                source: question.source,
+                                difficulty: question.difficulty,
+                                category: question.category
+                            });
+                            newQuestion.save()
+                                .then(() => res.status(200).send("success"))
+                                .catch(error => console.log(error))
+                        }
+                    })
+                    .catch(error => console.log(error))
 
-
-router.post("/add-pending-questions-to-used-questions", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        if(user !== false && user.role === "ADMIN"){
-            res.status(200).send("success")
-            console.log("success")
-
+            })
         }
         else{
             res.status(401).send("Authentication failed")
