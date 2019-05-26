@@ -1,6 +1,4 @@
-import { stat } from "fs";
 import store from '../store';
-import GameComplete from "../components/GameComplete";
 import questionsDB from './questionsDB';
 import router from "../router";
 import {getCurrentSettings} from './settingsData'
@@ -41,7 +39,6 @@ export default {
         getPlayerTurn: state => { return state.playerTurn },
         getCorrectAnswer: state => { return state.currentQuestion.answer },
         getCurrentQuestion: state => { return state.currentQuestion.question },
-        getCurrentAnswer: state => { return state.currentQuestion.answer },
         getLowGuess: state => { return state.lowGuess },
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
@@ -82,6 +79,8 @@ export default {
                 state.lowGuess = answer;
             }
         },
+
+        resetLowestAndHighestAnswers: state => { state.lowGuess = ''; state.highGuess = '' },
 
         incQuestionCounter: state => { state.questionCounter++ },
 
@@ -191,30 +190,23 @@ export default {
             commit('incAnswerAttempts');
             commit('setLastGuess', answer);
 
-            console.log('highest guess: ' + state.highGuess);
-            console.log('lowest guess: ' + state.lowGuess);
-
-
             // First check if answer was correct, below or above and mutate the state accordingly..
             this.dispatch('checkAnswer', [answer, correctAnswer])
 
             // ..then end the game, go to next question or go to next player
-                .then( (answerWasCorrect) => {
-                    if(answerWasCorrect){
+            .then( (answerWasCorrect) => {
+                if(answerWasCorrect){
 
-                        if (!state.muteSound){
-                            new Audio('/soundfx/correctAnswer.wav').play();
-                        }
+                    if (!state.muteSound){
+                        // noinspection JSIgnoredPromiseFromCall
+                        new Audio('/soundfx/correctAnswer.wav').play();
+                    }
 
-                        if(state.questionCounter >= state.questions.length){
-
+                    if(state.questionCounter >= state.questions.length){
                         dispatch('endGame')
-
                     } else {
-
                         commit('setNextQuestion');
                         commit('incPlayerTurn');
-
                     }
 
                 } else {
@@ -234,8 +226,6 @@ export default {
 
         checkAnswer({state, commit}, [answer, correctAnswer]){
 
-            console.log(answer);
-            console.log(correctAnswer);
             return new Promise( (resolve) => {
 
                 if(answer === correctAnswer){
@@ -245,6 +235,7 @@ export default {
                     commit('incPlayerGuessCount');
                     commit('incQuestionCounter');
                     commit('resetGuessCounter');
+                    commit('resetLowestAndHighestAnswers');
 
                     resolve(CORRECT_ANSWER)
                 }
