@@ -4,6 +4,9 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig");
 const mongoose = require("mongoose");
+const uuid = require('uuid')
+
+const db = require('../../postgresDB/PGdb.js')
 
 const User = require("../model/User");
 const PendingQuestion = require("../model/PendingQuestion");
@@ -12,42 +15,32 @@ const Question = require("../model/question")
 
 
 router.post("/register", (req, res) => {
-
-    if(!req.body.username || !req.body.password){
+    console.log(req.body)
+    console.log("wow")
+    if(!req.body.username || !req.body.password || !req.body.email){
         res.status(400).send("All fields must be entered");
     }
-    else {
-        User.findOne({username: req.body.username})
-            .then(foundUser => {
-                if(foundUser){
-                    res.status(409).send("The username is already taken")
-                }
-                else{
-                    const newUser = new User({
-                        username: req.body.username,
-                        password: req.body.password,
-                        role: "USER"
-                    });
 
-                    //bcrypt takes the password and salt and gives a hashed password in return
-                    bcrypt.genSalt(10, (error, salt) => {
-                        bcrypt.hash(newUser.password, salt, (error, hashedPassword) => {
-                            if (error) {
-                                throw error;
-                            }
-                            newUser.password = hashedPassword;
-                            newUser.save()
-                                .then(() => {
-                                    res.status(201).send("Registration successful")
-                                })
-                                .catch(error => console.log(error))
-                        })
-                    });
-
-                }
-            })
-            .catch(error => console.log(error));
-    }
+    db.query('SELECT * FROM users WHERE username = $1', [req.body.username])
+        .then(user => {
+            if(!user.rows[0]){
+                bcrypt.hash(req.body.password, bcrypt.genSaltSync(5)).then(hash => {
+                    db.query('INSERT INTO users VALUES($1, $2, $3, $4, $5) RETURNING *', [
+                        uuid.v4(),
+                        req.body.username,
+                        hash,
+                        req.body.email,
+                        req.body.role
+                    ]).then(newUser => {
+                        console.log("do something here")
+                        res.status(201).send(newUser.rows[0])
+                    }).catch(err => console.log(err));
+                }).catch(err => console.log(err));
+            }else{
+                console.log("why i am i here???")
+                res.status(409).send("User with that name already exists")
+            }
+        }).catch(err => console.log(err));
 });
 
 
@@ -58,22 +51,31 @@ router.post("/login",  (req, res) => {
         res.status(400).send("All fields must be entered");
     }
     else {
-        User.findOne({username: req.body.username})
+        db.query('SELECT * FROM users WHERE username = $1', [req.body.username])
             .then(foundUser => {
-                if(!foundUser){
+                if(!foundUser.rows[0]){
                     res.status(404).send("No user with that username was found");
-                }
-                else {
-                    bcrypt.compare(req.body.password, foundUser.password, (error, isMatching) => {
+                }else{
+                    bcrypt.compare(req.body.password, foundUser.rows[0].password, (error, isMatching) => {
                         if (error) {
                             throw error;
                         }
                         if(isMatching){
                             //secret must be the same as the one used to decrypt the token in passport.js
                             const token = jwt.sign({id: req.body.username}, jwtSecret.secret);
+                            console.log(foundUser.rows[0])
+                            console.log("wow")
                             res.status(200).send({
                                 token: token,
-                                viewAdminPages: foundUser.role === "ADMIN"
+                                viewAdminPages: foundUser.rows[0].role === "ADMIN",
+                                user: {
+                                    username: foundUser.rows[0].username,
+                                    points: foundUser.rows[0].points,
+                                    gamesplayed: foundUser.rows[0].gamesplayed,
+                                    gameswon: foundUser.rows[0].gameswon,
+                                    totalguesses: foundUser.rows[0].totalguesses,
+                                    correctguesses: foundUser.rows[0].correctguesses
+                                }
                             });
                         }
                         else {
@@ -81,97 +83,57 @@ router.post("/login",  (req, res) => {
                         }
                     });
                 }
-            })
-            .catch(error => console.log(error))
+            }).catch(err => {
+                console.log(err);
+        })
     }
 });
 
+router.get('/:username', (req, res) => {
+    db.query(`SELECT username, 
+              totalguesses, points, 
+              correctguesses, gamesplayed, role
+              FROM users 
+              WHERE username = $1`, [req.params.username]).then(foundUser => {
+                  if(!foundUser.rows[0]){
+                      res.status(404).send('User not found')
+                  }else{
+                      res.status(200).send(foundUser.rows[0])
+                  }
+    }).catch(err => res.status(500).send('Something is wrong'))
+})
 
+router.put('/:username', (req, res) => {
+    db.query(`UPDATE users SET
+               totalguesses = totalguesses + $2,
+               points = points + $3,
+               correctguesses = correctguesses + $4,
+               gamesplayed = gamesplayed + 1
+               WHERE username = $1
+               RETURNING username, totalguesses, points, correctguesses, gamesplayed`,
+               [req.params.username, req.body.totalguesses, req.body.points, req.body.correctguesses])
+        .then(updatedUser => {
+            console.log(updatedUser.rows[0])
+            console.log("wow")
+            if(!updatedUser.rows[0]){
+                res.status(404).send("User not found")
+            }else
+                res.status(201).send(updatedUser.rows[0])
+        }).catch(err => console.log(err));
+})
 
-//todo move the suggest question related endpoints to its own route file and then improve url names
-
-router.post("/suggest-question", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        //This code runs if the authentication in passport.js was successful
-        if(user !== false){
-            PendingQuestion.findOne({suggestedBy: user.username})
-                .then(foundPendingQuestion => {
-                    if(foundPendingQuestion){
-                        res.status(409).send("This user already have a question waiting for approval")
-                    }
-                    else{
-                        const newPendingQuestion = new PendingQuestion({
-                            suggestedBy: user.username,
-                            question: req.body.questionFields.question,
-                            answer: req.body.questionFields.answer,
-                            source: req.body.questionFields.source,
-                            difficulty: req.body.questionFields.difficulty,
-                            category: req.body.questionFields.category
-                        });
-                        newPendingQuestion.save()
-                            .then(() => res.status(201).send("Question sent and waiting for approval"))
-                            .catch((error) => console.log(error))
-                    }
-                })
-                .catch(error => console.log(error));
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
-
-
-router.get("/suggested-questions", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        if(user !== false && user.role === "ADMIN"){
-            PendingQuestion.find()
-                .then(allPendingQuestions => {
-                    res.status(200).send(allPendingQuestions)
-                })
-                .catch(error => console.log(error))
-
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
-
-
-router.post("/accept-or-deny-pending-questions", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        if(user !== false && user.role === "ADMIN"){
-            req.body.questions.forEach(question => {
-                PendingQuestion.findOneAndDelete({suggestedBy: question.suggestedBy})
-                    .then(() => {
-                        if(question.acceptOrDeny === "Accept"){
-                            let newQuestion = new Question({
-                                _id: new mongoose.Types.ObjectId(),
-                                question: question.question,
-                                answer: question.answer,
-                                source: question.source,
-                                difficulty: question.difficulty,
-                                category: question.category
-                            });
-                            newQuestion.save()
-                                .then(() => res.status(200).send("success"))
-                                .catch(error => console.log(error))
-                        }
-                    })
-                    .catch(error => console.log(error))
-
-            })
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
-
-
-
-
+router.get('/top/:nr', (req, res) => {
+    db.query('SELECT username, points FROM users ORDER BY points LIMIT $1', [req.params.nr])
+        .then(foundUsers => {
+            console.log(foundUsers)
+            if(!foundUsers.rows){
+                res.status(200).send("No users")
+            }else
+                res.status(200).send(foundUsers.rows)
+        }).catch(err => {
+            console.log(err);
+    })
+})
 
 
 router.get("/logout", (req, res) => {

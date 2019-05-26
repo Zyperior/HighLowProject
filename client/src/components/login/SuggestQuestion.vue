@@ -59,7 +59,7 @@
                 this.errorMessage = "";
 
                 if(this.isQuestionFieldsValid()){
-                    axios.post("http://localhost:5000/users/suggest-question", {
+                    axios.post("http://localhost:5000/suggestedQuestions/", {
                         questionFields: this.questionFields
                     }, {
                         headers: {

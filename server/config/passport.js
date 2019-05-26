@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("./jwtconfig")
 
+const db = require('../postgresDB/PGdb.js')
+
 
 
 const User = require("../api/model/User");
@@ -19,17 +21,18 @@ module.exports = function(passport){
             jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme("JWT"),
             secretOrKey: jwtSecret.secret
         }, (jwt_payload, done) => {
-            User.findOne({username: jwt_payload.id})
+            db.query('SELECT username, role, user_id FROM users WHERE username = $1', [jwt_payload.id])
                 .then(foundUser => {
-                    if(foundUser){
+                    if(foundUser.rows[0]){
                         //done takes in the parameters (error, user, options)
-                        done(null, foundUser)
+                        done(null, foundUser.rows[0])
                     }
                     else {
                         done(null, false)
                     }
                 })
                 .catch(error => console.log(error))
+
         })
     );
 

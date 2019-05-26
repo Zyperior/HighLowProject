@@ -23,6 +23,9 @@
             <p>Username</p>
             <input v-model="usernameField">
             <br>
+            <p>Email</p>
+            <input v-model="emailField"/>
+            <br>
             <p>Password</p>
             <input v-model="passwordField" type="password">
             <br>
@@ -35,7 +38,6 @@
         </div>
 
         <br><br><br><br>
-        <p>Or use an existing account by entering "user" or "admin" in both fields without quotation marks</p>
 
     </div>
 </template>
@@ -50,6 +52,7 @@
                 usernameField: "",
                 passwordField: "",
                 repeatPasswordField: "",
+                emailField: "",
                 successMessage: "",
                 failMessage: "",
                 displayLogin: true
@@ -66,8 +69,13 @@
                     password: this.passwordField
                     })
                 .then((response) => {
+
+                    this.$store.commit('userStats/setIsLoggedIn', true);
+                    this.$store.commit('userStats/setUserCookieData', response.data.user)
+                    console.log(this.$store.getters['userStats/getIsLoggedIn'])
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("viewAdminPages", response.data.viewAdminPages);
+
                     this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
                         loggedInUser: true,
                         admin: response.data.viewAdminPages
@@ -86,9 +94,12 @@
                 if(this.validateInput()){
                     axios.post("http://localhost:5000/users/register", {
                         username: this.usernameField,
-                        password: this.passwordField
+                        password: this.passwordField,
+                        email: this.emailField,
+                        role: "USER"
                     })
-                    .then(() => {
+                    .then((res) => {
+
                         this.displayLogin = true;
                         this.successMessage = "Registration successful, you can now login"
                     })
@@ -102,7 +113,7 @@
             validateInput(){
                 //This can easily be filled with more criteria
 
-                if(!this.usernameField || !this.passwordField || !this.repeatPasswordField){
+                if(!this.usernameField || !this.passwordField || !this.repeatPasswordField || !this.emailField){
                     this.failMessage = "All fields must be entered"
                 }
 

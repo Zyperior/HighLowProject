@@ -52,9 +52,13 @@ const router = new Router({
       component: () => import('./components/login/AuthenticationTest.vue')
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('./components/login/Profile.vue')
+      path: '/profile/',
+      name: 'user-profile',
+      component: () => import('./views/UserProfile.vue'),
+      props: {
+        default: true,
+        sidebar: false
+      }
     },
       {
           path: '/suggest-question',

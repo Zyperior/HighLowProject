@@ -43,6 +43,8 @@ app.use("/bots", botRouter);
 
 app.use("/users", require("./api/routes/users.js"));
 
+app.use("/suggestedQuestions", require('./api/routes/suggestedQuestions'))
+
 
 const PORT = process.env.PORT || 5000;
 

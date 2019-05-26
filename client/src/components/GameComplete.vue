@@ -1,8 +1,8 @@
 <template>
     <div v-show="gameCompleted">
-        <div v-for="player in players">
-            {{ player.name }} guessed {{ player.guessCount}} times this match
-            {{ player.name }} earned {{ player.score}} points
+        <div v-for="(player,index) in players">
+            <h3>{{index+1}}.</h3> {{ player.name }} {{ player.score}} <br>
+            Guesscount: {{player.guessCount}}
         </div>
         <router-link to="/">Play again</router-link>
     </div>
@@ -29,5 +29,7 @@
 </script>
 
 <style scoped>
-
+ h3{
+     display: inline-block;
+ }
 </style>
