@@ -60,19 +60,20 @@
 
                 if(this.isQuestionFieldsValid()){
                     axios.post("http://localhost:5000/users/suggest-question", {
+                        questionFields: this.questionFields
+                    }, {
                         headers: {
                             Authorization: `JWT ${localStorage.getItem("token")}`
-                        },
-                        question: this.question
+                        }
                     })
-                        .then(() => {
-                            this.successMessage = "Question submitted! It's now waiting for approval."
-                        })
-                        .catch((error) => {
-                            this.errorMessage = "You already have a pending question waiting for approval." +
-                                "You can only send in one question at once";
-                            console.log(error)
-                        })
+                    .then(() => {
+                        this.successMessage = "Question submitted! It's now waiting for approval."
+                    })
+                    .catch((error) => {
+                        this.errorMessage = "You already have a pending question waiting for approval." +
+                            "You can only send in one question at once";
+                        console.log(error)
+                    })
                 }
 
             },

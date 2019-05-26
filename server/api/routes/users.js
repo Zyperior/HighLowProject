@@ -1,9 +1,11 @@
 const router = require("express").Router();
-const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig");
+
+const User = require("../model/User");
+const PendingQuestion = require("../model/PendingQuestion")
 
 
 
@@ -89,11 +91,28 @@ router.post("/suggest-question", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         //This code runs if the authentication in passport.js was successful
         if(user !== false){
-            console.log("auth success")
-            res.status(200).send("Authentication successful")
+            PendingQuestion.findOne({suggestedBy: user.username})
+                .then(foundPendingQuestion => {
+                    if(foundPendingQuestion){
+                        res.status(409).send("This user already have a question waiting for approval")
+                    }
+                    else{
+                        const newPendingQuestion = new PendingQuestion({
+                            suggestedBy: user.username,
+                            question: req.body.questionFields.question,
+                            answer: req.body.questionFields.answer,
+                            source: req.body.questionFields.source,
+                            difficulty: req.body.questionFields.difficulty,
+                            category: req.body.questionFields.category
+                        });
+                        newPendingQuestion.save()
+                            .then(() => res.status(201).send("Question sent and waiting for approval"))
+                            .catch((error) => console.log(error))
+                    }
+                })
+                .catch(error => console.log(error));
         }
         else{
-            console.log("auth fail")
             res.status(401).send("Authentication failed")
         }
     })(req, res, next);

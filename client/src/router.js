@@ -66,7 +66,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
 
-  const pagesThatRequireLogin = ["/profile", "/admin"];
+  const pagesThatRequireLogin = ["/profile", "/suggest-question", "/admin"];
   const adminPages = ["/admin"];
 
   const loginRequired = pagesThatRequireLogin.includes(to.path);
