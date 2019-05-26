@@ -15,7 +15,15 @@
                 <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
                 <!--<p>{{bot.name}}</p>-->
                 <!--</div>-->
-                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn" autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer); guess();">
+                <input
+                        v-model="answer"
+                        oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                        name="answer"
+                        placeholder="Enter your answer"
+                        :disabled="!playerTurn"
+                        autocomplete="off"
+                        v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
+                >
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
@@ -42,7 +50,8 @@
               playerTurn: true,
               number: 0,
               activePlayer: {},
-              recording: false
+              recording: false,
+              answer: ''
           }
         },
         methods: {
@@ -71,11 +80,9 @@
                 }
 
             },
-
-
             submitAnswerWithEnter(answer) {
 
-                if (answer.length != 0) {
+                if (answer.length !== 0) {
 
                     this.submitAnswer(answer);
                 }
@@ -202,11 +209,6 @@
             },
             lastGuess() {
               return this.$store.getters.getLastGuess;
-            },
-            answer: {
-                get() {
-                    return this.$store.getters.getCurrentAnswer;
-                }
             },
             currentQuestion() {
                 return this.$store.getters.getCurrentQuestion;

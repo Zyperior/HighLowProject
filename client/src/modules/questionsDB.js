@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 let questions = [];
 
@@ -34,9 +34,5 @@ export default {
         })
 
     },
-
-    resetQuestions() {
-        questions = [];
-    }
 
 }
