@@ -18,6 +18,12 @@
           this.$store.commit("breakOutOfBotLoop")
         }
       }
+    },
+    mounted() {
+      this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
+        loggedInUser: localStorage.getItem("token"),
+        admin: localStorage.getItem("viewAdminPages") == "true"
+      })
     }
   }
 </script>
