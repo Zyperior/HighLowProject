@@ -14,10 +14,13 @@
             <router-link to="/auth-test">AuthenticationTest</router-link>
         </div>
         <div v-show="displayExclusivePages.loggedInUser">
-            <router-link to="/secret-page">OnlyLoggedInUsersCanSeeThis</router-link>
+            <router-link to="/profile">Profile</router-link>
+        </div>
+        <div v-show="displayExclusivePages.loggedInUser">
+            <router-link to="/suggest-question">Suggest a question</router-link>
         </div>
         <div v-show="displayExclusivePages.loggedInAdmin">
-            <router-link to="/super-secret-page">OnlyLoggedInAdminCanSeeThis</router-link>
+            <router-link to="/admin">Admin page</router-link>
         </div>
 
 

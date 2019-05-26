@@ -47,22 +47,27 @@ const router = new Router({
       component: () => import('./components/login/AuthenticationTest.vue')
     },
     {
-      path: '/secret-page',
-      name: 'secret-page',
-      component: () => import('./components/login/OnlyLoggedInCanSeeThis.vue')
+      path: '/profile',
+      name: 'profile',
+      component: () => import('./components/login/Profile.vue')
     },
+      {
+          path: '/suggest-question',
+          name: 'suggest-question',
+          component: () => import('./components/login/SuggestQuestion.vue')
+      },
     {
-      path: '/super-secret-page',
-      name: 'super-secret-page',
-      component: () => import('./components/login/OnlyLoggedInAdminCanSeeThis.vue')
+      path: '/admin',
+      name: 'admin',
+      component: () => import('./components/login/AdminPage.vue')
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
 
-  const pagesThatRequireLogin = ["/secret-page", "/super-secret-page"];
-  const adminPages = ["/super-secret-page"];
+  const pagesThatRequireLogin = ["/profile", "/admin"];
+  const adminPages = ["/admin"];
 
   const loginRequired = pagesThatRequireLogin.includes(to.path);
   const adminRequired = adminPages.includes(to.path);

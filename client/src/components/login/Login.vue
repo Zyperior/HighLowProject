@@ -72,7 +72,7 @@
                         loggedInUser: true,
                         admin: response.data.viewAdminPages
                     });
-                    this.$router.push("/")
+                    this.$router.push("/profile")
                 })
                 .catch((error) => {
                     this.failMessage = "Username and password do not match an existing user";

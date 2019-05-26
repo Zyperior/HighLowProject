@@ -83,9 +83,36 @@ router.post("/login",  (req, res) => {
 });
 
 
-router.get("/auth-test-logged-in", (req, res, next) => {
+
+
+router.post("/suggest-question", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         //This code runs if the authentication in passport.js was successful
+        if(user !== false){
+            console.log("auth success")
+            res.status(200).send("Authentication successful")
+        }
+        else{
+            console.log("auth fail")
+            res.status(401).send("Authentication failed")
+        }
+    })(req, res, next);
+});
+
+
+
+
+
+router.get("/logout", (req, res) => {
+    //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
+    res.send("todo")
+});
+
+
+
+//Authentication tests to test things work like it should
+router.get("/auth-test-logged-in-user", (req, res, next) => {
+    passport.authenticate("jwt", {session: false}, (error, user) => {
         if(user !== false){
             res.status(200).send("Authentication successful")
         }
@@ -94,7 +121,6 @@ router.get("/auth-test-logged-in", (req, res, next) => {
         }
     })(req, res, next);
 });
-
 
 router.get("/auth-test-logged-in-admin", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
@@ -106,18 +132,6 @@ router.get("/auth-test-logged-in-admin", (req, res, next) => {
         }
     })(req, res, next);
 });
-
-
-
-
-
-router.get("/logout", (req, res) => {
-   //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
-   res.send("todo")
-});
-
-
-
 
 
 

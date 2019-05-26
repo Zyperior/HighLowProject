@@ -1,18 +1,14 @@
 <template>
     <div>
-        <p>Only logged in users can see this!</p>
+        <p >Only logged in admins can see this!</p>
     </div>
 </template>
 
 <script>
-
-
     export default {
-        name: "OnlyLoggedInCanSeeThis"
-
+        name: "AdminPage"
 
     }
-
 </script>
 
 <style scoped>

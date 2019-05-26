@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>Temporary test component.</p>
+        <p>Temporary test component(?)</p>
         <p>Click on the buttons to check your current authorization levels. They return an answer if the request to the backend was accepted or not.</p>
 
         <button @click="button1">Logged in users (including admins) can make this request</button>
@@ -26,7 +26,7 @@
         },
         methods: {
             button1(){
-                axios.get("http://localhost:5000/users/auth-test-logged-in", {
+                axios.get("http://localhost:5000/users/auth-test-logged-in-user", {
                     headers: {
                         Authorization: `JWT ${localStorage.getItem("token")}`
                     }
