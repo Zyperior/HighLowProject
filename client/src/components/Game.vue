@@ -23,7 +23,7 @@
                         :disabled="!playerTurn"
                         autocomplete="off"
                         v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
-                >
+                />
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
@@ -71,7 +71,11 @@
                     }
                 }
 
+                this.answer = "";
+
             },
+
+
             submitAnswerWithEnter(answer) {
 
                 if (answer.length !== 0) {
@@ -147,6 +151,7 @@
 
                     if(thisComponent.activePlayer.isHuman){
                         thisComponent.playerTurn = true;
+                        
                     }else {
                         thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
