@@ -12,7 +12,7 @@
         },
         computed: {
             mute() {
-                return this.$store.getters.getMuteSound
+                return this.$store.getters.isMuteSound
                     ? 'Enable sound' : 'Mute sound'
             }
         }

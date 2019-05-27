@@ -18,6 +18,15 @@
           this.$store.commit("breakOutOfBotLoop")
         }
       }
+    },
+    mounted() {
+      this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
+        loggedInUser: localStorage.getItem("token"),
+        admin: localStorage.getItem("viewAdminPages") == "true"
+      })
+       if(window.$cookies.isKey('userData')) {
+           this.$store.commit('userStats/setIsLoggedIn', true)
+       }
     }
   }
 </script>
@@ -88,10 +97,6 @@
     width: 80%;
     font-size: var(--defaultFontSizeMobile);
     padding: 1em;
-    border-radius: 1em;
-    border-style: outset;
-    border-width: 8px;
-    border-color: var(--buttonBorderColor);
     margin: 1em 1em 0em 1em;
   }
 
