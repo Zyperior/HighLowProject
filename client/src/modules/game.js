@@ -154,7 +154,7 @@ export default {
             return new Promise( (resolve) => {
 
                 // Add playing bots to array
-                const players = store.getters.playingBots;
+                const players = store.getters.playingBots.slice();
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
