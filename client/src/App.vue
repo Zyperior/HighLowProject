@@ -46,7 +46,6 @@
     min-width: 100%;
     left: 0;
     top: 0;
-    z-index: 1;
   }
 
   /* Hide the links inside the navigation menu (except for logo/home) */

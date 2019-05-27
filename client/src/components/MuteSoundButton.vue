@@ -20,5 +20,7 @@
 </script>
 
 <style scoped>
-
+    button{
+        max-height: 50px;
+    }
 </style>
