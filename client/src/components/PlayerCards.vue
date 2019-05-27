@@ -2,20 +2,20 @@
     <div id="card-div" v-if="getPlayerIndexes.length > 0">
 
         <div id="hidden" :class="{hiddenCard: flipCardsOngoing}" v-if="activePlayers.length > 3" :style="animationTime">
-            <p>{{ activePlayers[getPlayerIndexes[2]].name }}, {{ activePlayers[getPlayerIndexes[2]].answer }}</p>
+            <p>{{ activePlayers[getPlayerIndexes[2]].name }}, {{ showAnswer(activePlayers[getPlayerIndexes[2]].answer) }}</p>
         </div>
 
         <div id="upper" :class="{upperCard: flipCardsOngoing}" :style="animationTime">
-            <p>{{ activePlayers[getPlayerIndexes[1]].name }}, {{ activePlayers[getPlayerIndexes[1]].answer }}</p>
+            <p>{{ activePlayers[getPlayerIndexes[1]].name }}, {{ showAnswer(activePlayers[getPlayerIndexes[1]].answer) }}</p>
         </div>
 
         <div id="center" :class="{centerCard: flipCardsOngoing && activePlayers.length > 2, centerCardTwoPlayers: flipCardsOngoing && activePlayers.length === 2}" :style="animationTime">
-            <p>{{ activePlayers[getPlayerIndexes[0]].name }}, {{ activePlayers[getPlayerIndexes[0]].answer }}</p>
+            <p>{{ activePlayers[getPlayerIndexes[0]].name }}, {{ showAnswer(activePlayers[getPlayerIndexes[0]].answer) }}</p>
         </div>
 
         <div id="lower" :class="{lowerCard: flipCardsOngoing && activePlayers.length > 3, lowerCardThreePlayers: flipCardsOngoing && activePlayers.length === 3}"  v-if="activePlayers.length > 2"  :style="animationTime">
-            <p v-if="activePlayers.length > 3">{{ activePlayers[getPlayerIndexes[getPlayerIndexes.length - 1]].name }}, {{ activePlayers[getPlayerIndexes[getPlayerIndexes.length - 1]].answer }}</p>
-            <p v-else>{{ activePlayers[getPlayerIndexes[2]].name }}, {{ activePlayers[getPlayerIndexes[2]].answer }}</p>
+            <p v-if="activePlayers.length > 3">{{ activePlayers[getPlayerIndexes[getPlayerIndexes.length - 1]].name }}, {{ showAnswer(activePlayers[getPlayerIndexes[getPlayerIndexes.length - 1]].answer) }}</p>
+            <p v-else>{{ activePlayers[getPlayerIndexes[2]].name }}, {{ showAnswer(activePlayers[getPlayerIndexes[2]].answer) }}</p>
         </div>
 
 
@@ -35,15 +35,24 @@ export default {
         "activePlayers"
 
     ],
-
     
+
     methods: {
 
-        flipCards: function() {
+        showAnswer: function(answer) {
 
-            this.$store.commit("flipCards");            
+            if (answer >= 0) {
+                return answer;
+            }
+
+            else {
+
+                return "PASS";
+
+            }
+
         }
-       
+
     },
 
 
@@ -60,7 +69,9 @@ export default {
         animationTime() {
             
             return {"--animation-time": (this.$store.getters.getAnimationTime / 1000).toFixed(1) + "s"}
-        }
+        },
+
+
         
     }
     

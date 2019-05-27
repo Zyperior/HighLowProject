@@ -55,13 +55,7 @@
           }
         },
         methods: {
-            // startGame() {
-            //     console.log("Start game!");
-
-            //     this.$refs.myPlayerCards.initIndexes();
-            //     this.$store.dispatch("startGame");
-
-            // },
+            
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -71,8 +65,6 @@
                     }
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
-
-                    this.$refs.myPlayerCards.flipCards();
 
                     if(this.$store.state.game.chattyBots) {
                         this.$store.dispatch("chat", chatPayload);
@@ -252,7 +244,7 @@
                 this.guess();
             },
             isTimerZero(){
-                this.submitAnswer(0);
+                this.submitAnswer(-1);
                 this.guess();
             }
 

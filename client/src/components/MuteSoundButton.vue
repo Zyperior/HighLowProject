@@ -1,5 +1,9 @@
 <template>
-    <button @click="muteSound()">{{ mute }}</button>
+    <div>
+        <img alt="unmute" src="/soundfx/Mute_Icon.svg" v-if="mute"  @click="muteSound()"/>
+
+        <img alt="mute" src="/soundfx/Speaker_Icon.svg" v-if="!mute"  @click="muteSound()"/>
+    </div>
 </template>
 
 <script>
@@ -13,12 +17,13 @@
         computed: {
             mute() {
                 return this.$store.getters.isMuteSound
-                    ? 'Enable sound' : 'Mute sound'
             }
         }
     }
 </script>
 
 <style scoped>
-
+    button{
+        max-height: 50px;
+    }
 </style>

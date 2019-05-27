@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <NavBar/>
-    <router-view/>
+    <NavBar class="topnav"/>
+    <router-view class="view"/>
   </div>
 </template>
 <script>
@@ -33,6 +33,54 @@
 
 <style>
 
+  .logoPlaceholder{
+    display: block;
+    color: white;
+  }
+  .view{
+    margin-top: 40px;
+  }
+  /* Style the navigation menu */
+  .topnav {
+    overflow: hidden;
+    position: absolute;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+  }
+
+  #topnav{
+    background-color: #333;
+  }
+
+  /* Hide the links inside the navigation menu (except for logo/home) */
+  .topnav #myLinks {
+    display: block;
+  }
+  /* Style navigation menu links */
+  .topnav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+
+  }
+
+  /* Style the hamburger menu */
+  .topnav a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Add a grey background color on mouse-over */
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
 
   body {
     margin: 0.5em;
@@ -69,6 +117,9 @@
       font-size: var(--defaultFontSize);
       width: 20%;
     }
+
+
+
 
 
   }
