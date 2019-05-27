@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar class="topnav"/>
-    <router-view/>
+    <router-view class="view"/>
   </div>
 </template>
 <script>
@@ -37,7 +37,9 @@
     display: block;
     color: white;
   }
-
+  .view{
+    margin-top: 40px;
+  }
   /* Style the navigation menu */
   .topnav {
     overflow: hidden;
@@ -54,8 +56,6 @@
   /* Hide the links inside the navigation menu (except for logo/home) */
   .topnav #myLinks {
     display: block;
-    background-color: #777;
-    opacity: 0.5;
   }
   /* Style navigation menu links */
   .topnav a {
