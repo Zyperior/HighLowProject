@@ -42,21 +42,27 @@
   .topnav {
     overflow: hidden;
     position: absolute;
-    background-color: #333;
     min-width: 100%;
     left: 0;
     top: 0;
   }
 
+  #topnav{
+    background-color: #333;
+  }
+
   /* Hide the links inside the navigation menu (except for logo/home) */
   .topnav #myLinks {
     display: block;
+    background-color: #777;
+    opacity: 0.5;
   }
   /* Style navigation menu links */
   .topnav a {
     color: white;
     text-decoration: none;
     display: block;
+
   }
 
   /* Style the hamburger menu */
@@ -66,6 +72,8 @@
     position: absolute;
     right: 0;
     top: 0;
+    width: 35px;
+    height: 35px;
   }
 
   /* Add a grey background color on mouse-over */
