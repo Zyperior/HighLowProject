@@ -84,6 +84,8 @@ export default {
 
         incQuestionCounter: state => { state.questionCounter++ },
 
+        resetQuestionCounter: state => { state.questionCounter = 0},
+
         incPlayerCorrectAnswers: state => { state.players[state.playerTurn].correctAnswer++ },
 
         incPlayerScore: state => { state.players[state.playerTurn].score += state.currentQuestion.value },
@@ -156,15 +158,32 @@ export default {
             return new Promise( (resolve) => {
 
                 // Add playing bots to array
-                const players = store.getters.playingBots;
+                const players = store.getters.playingBots.slice();
+
+                // If user is logged in, make User main-player, otherwise make Guest main-player
+                let username = "Guest";
+                if(window.$cookies.isKey('userData')){
+                   username = window.$cookies.get('userData').username;
+                    }
+                const player = {
+                    name: username,
+                    score: 0,
+                    guessCount: 0,
+                    isHuman: true,
+                    correctAnswer: 0,
+                    isUser: store.getters['userStats/getIsLoggedIn'],
+                }
+                players.push(player);
 
                 // Create players from current settings and add to array
-                for(let i = 1; i <= getCurrentSettings().playerAmount; i++){
+                for(let i = 2; i <= getCurrentSettings().playerAmount+1; i++){
                     let player = {
                         name: 'Player '+i,
                         score: 0,
                         guessCount: 0,
+                        correctAnswer: 0,
                         isHuman: true,
+                        isUser: false,
                         answer: ""
                     };
                     players.push(player);
@@ -276,16 +295,16 @@ export default {
 
             store.dispatch('generalStats/postDBData', [state.questions.length, state.answerAttempts]);
 
-            state.players.forEach(player => {
+            state.players.forEach(p => {
 
-                if(!(player.isHuman)) {
+                if(!(p.isHuman)) {
 
                     store.dispatch('botStats/updateBotStats',
-                        [player.name, player.score, 1, player.guessCount, player.correctAnswer])
+                        [p.name, p.score, 1, p.guessCount, p.correctAnswer])
 
-                } else {
-
-                    //store player data
+                }else if(p.isUser){
+                    console.log(p.correctAnswer);
+                    store.dispatch('userStats/updateUser', [p.name, p.guessCount, p.score, p.correctAnswer])
                 }
 
             });
@@ -295,6 +314,7 @@ export default {
 
             commit('resetLastGuess');
             commit('stopGame');
+            commit('resetQuestionCounter')
 
 
         }
