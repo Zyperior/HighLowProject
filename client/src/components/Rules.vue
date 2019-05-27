@@ -1,24 +1,50 @@
 <template>
-    <div>
-        <h1>The rules will be shown here</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-           Sed gravida vestibulum purus, sit amet sagittis lorem dapibus in. 
-           Quisque in fringilla dui. Mauris a quam nibh. Etiam a tortor et orci condimentum viverra in eu purus. 
-           Cras sit amet gravida leo. Nam a faucibus enim. Etiam euismod ipsum quis tristique maximus. 
-           Aenean vitae sapien leo. Morbi consectetur iaculis massa, non pharetra nibh ullamcorper a. 
-           Praesent ut enim ut quam sagittis condimentum. Nulla facilisi. Maecenas faucibus massa fringilla egestas 
-           pretium. Aenean blandit porttitor ipsum at ornare. Nullam interdum tellus lacinia nisl suscipit convallis. 
-           Etiam nibh nulla, dapibus varius pellentesque non, laoreet ac massa. 
-           Integer luctus risus ut justo tempus scelerisque. Fusce consequat enim non ipsum elementum, eu dignissim
-           ligula vestibulum. Cras turpis turpis, rutrum aliquet imperdiet in, sagittis at mauris. 
-           Aenean sed libero ac orci ultrices consectetur. Morbi nec mauris erat. 
-           Pellentesque rhoncus fringilla velit, vitae aliquet enim ullamcorper nec. 
-           Phasellus eget volutpat nisi, sed ullamcorper sapien. Vivamus auctor faucibus volutpat. 
-           Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
-           Ut accumsan sem auctor, eleifend nibh at, sagittis ipsum.
-        </p>
+    <div class="rules">
+        <div class="title">Rules for High/Low</div>
+        <div class="info">
+            First player guesses the numerical answer to the question.
+            If it's incorrect, the next player gets a turn, in order.
+            Information about a guess being too high or too low is given.
+
+            When a player guesses correctly, he's given points.
+            The player with the most points at the end of the game wins.
+        </div>
+        <br><br>
+        <div class="title">How to play</div>
+        <div class="info">
+            When it's your turn, enter a guess in the input field.
+            Press the Submit-button or Enter-key.
+
+            Alternatively, use speech-to-text.
+            Click the Push To Talk-button and say your answer.
+            You can change speech language in the settings.
+
+            When the timer reaches zero, you lose your turn.
+        </div>
     </div>
 </template>
 
+<script>
+    export default {
+        name: "Rules"
+    }
+</script>
 
+<style scoped>
+    .rules{
+        display:grid;
+        justify-content: center;
+        margin: 1em;
+    }
 
+    .title {
+        text-decoration: underline;
+    }
+
+    .info{
+        text-align: left;
+        margin-top: 1vmax;
+        white-space: pre-line;
+    }
+
+</style>
