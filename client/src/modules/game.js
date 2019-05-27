@@ -114,6 +114,10 @@ export default {
 
         displayResults: state => { state.gameCompleted = true; },
 
+        resetPlayerAnswers: state => { state.players.forEach(player => { player.answer = ""});},
+
+        setPlayerAnswer: (state, answer) => { state.players[state.playerTurn].answer = answer; },
+
         //Vet ej vad dessa två gör, låter dem ligga tills vidare /Andreas
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
         setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
@@ -160,7 +164,8 @@ export default {
                         name: 'Player '+i,
                         score: 0,
                         guessCount: 0,
-                        isHuman: true
+                        isHuman: true,
+                        answer: ""
                     };
                     players.push(player);
                 }
@@ -189,6 +194,7 @@ export default {
 
             commit('incAnswerAttempts');
             commit('setLastGuess', answer);
+            commit("stopTimer", {root: true});
 
             // First check if answer was correct, below or above and mutate the state accordingly..
             this.dispatch('checkAnswer', [answer, correctAnswer])
@@ -203,24 +209,24 @@ export default {
                     }
 
                     if(state.questionCounter >= state.questions.length){
-                        dispatch('endGame')
+                        dispatch('endGame');
                     } else {
                         commit('setNextQuestion');
                         commit('incPlayerTurn');
+                        commit("startTimer", {root: true});
+                        store.commit("flipCards");
                     }
 
                 } else {
 
                     commit('incPlayerTurn');
+                    commit("startTimer", {root: true});
+                    store.commit("flipCards");
 
                 }
 
             });
 
-
-            // Osäker på var jag ska lägga dessa? (Flytta och ta bort denna kommentar) //Andreas
-            commit("stopTimer", {root: true});
-            commit("startTimer", {root: true});
 
         },
 
@@ -236,6 +242,7 @@ export default {
                     commit('incQuestionCounter');
                     commit('resetGuessCounter');
                     commit('resetLowestAndHighestAnswers');
+                    commit("resetPlayerAnswers");
 
                     resolve(CORRECT_ANSWER)
                 }
@@ -245,6 +252,7 @@ export default {
                     commit('incGuessCounter');
                     commit('incPlayerGuessCount');
                     commit('decQuestionValue');
+                    commit("setPlayerAnswer", answer);
 
                     resolve(INCORRECT_ANSWER)
                 }
@@ -255,6 +263,7 @@ export default {
                     commit('incGuessCounter');
                     commit('incPlayerGuessCount');
                     commit('decQuestionValue');
+                    commit("setPlayerAnswer", answer);
 
                     resolve(INCORRECT_ANSWER);
                 }
