@@ -96,7 +96,7 @@ export default {
         },
 
         setClosestLowAnswer:  (state, answer) => {
-            if(state.lowGuess === '' || state.lowGuess < answer){
+            if( (state.lowGuess === '' && answer >= 0) || state.lowGuess < answer){
                 state.lowGuess = answer;
             }
         },
@@ -196,6 +196,7 @@ export default {
                     isHuman: true,
                     correctAnswer: 0,
                     isUser: store.getters['userStats/getIsLoggedIn'],
+                    answer: ""
                 }
                 players.push(player);
 

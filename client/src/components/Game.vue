@@ -23,7 +23,7 @@
                         :disabled="!playerTurn"
                         autocomplete="off"
                         v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
-                >
+                />
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
@@ -71,7 +71,11 @@
                     }
                 }
 
+                this.answer = "";
+
             },
+
+
             submitAnswerWithEnter(answer) {
 
                 if (answer.length !== 0) {
@@ -116,12 +120,7 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-                let audio = new Audio();
-                if(!this.muteSounds){
-                    audio.src = bot.soundFx[0];
-                    audio.play();
-                }
-                let randTime = Math.floor(Math.random() * 5000) + this.animationTime + 200;
+                let randTime = Math.floor(Math.random() * 5000);
                 if(this.isGameRunning){
                     this.botLoopTimeoutFunction = setTimeout(function () {
 
@@ -147,6 +146,7 @@
 
                     if(thisComponent.activePlayer.isHuman){
                         thisComponent.playerTurn = true;
+                        
                     }else {
                         thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
