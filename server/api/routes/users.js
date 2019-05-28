@@ -3,16 +3,9 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig");
-const mongoose = require("mongoose");
 const uuid = require('uuid')
 
 const db = require('../../postgresDB/PGdb.js')
-
-const User = require("../model/User");
-const PendingQuestion = require("../model/PendingQuestion");
-const Question = require("../model/question")
-
-
 
 router.post("/auth/register", (req, res) => {
 
@@ -124,41 +117,6 @@ router.get('/top/:nr', (req, res) => {
                 res.status(200).send(foundUsers.rows)
         }).catch(err => res.status(500).send("Something went wrong"));
 })
-
-
-// router.get("/logout", (req, res) => {
-//     //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
-//     res.send("todo")
-// });
-
-
-
-//Authentication tests to test things work like it should
-//Maybe delete?
-
-// router.get("/auth-test-logged-in-user", (req, res, next) => {
-//     passport.authenticate("jwt", {session: false}, (error, user) => {
-//         if(user !== false){
-//             res.status(200).send("Authentication successful")
-//         }
-//         else{
-//             res.status(401).send("Authentication failed")
-//         }
-//     })(req, res, next);
-// });
-//
-// router.get("/auth-test-logged-in-admin", (req, res, next) => {
-//     passport.authenticate("jwt", {session: false}, (error, user) => {
-//         if(user !== false && user.role === "ADMIN"){
-//             res.status(200).send("Authentication successful")
-//         }
-//         else{
-//             res.status(401).send("Authentication failed")
-//         }
-//     })(req, res, next);
-// });
-
-
 
 
 module.exports = router;
