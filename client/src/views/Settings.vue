@@ -5,6 +5,8 @@
         <p id="difficultyText">Choose difficulty</p>
         <p id="shuffleText">Shuffle player start order</p>
         <p id="extraPlayersText">Extra players</p>
+        <p id="botText">Bot commentary</p>
+        <p id="micLangText">Microphone Input Language</p>
         <number-of-questions id="amount" @changeAmountQuestions="changeAmountOfQuestions" />
         <questions-category id="category" @changeCategory="changeCategory" />
         <questions-difficulty id="difficulty" @changeDifficulty="changeDifficulty" />
@@ -12,7 +14,7 @@
         <number-of-players id="playerAmount" @changePlayerAmount="changePlayerAmount" />
         <bot-settings id="botContainer" @botComment="botComment" />
         <shuffle-order id="shuffle" @shuffle="shufflePlayers" />
-
+        <bot-commentary id="botComments" @botComment="setBotComment"/>
         <mic-input-language id="language" @changeMicLanguage="changeMicLanguage" />
     </div>
 </template>
@@ -26,6 +28,8 @@
     import MicInputLang from '../components/settingscomp/MicInputLang';
     import BotSettings from '../components/settingscomp/botsettings/BotSettings'
     import Settings from '../modules/settingsData'
+    import ChattyBots from '../components/settingscomp/botsettings/ChattyBots.vue'
+
 
     export default {
         name: "Settings",
@@ -36,7 +40,8 @@
             'questions-difficulty' : QuestionDifficulty,
             'number-of-players' : NumberOfPlayers,
             'mic-input-language' : MicInputLang,
-            'bot-settings': BotSettings
+            'bot-settings': BotSettings,
+            'bot-commentary': ChattyBots
         },
         methods:{
             changeAmountOfQuestions(value) { Settings.setQuestionsAmount(value) },
@@ -56,6 +61,7 @@
         grid-template-columns: repeat(3, auto);
         grid-template-rows: repeat(9, auto);
         align-items: center;
+        padding: 10px 15px 0px 15px;
     }
     #shuffleText{
         grid-row: 4;
@@ -113,7 +119,29 @@
     }
     #language{
         grid-row: 9;
-        grid-column: 1 / span 2;
+        grid-column: 2;
+        font-size: 14px;
+        justify-self: start;
+    }
+    #micLangText{
+        grid-row: 9;
+        grid-column: 1;
+        justify-self: start;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    #botText{
+        grid-row: 8;
+        grid-column: 1;
+        justify-self: start;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    #botComments{
+        grid-row: 8;
+        grid-column: 2;
+        font-size: 14px;
+        justify-self: start;
     }
     #playerAmount{
         grid-row: 5;

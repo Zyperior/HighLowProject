@@ -4,7 +4,7 @@
        <add-remove-button id="addButton" directive="add" @addAvailableToPlaying="addAvailableToPlaying" />
        <add-remove-button id="removeButton" directive="remove" @addPlayingToAvailable="addPlayingToAvailable"/>
        <available-bots id="availableBots" @changeAvailableBotIndex="setAvailableBotIndex" />
-       <bot-commentary id="botComments" @botComment="setBotComment"/>
+
    </div>
 </template>
 
@@ -75,18 +75,15 @@
         justify-items: center;
 
     }
-    #botComments{
-        grid-row: 3;
-        grid-column: 1 / span 3;
-        justify-self: center;
-    }
     #selectedBots{
         grid-column: 1;
         grid-row: 1 / span 2;
+
     }
     #availableBots{
         grid-column: 3;
         grid-row: 1 / span 2;
+
     }
     #addButton{
         grid-column: 2;
