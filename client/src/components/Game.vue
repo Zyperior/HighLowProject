@@ -4,7 +4,7 @@
         <div v-show="isGameRunning">
             <p>{{currentQuestion}}</p>
             <div>
-                <h2>Highest Guess: {{highGuess}} </h2>
+                <h2>Highest Guess: {{highGuess}}</h2>
                 <h2>Lowest Guess: {{lowGuess}} </h2>
                 <!-- <p v-for="player in players" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
 
@@ -29,6 +29,7 @@
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
                     <button v-if="speechRecognitionAvailable" @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Click To Talk</button>
                 </div>
+                <div class="high-or-low" v-if="showHiOrLow">{{hilo}}</div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
             </div>
@@ -49,14 +50,15 @@
 
     export default {
         data(){
-          return {
-              playerTurn: true,
-              number: 0,
-              activePlayer: {},
-              recording: false,
-              answer: '',
-              speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition')
-          }
+            return {
+                playerTurn: true,
+                number: 0,
+                activePlayer: {},
+                recording: false,
+                answer: '',
+                speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
+                showHiLo: false,
+            }
         },
         methods: {
             
@@ -67,16 +69,25 @@
                         let answerSound = new Audio('/soundfx/testAudio.wav');
                         answerSound.play();
                     }
-                    this.$store.dispatch("submitAnswer", a);
-                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
 
-                    if(this.$store.state.game.chattyBots && chatPayload[0].answer !== -1) {
+                    this.showFeedback();
+                    this.$store.dispatch("submitAnswer", a);
+
+                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                    if(this.$store.state.game.chattyBots) {
                         this.$store.dispatch("chat", chatPayload);
                     }
                 }
 
                 this.answer = "";
 
+            },
+            showFeedback() {
+              //Timeout for "Higher!" "Lower!" messages.
+              this.showHiLo = true;
+                setTimeout(() => {
+                    this.showHiLo = false;
+                }, 1500);
             },
 
 
@@ -91,22 +102,28 @@
 
 
             startVoiceRecording() {
-                //Starts recording if player turn, when recording stops submit if it's still the player turn.
+                //Starts recording if player turn and not currently recording, when recording stops submit if it's still the player turn.
                 if (this.playerTurn) {
                     let that = this;
                     let voiceResult = 0;
                     recognition.lang = getCurrentSettings().micInputLanguage;
-                    recognition.start();
-                    recognition.onresult = function (event) {
-                        for (var i = event.resultIndex; i < event.results.length; i++) {
-                            if (event.results[i].isFinal) {
-                                voiceResult = event.results[i][0].transcript;
-                                if(that.playerTurn) {
-                                    that.submitAnswer(voiceResult);
-                                    that.guess();
+                    if(!this.recording) {
+                        recognition.start();
+                        this.recording = true;
+                        recognition.onresult = function (event) {
+                            for (let i = event.resultIndex; i < event.results.length; i++) {
+                                if (event.results[i].isFinal) {
+                                    voiceResult = event.results[i][0].transcript;
+                                    if (that.playerTurn) {
+                                        that.submitAnswer(voiceResult);
+                                        that.guess();
+                                    }
                                 }
                             }
-                        }
+                        };
+                    }
+                    recognition.onend = function() {
+                        this.recording = false;
                     };
                 }
             },
@@ -162,6 +179,18 @@
             isGameRunning(){
               return this.$store.getters.isGameRunning;
             },
+            hilo(interval) {
+                if (interval.lastGuess === -1) {
+                    return "Too slow!"
+                } else if (interval.lastGuess === interval.correctAnswer) {
+                    return "Correct!"
+                } else if (interval.lastGuess > interval.correctAnswer) {
+                    return "Lower!"
+                } else if (interval.lastGuess < interval.correctAnswer) {
+                    return "Higher!"
+                }
+            },
+
             botLoopTimeoutFunction: {
                 get(){
                     return this.$store.getters.getBotLoopTimeoutFunction;
@@ -173,6 +202,9 @@
             },
             playerCounter(){
               return this.$store.getters.getPlayerTurn;
+            },
+            showHiOrLow() {
+                return this.showHiLo;
             },
             activeBots(){
                 return this.$store.getters.playingBots;
@@ -285,5 +317,12 @@
   cursor: not-allowed;
 }
 
+.high-or-low{
+    position: absolute;
+    left: 25%;
+    top: 43%;
+    font-weight: 800;
+    font-size: 20px;
+}
 
 </style>
