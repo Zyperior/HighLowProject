@@ -64,7 +64,7 @@
                 this.successMessage = "";
                 this.failMessage = "";
 
-                axios.post("http://localhost:5000/users/login", {
+                axios.post("http://localhost:5000/users/auth/login", {
                     username: this.usernameField,
                     password: this.passwordField
                     })
@@ -92,14 +92,13 @@
                 this.failMessage = "";
 
                 if(this.validateInput()){
-                    axios.post("http://localhost:5000/users/register", {
+                    axios.post("http://localhost:5000/users/auth/register", {
                         username: this.usernameField,
                         password: this.passwordField,
                         email: this.emailField,
                         role: "USER"
                     })
                     .then((res) => {
-
                         this.displayLogin = true;
                         this.successMessage = "Registration successful, you can now login"
                     })
