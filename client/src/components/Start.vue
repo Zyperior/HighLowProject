@@ -1,6 +1,8 @@
 <template>
     <div id="startStage">
         <router-link to="game"><button @click="startGame">Start Game</button></router-link>
+        <br><br>
+        <button class="smallerButton" @click="$router.push('/settings')">Change game settings</button>
     </div>
 </template>
 
@@ -16,8 +18,18 @@
 </script>
 
 <style scoped>
-  /*Jag har lagt till några <br> (linebreak) i template/html koden för att saker ska hamna på nya rader.
-  Helt ok att ta bort dem för den som sedan stylar programmet*/
+
+    .smallerButton{
+        background: none;
+        text-decoration: underline;
+        border-style: none;
+        margin: 0;
+        padding: 0;
+        width: auto;
+    }
+    .smallerButton:hover{
+        cursor: pointer;
+    }
 
     img {
         width: 15%;

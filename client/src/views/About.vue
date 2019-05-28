@@ -53,6 +53,8 @@
 
 <style scoped>
 
+
+
     .about{
         display:grid;
         /* min-width: 96vmin; */

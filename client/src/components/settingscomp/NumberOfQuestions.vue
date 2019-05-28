@@ -15,7 +15,7 @@
         data(){
             return{
                 questionsAmount: [1, 2, 3, 4, 5],
-                amount: 1
+                amount: 3
             }
         },
         methods:{

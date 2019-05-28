@@ -9,9 +9,8 @@ const POINT_DEC_PERCENT = 0.01;
 const CORRECT_ANSWER = true;
 const INCORRECT_ANSWER = false;
 
-export default {
-
-    state : {
+const getDefaultState = () => {
+    return {
         gameRunning: false,
         gameCompleted: false,
         startTimer: false,
@@ -29,7 +28,12 @@ export default {
         answerAttempts: 0,
         questionCounter: 0,
         playerTurn: 0
-    },
+    }
+};
+
+export default {
+
+    state : getDefaultState(),
 
     getters : {
         isStartTimer: state => { return state.startTimer },
@@ -39,6 +43,7 @@ export default {
         getPlayerTurn: state => { return state.playerTurn },
         getCorrectAnswer: state => { return state.currentQuestion.answer },
         getCurrentQuestion: state => { return state.currentQuestion.question },
+        getCurrentQuestionValue: state => { return state.currentQuestion.value },
         getLowGuess: state => { return state.lowGuess },
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
@@ -47,78 +52,83 @@ export default {
     },
     mutations : {
 
-        setQuestions: (state, loadedQuestions) => (state.questions = loadedQuestions),
+        setQuestions (state, loadedQuestions) { state.questions = loadedQuestions },
 
-        startGame: state => {
+        startGame (state) {
             state.gameRunning = true;
             state.startTimer = true;
         },
 
-        setNextQuestion: state => {
+        setNextQuestion (state) {
             state.currentQuestion.question = state.questions[state.questionCounter].question;
             state.currentQuestion.answer = state.questions[state.questionCounter].answer;
             state.currentQuestion.points = state.questions[state.questionCounter].difficulty * POINT_FACTOR;
             state.currentQuestion.value = state.questions[state.questionCounter].difficulty * POINT_FACTOR;
         },
 
-        incPlayerTurn: state => {
+        incPlayerTurn (state) {
             state.playerTurn++;
             if(state.playerTurn >= state.players.length){
                 state.playerTurn = 0;
             }
         },
 
-        setClosestHighAnswer:  (state, answer) => {
+        setClosestHighAnswer (state, answer) {
             if(state.highGuess === '' || state.highGuess > answer){
                 state.highGuess = answer;
             }
         },
 
-        setClosestLowAnswer:  (state, answer) => {
+        setClosestLowAnswer (state, answer) {
             if( (state.lowGuess === '' && answer >= 0) || state.lowGuess < answer){
                 state.lowGuess = answer;
             }
         },
 
-        resetLowestAndHighestAnswers: state => { state.lowGuess = ''; state.highGuess = '' },
+        resetLowestAndHighestAnswers (state) { state.lowGuess = ''; state.highGuess = '' },
 
-        incQuestionCounter: state => { state.questionCounter++ },
+        incQuestionCounter (state) { state.questionCounter++ },
 
-        resetQuestionCounter: state => { state.questionCounter = 0},
+        resetQuestionCounter (state) { state.questionCounter = 0},
 
-        incPlayerCorrectAnswers: state => { state.players[state.playerTurn].correctAnswer++ },
+        incPlayerCorrectAnswers (state) { state.players[state.playerTurn].correctAnswer++ },
 
-        incPlayerScore: state => { state.players[state.playerTurn].score += state.currentQuestion.value },
+        incPlayerScore (state) { state.players[state.playerTurn].score += state.currentQuestion.value },
 
-        incPlayerGuessCount: state => { state.players[state.playerTurn].guessCount++ },
+        incPlayerGuessCount (state) { state.players[state.playerTurn].guessCount++ },
 
-        decQuestionValue: state => {
-            state.currentQuestion.value -= (state.currentQuestion.points * (state.guessCount * POINT_DEC_PERCENT))
+        decQuestionValue (state) {
+            state.currentQuestion.value -= (state.currentQuestion.points * (state.guessCount * POINT_DEC_PERCENT));
+            if(state.currentQuestion.value < 1){
+                state.currentQuestion.value = 1;
+            }
         },
 
-        setLastGuess: (state, answer) => { state.lastGuess = answer },
+        setLastGuess (state, answer) { state.lastGuess = answer },
 
         resetLastGuess: state => { state.lastGuess = '' },
 
-        incGuessCounter: state => { state.guessCount++ },
+        incGuessCounter (state) { state.guessCount++ },
 
-        resetGuessCounter: state => { state.guessCount = 0 },
+        resetGuessCounter (state) { state.guessCount = 0 },
 
-        incAnswerAttempts: state => { state.answerAttempts++ },
+        incAnswerAttempts (state) { state.answerAttempts++ },
 
-        setPlayers: (state, players) => { state.players = players; },
+        setPlayers (state, players) { state.players = players; },
 
-        muteSound: state => { state.muteSound = !state.muteSound },
+        muteSound (state) { state.muteSound = !state.muteSound; },
 
-        resetPlayersBeforeNewGame: state => { state.players = []; },
+        resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame: state => { state.isGameRunning = false },
+        stopGame (state) { state.isGameRunning = false; },
 
-        displayResults: state => { state.gameCompleted = true; },
+        displayResults (state) { state.gameCompleted = true; },
 
-        resetPlayerAnswers: state => { state.players.forEach(player => { player.answer = ""});},
+        resetPlayerAnswers (state) { state.players.forEach(player => { player.answer = ""; })},
 
-        setPlayerAnswer: (state, answer) => { state.players[state.playerTurn].answer = answer; },
+        setPlayerAnswer (state, answer) { state.players[state.playerTurn].answer = answer; },
+
+        resetState (state) { state = getDefaultState() },
 
         //Vet ej vad dessa två gör, låter dem ligga tills vidare /Andreas
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
@@ -128,6 +138,7 @@ export default {
 
         async loadGame({commit}) {
 
+            commit('resetState');
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
 
@@ -309,14 +320,13 @@ export default {
 
             });
 
+            commit('stopGame');
             router.push('/complete');
             commit('displayResults');
 
             commit('resetLastGuess');
-            commit('stopGame');
-            commit('resetQuestionCounter')
 
-
+            commit('resetQuestionCounter');
         }
     }
 }

@@ -49,6 +49,14 @@ const router = new Router({
       component: () => import('./components/login/Login.vue')
     },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('./components/login/Register.vue')
+    },
+
+
+
+    {
       path: '/auth-test',
       name: 'authtest',
       component: () => import('./components/login/AuthenticationTest.vue')
