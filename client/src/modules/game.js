@@ -182,7 +182,7 @@ export default {
                     guessCount: 0,
                     isHuman: true,
                     correctAnswer: 0,
-                    isUser: store.getters['userStats/getIsLoggedIn'],
+                    isUser: store.getters['userDB/getIsLoggedIn'],
                     answer: ""
                 }
                 players.push(player);
@@ -315,8 +315,7 @@ export default {
                         [p.name, p.score, 1, p.guessCount, p.correctAnswer])
 
                 }else if(p.isUser){
-                    console.log(p.correctAnswer);
-                    store.dispatch('userStats/updateUser', [p.name, p.guessCount, p.score, p.correctAnswer])
+                    store.dispatch('userDB/updateUser', [p.name, p.guessCount, p.score, p.correctAnswer])
                 }
 
             });

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-    import axios from "axios" //axios/index
-
     export default {
         name: "Login",
         data() {
@@ -45,29 +43,26 @@
             login(){
                 this.errorMessage = "";
 
-                axios.post("http://localhost:5000/users/login", {
-                    username: this.usernameField,
-                    password: this.passwordField
-                    })
+                this.$store.dispatch('userDB/login', [this.usernameField, this.passwordField])
                 .then((response) => {
 
-                    this.$store.commit('userStats/setIsLoggedIn', true);
-                    this.$store.commit('userStats/setUserCookieData', response.data.user)
+                    this.$store.commit('userDB/setUserCookieData', response.user)
+                    this.$store.commit('userDB/setIsLoggedIn', true);
 
-                    localStorage.setItem("token", response.data.token);
-                    localStorage.setItem("viewAdminPages", response.data.viewAdminPages);
+                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("viewAdminPages", response.viewAdminPages);
 
                     this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
                         loggedInUser: true,
-                        admin: response.data.viewAdminPages
+                        admin: response.viewAdminPages
                     });
-                    this.$router.push("/profile")
+
+                    this.$router.push("/profile/"+response.user.username);
                 })
                 .catch((error) => {
                     this.errorMessage = "Username and password do not match an existing user";
-                    console.log(error)
                 })
-            },
+            }
 
 
         }

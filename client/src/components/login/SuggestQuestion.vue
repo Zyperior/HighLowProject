@@ -74,7 +74,6 @@
                     .catch((error) => {
                         this.errorMessage = "You already have a pending question waiting for approval. " +
                             "You can only send in one question at once";
-                        console.log(error)
                     })
                 }
 

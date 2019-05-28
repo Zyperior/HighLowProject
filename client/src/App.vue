@@ -25,7 +25,7 @@
         admin: localStorage.getItem("viewAdminPages") == "true"
       })
        if(window.$cookies.isKey('userData')) {
-           this.$store.commit('userStats/setIsLoggedIn', true)
+           this.$store.commit('userDB/setIsLoggedIn', true)
        }
     }
   }

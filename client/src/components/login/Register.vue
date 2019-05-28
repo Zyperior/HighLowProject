@@ -41,24 +41,17 @@
         methods: {
             register(){
                 this.errorMessage = "";
-
                 if(this.validateInput()){
-                    axios.post("http://localhost:5000/users/register", {
-                        username: this.usernameField,
-                        password: this.passwordField,
-                        email: this.emailField,
-                        role: "USER"
-                    })
+                    this.$store.dispatch('userDB/register', [this.usernameField, this.passwordField, this.emailField, "USER"])
                         .then((res) => {
-                            this.$router.push('/login')
+                            if(res === 409)
+                                this.errorMessage = "This username is already taken";
                         })
                         .catch((error) => {
-                            this.errorMessage = "The username is already taken";
-                            console.log(error)
+                            this.errorMessage = "Something went wrong";
                         })
                 }
             },
-
             validateInput(){
 
                 if(!this.usernameField || !this.passwordField || !this.repeatPasswordField || !this.emailField){

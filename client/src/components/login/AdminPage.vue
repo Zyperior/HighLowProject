@@ -50,14 +50,12 @@
         },
         methods: {
             fetchAllPendingQuestions(){
-                console.log("so fetch!!")
                 axios.get("http://localhost:5000/suggestedQuestions/", {
                     headers: {
                         Authorization: `JWT ${localStorage.getItem("token")}`
                     }
                 })
                 .then((response) => {
-                    console.log(response.data)
                     this.pendingQuestions = response.data;
                     this.pendingQuestions.forEach(pendingQuestion => {
                         pendingQuestion.acceptOrDeny = "Remain pending"
@@ -69,7 +67,6 @@
             },
 
             acceptOrDenyPendingQuestions(){
-                console.log(this.pendingQuestions)
 
                 const questionsToSend = this.pendingQuestions.filter(pendingQuestion =>
                     pendingQuestion.acceptOrDeny !== "Remain pending");
