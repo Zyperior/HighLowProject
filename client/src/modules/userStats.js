@@ -7,7 +7,6 @@ module.exports = {
     },
     getters: {
         getIsLoggedIn(state){
-            console.log(state.isLoggedIn)
             return state.isLoggedIn;
         }
     },
@@ -34,7 +33,7 @@ module.exports = {
         getUser: function({commit}, username){
             return axios.get(
                 'http://localhost:5000/users/'+username
-            ).then(res => res.data).catch(err => console.log(err));
+            ).then(res => res.data).catch(err => err);
 
         },
         getTopUsers({commit}, limit){

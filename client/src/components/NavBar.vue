@@ -89,15 +89,9 @@
 
             },
             searchForUser(username) {
-                this.$store.dispatch('userStats/getUser', username)
-                    .then((user) => {
-                        console.log("in user");
-                        console.log(user);
-                    })
-                    .catch(err => {
-                        console.log("User does not exist");
-                    })
-            },
+                if(username != "")
+                    this.$router.push({name: 'user-profile', params: {username: username}});
+            }
         },
         components:{
             'mute-sound-button': MuteSoundButton

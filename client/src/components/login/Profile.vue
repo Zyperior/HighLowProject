@@ -1,7 +1,8 @@
 <template>
     <div>
-        <h1>Welcome {{user.username}}</h1>
         <div class="statistics">
+            <h1 v-if="isLoggedIn">Welcome, {{user.username}}</h1>
+            <h1 v-else>{{user.username}}</h1>
             <h4>Points:</h4> {{user.points}}<br>
             <h4>Correct answers percentage:</h4> {{percentage}}%<br>
             <h4>Games played:</h4> {{user.gamesplayed}}<br>
@@ -17,7 +18,7 @@
         name: "Profile",
         props: {
             user: {
-                required: true,
+                required: false,
                 type: Object
             }
         },
@@ -27,6 +28,9 @@
                     return Math.floor(this.user.correctguesses / this.user.totalguesses * 100);
                 else
                     return 0;
+            },
+            isLoggedIn(){
+                return this.$cookies.get('userData').username === this.user.username
             }
         }
 

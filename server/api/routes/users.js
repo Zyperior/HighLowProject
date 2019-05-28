@@ -14,9 +14,8 @@ const Question = require("../model/question")
 
 
 
-router.post("/register", (req, res) => {
-    console.log(req.body)
-    console.log("wow")
+router.post("/auth/register", (req, res) => {
+
     if(!req.body.username || !req.body.password || !req.body.email){
         res.status(400).send("All fields must be entered");
     }
@@ -32,20 +31,18 @@ router.post("/register", (req, res) => {
                         req.body.email,
                         req.body.role
                     ]).then(newUser => {
-                        console.log("do something here")
                         res.status(201).send(newUser.rows[0])
-                    }).catch(err => console.log(err));
-                }).catch(err => console.log(err));
+                    }).catch(err => res.status(500).send("Something went wrong, user not created"));
+                }).catch(err => res.status(500).send("Something went wrong"));
             }else{
-                console.log("why i am i here???")
                 res.status(409).send("User with that name already exists")
             }
-        }).catch(err => console.log(err));
+        }).catch(err => res.status(500).send("Something went wrong"));
 });
 
 
 
-router.post("/login",  (req, res) => {
+router.post("/auth/login",  (req, res) => {
 
     if(!req.body.username || !req.body.password){
         res.status(400).send("All fields must be entered");
@@ -83,9 +80,7 @@ router.post("/login",  (req, res) => {
                         }
                     });
                 }
-            }).catch(err => {
-                console.log(err);
-        })
+            }).catch(err => res.status(500).send("Something went wrong"));
     }
 });
 
@@ -100,7 +95,9 @@ router.get('/:username', (req, res) => {
                   }else{
                       res.status(200).send(foundUser.rows[0])
                   }
-    }).catch(err => res.status(500).send('Something is wrong'))
+    }).catch(err => {
+        res.status(500).send('Something is wrong')
+    })
 })
 
 router.put('/:username', (req, res) => {
@@ -119,52 +116,52 @@ router.put('/:username', (req, res) => {
                 res.status(404).send("User not found")
             }else
                 res.status(201).send(updatedUser.rows[0])
-        }).catch(err => console.log(err));
+        }).catch(err => res.status(500).send("Something went wrong"));
 })
 
 router.get('/top/:nr', (req, res) => {
-    db.query('SELECT username, points FROM users ORDER BY points LIMIT $1', [req.params.nr])
+    db.query('SELECT username, points FROM users ORDER BY points DESC LIMIT $1', [req.params.nr])
         .then(foundUsers => {
             console.log(foundUsers)
             if(!foundUsers.rows){
                 res.status(200).send("No users")
             }else
                 res.status(200).send(foundUsers.rows)
-        }).catch(err => {
-            console.log(err);
-    })
+        }).catch(err => res.status(500).send("Something went wrong"));
 })
 
 
-router.get("/logout", (req, res) => {
-    //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
-    res.send("todo")
-});
+// router.get("/logout", (req, res) => {
+//     //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
+//     res.send("todo")
+// });
 
 
 
 //Authentication tests to test things work like it should
-router.get("/auth-test-logged-in-user", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        if(user !== false){
-            res.status(200).send("Authentication successful")
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
+//Maybe delete?
 
-router.get("/auth-test-logged-in-admin", (req, res, next) => {
-    passport.authenticate("jwt", {session: false}, (error, user) => {
-        if(user !== false && user.role === "ADMIN"){
-            res.status(200).send("Authentication successful")
-        }
-        else{
-            res.status(401).send("Authentication failed")
-        }
-    })(req, res, next);
-});
+// router.get("/auth-test-logged-in-user", (req, res, next) => {
+//     passport.authenticate("jwt", {session: false}, (error, user) => {
+//         if(user !== false){
+//             res.status(200).send("Authentication successful")
+//         }
+//         else{
+//             res.status(401).send("Authentication failed")
+//         }
+//     })(req, res, next);
+// });
+//
+// router.get("/auth-test-logged-in-admin", (req, res, next) => {
+//     passport.authenticate("jwt", {session: false}, (error, user) => {
+//         if(user !== false && user.role === "ADMIN"){
+//             res.status(200).send("Authentication successful")
+//         }
+//         else{
+//             res.status(401).send("Authentication failed")
+//         }
+//     })(req, res, next);
+// });
 
 
 
