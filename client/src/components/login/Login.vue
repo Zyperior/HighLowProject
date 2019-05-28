@@ -62,22 +62,7 @@
                 .catch((error) => {
                     this.errorMessage = "Username and password do not match an existing user";
                 })
-            },
-            register(){
-                this.successMessage = "";
-                this.failMessage = "";
-
-                if(this.validateInput()){
-                    this.$store.dispatch('userDB/register', [this.usernameField, this.passwordField, this.emailField, "USER"])
-                    .then((res) => {
-                        this.displayLogin = true;
-                        this.successMessage = "Registration successful, you can now login"
-                    })
-                    .catch((error) => {
-                        this.errorlMessage = "The username is already taken";
-                    })
-                }
-            },
+            }
 
 
         }

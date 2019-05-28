@@ -51,7 +51,7 @@ module.exports = {
                 password: userDataArray[1],
                 email: userDataArray[2],
                 role: userDataArray[4],
-            }).then(res => res).catch(err => err);
+            }).then(res => res).catch(err => 409);
         }
     }
 }
