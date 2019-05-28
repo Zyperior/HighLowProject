@@ -1,9 +1,16 @@
 <template>
-    <div id="topnav">
-        <div class="searchPlaceHolder">
-            <input id="searchInput" v-model="username"><img id="glass" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)" />
-        </div>
-        <div id="myLinks" v-if="activate === true">
+    <div>
+
+
+        <div id="navigation-bar">
+
+            <div id="left-container">
+                <input id="search-field" v-model="username" placeholder="Search for user">
+                <img id="glass-icon" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)" />
+
+
+            </div>
+            <div id="links" v-if="activate === true">
             <div @click="showMenu"> </div>
             <div @click="showMenu"><router-link to="/">Home</router-link></div>
             <div @click="showMenu"><router-link to="/rules">Rules</router-link></div>
@@ -11,33 +18,44 @@
             <div @click="showMenu"><router-link to="/bots">Bots</router-link></div>
             <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <router-link to="/profile">Profile</router-link>
+            <router-link to="/profile">Profile</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <router-link to="/suggest-question">Suggest a question</router-link>
+            <router-link to="/suggest-question">Suggest a question</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInAdmin">
-                <router-link to="/admin">Admin page</router-link>
+            <router-link to="/admin">Admin page</router-link>
             </div>
 
             <div @click="showMenu" v-show="!displayExclusivePages.loggedInUser">
-                <router-link to="/login">Login</router-link>
+            <router-link to="/login">Login</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <button id="logout-button" @click="logout">Logout button</button>
+            <button id="logout-button" @click="logout">Logout button</button>
+            </div>
+            </div>
+
+
+
+
+            <div id="right-container">
+                <!--<div>-->
+                    <!--<mute-sound-button id="sound-icon"/>-->
+                <!--</div>-->
+
+                <button id="login-button">Login</button>
+
+
+                <img @click="showMenu" id="menu-icon" src="https://www.lisastone.com/wp-content/uploads/pp/images/1494960420-menu.png"/>
+                <!--<div>-->
+                    <!--&lt;!&ndash;<a class="menu-icon" href="javascript:void(0);" @click="showMenu"><i class="fa fa-bars"></i></a>&ndash;&gt;-->
+                <!--</div>-->
             </div>
 
         </div>
-            <a href="javascript:void(0);" class="icon" @click="showMenu">
-            <i class="fa fa-bars"></i>
-        </a>
-
-        <mute-sound-button id="mute" />
 
 
-        <!--<div>-->
-            <!--<router-link to="/auth-test">AuthenticationTest</router-link>-->
-        <!--</div>-->
+
 
 
 
@@ -100,41 +118,71 @@
 </script>
 
 <style scoped>
-    .searchPlaceHolder{
-        display: grid;
-        grid-template-columns: repeat(2, auto);
-    }
-    #topnav{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
 
-        padding: 3px 3px 3px 3px;
-    }
-    #mute{
-        grid-column: 3;
-    }
-    #glass{
-        grid-column: 2;
-        height: 22px;
-        width: 22px;
-    }
-    #searchInput{
-        grid-column: 1;
-        max-height: 20px;
-        max-width: 90px;
+    #navigation-bar{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
 
-    }
-     #navBar {
-        margin: auto;
-        width: 90%;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
+        height: 3em;
+        background: #2c2c2c;
 
 
-    #navBar div {
-        padding: 1em;
     }
+
+    #left-container, #right-container{
+        display: flex;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 1em;
+        margin-right: 1em;
+        align-items: center;
+    }
+
+    #login-button{
+        border: none;
+        background: #7dd556;
+        color: white;
+        border-radius: 5px;
+        padding: 0.5em 1em;
+        margin-left: 1em;
+    }
+
+    #login-button:hover, #menu-icon:hover, #glass-icon{
+        cursor: pointer;
+    }
+
+    #search-field{
+        margin-right: 1em;
+    }
+
+    #left-container img{
+        max-height: 1em;
+    }
+
+    #menu-icon{
+        color: white;
+        height: 50px;
+        margin-left: 1em;
+    }
+
+    #links{
+        background: #7dd556;
+
+    }
+    #links a{
+        color: white;
+        text-decoration: none;
+    }
+    #links a:hover{
+        background: blue;
+    }
+
+
+
+
+
+
 
 
      #logout-button{
