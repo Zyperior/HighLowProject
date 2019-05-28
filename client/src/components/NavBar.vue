@@ -1,7 +1,7 @@
 <template>
     <div id="topnav">
         <div class="searchPlaceHolder">
-            <input id="searchInput" v-model="username"><img id="glass" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)" />
+            <input id="searchInput" v-model="username" placeholder="Search for user"><img id="glass" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)"/>
         </div>
         <div id="myLinks" v-if="activate === true">
             <div @click="showMenu"> </div>
@@ -11,7 +11,7 @@
             <div @click="showMenu"><router-link to="/bots">Bots</router-link></div>
             <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <router-link to="/profile">Profile</router-link>
+                <router-link to='/myprofile'>Profile</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
                 <router-link to="/suggest-question">Suggest a question</router-link>
@@ -34,13 +34,6 @@
 
         <mute-sound-button id="mute" />
 
-
-        <!--<div>-->
-            <!--<router-link to="/auth-test">AuthenticationTest</router-link>-->
-        <!--</div>-->
-
-
-
     </div>
 </template>
 
@@ -57,7 +50,6 @@
         },
         methods: {
             showMenu: function () {
-                console.log("hej");
                 this.activate = !this.activate;
                 console.log(this.activate)
             },
@@ -74,15 +66,9 @@
 
             },
             searchForUser(username) {
-                this.$store.dispatch('userStats/getUser', username)
-                    .then((user) => {
-                        console.log("in user");
-                        console.log(user);
-                    })
-                    .catch(err => {
-                        console.log("User does not exist");
-                    })
-            },
+                if(username != "")
+                    this.$router.push({name: 'user-profile', params: {username: username}});
+            }
         },
         components:{
             'mute-sound-button': MuteSoundButton
