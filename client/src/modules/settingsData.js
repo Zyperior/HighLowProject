@@ -5,7 +5,7 @@ let currentSettings = {
         category: 0,
         difficulty: 0
     },
-    playerAmount: 1,
+    playerAmount: 0,
     botCommentary: true,
     shufflePlayers: true,
     micInputLanguage: 'sv-SE',
