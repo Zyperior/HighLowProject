@@ -120,12 +120,7 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-                let audio = new Audio();
-                if(!this.muteSounds){
-                    audio.src = bot.soundFx[0];
-                    audio.play();
-                }
-                let randTime = Math.floor(Math.random() * 5000) + this.animationTime + 200;
+                let randTime = Math.floor(Math.random() * 5000);
                 if(this.isGameRunning){
                     this.botLoopTimeoutFunction = setTimeout(function () {
 
