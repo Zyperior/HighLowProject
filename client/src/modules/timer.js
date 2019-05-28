@@ -1,4 +1,7 @@
 
+
+import store from '../store';
+
 const state =  {
     time: 10000,
     interval: 0,
@@ -22,18 +25,22 @@ const mutations = {
 
         state.time = state.timeLimit;
 
-        state.interval = setInterval(function() {
+        setTimeout(function() {
 
-            state.time -= 100;
+            state.interval = setInterval(function() {
 
-            if (state.time === 0) {
+                state.time -= 100;
 
-                clearInterval(state.interval);
-                state.isTimerZero = !state.isTimerZero;
+                if (state.time === 0) {
 
-            }
+                    clearInterval(state.interval);
+                    state.isTimerZero = !state.isTimerZero;
 
-        }, 100);
+                }
+
+            }, 100);
+
+        }, store.getters.getAnimationTime);
 
     },
 
