@@ -27,7 +27,7 @@
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
-                    <button @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Push To Talk</button>
+                    <button v-if="speechRecognitionAvailable" @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Click To Talk</button>
                 </div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
@@ -40,9 +40,12 @@
     import Timer from '@/components/Timer.vue';
     import ChatMessage from "./ChatMessage";
     import PlayerCards from '@/components/PlayerCards.vue';
+    import {getCurrentSettings} from '@/modules/settingsData';
 
     //Some voice recognition.
-    //var recognition = new webkitSpeechRecognition() || SpeechRecognition();
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+        var recognition = new webkitSpeechRecognition();
+    }
 
     export default {
         data(){
@@ -51,7 +54,8 @@
               number: 0,
               activePlayer: {},
               recording: false,
-              answer: ''
+              answer: '',
+              speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition')
           }
         },
         methods: {
@@ -66,7 +70,7 @@
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
 
-                    if(this.$store.state.game.chattyBots) {
+                    if(this.$store.state.game.chattyBots && chatPayload[0].answer !== -1) {
                         this.$store.dispatch("chat", chatPayload);
                     }
                 }
@@ -87,26 +91,23 @@
 
 
             startVoiceRecording() {
-                if(this.playerTurn) {
-                    if(!this.recording) {
-                        this.recording = !this.recording;
-                        let that = this;
-                        let voiceResult = 0;
-                        recognition.lang = this.$store.state.game.speechToTextLanguage;
-                        recognition.start();
-                        recognition.onresult = function (event) {
-                            for (var i = event.resultIndex; i < event.results.length; i++) {
-                                if (event.results[i].isFinal) {
-                                    voiceResult = event.results[i][0].transcript;
-                                    if(this.playerTurn) {
-                                        that.$store.commit('submitAnswer', voiceResult);
-                                        that.guess();
-                                    }
+                //Starts recording if player turn, when recording stops submit if it's still the player turn.
+                if (this.playerTurn) {
+                    let that = this;
+                    let voiceResult = 0;
+                    recognition.lang = getCurrentSettings().micInputLanguage;
+                    recognition.start();
+                    recognition.onresult = function (event) {
+                        for (var i = event.resultIndex; i < event.results.length; i++) {
+                            if (event.results[i].isFinal) {
+                                voiceResult = event.results[i][0].transcript;
+                                if(that.playerTurn) {
+                                    that.submitAnswer(voiceResult);
+                                    that.guess();
                                 }
                             }
                         }
-                        this.recording = false;
-                    }
+                    };
                 }
             },
             add(){
