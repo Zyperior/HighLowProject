@@ -43,6 +43,11 @@ const router = new Router({
       name: 'login',
       component: () => import('./components/login/Login.vue')
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./components/login/Register.vue')
+    },
 
 
 

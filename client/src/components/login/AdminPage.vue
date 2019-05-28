@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p >Only logged in admins can see this!</p>
         <br>
         <button @click="fetchAllPendingQuestions">Fetch all pending questions</button>
         <ul>

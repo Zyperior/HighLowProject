@@ -18,8 +18,8 @@
                     <!--<mute-sound-button id="sound-icon"/>-->
                 <!--</div>-->
 
-                <button v-show="!displayExclusivePages.loggedInUser">Login</button>
-                <button v-show="!displayExclusivePages.loggedInUser">Register</button>
+                <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/login')">Login</button>
+                <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/register')">Register</button>
                 <button v-show="displayExclusivePages.loggedInUser" @click="logout">Logout</button>
 
 
@@ -34,11 +34,12 @@
 
         <div id="links" v-if="activate === true">
 <!--            <div @click="showMenu"> </div>-->
-            <div @click="showMenu"><router-link to="/">Home</router-link></div>
+            <div @click="showMenu"><router-link to="/">Play</router-link></div>
             <div @click="showMenu"><router-link to="/rules">Rules</router-link></div>
             <div @click="showMenu"><router-link to="/about">About</router-link></div>
             <div @click="showMenu"><router-link to="/bots">Bots</router-link></div>
             <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
+
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
                 <router-link to="/profile">Profile</router-link>
             </div>
@@ -49,12 +50,7 @@
                 <router-link to="/admin">Admin page</router-link>
             </div>
 
-            <div @click="showMenu" v-show="!displayExclusivePages.loggedInUser">
-                <router-link to="/login">Login</router-link>
-            </div>
-<!--            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">-->
-<!--                <button id="logout-button" @click="logout">Logout button</button>-->
-<!--            </div>-->
+
         </div>
 
 
@@ -121,6 +117,9 @@
 </script>
 
 <style scoped>
+
+
+
 
     #navigation-bar{
         display: flex;

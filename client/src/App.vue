@@ -39,6 +39,10 @@
     box-sizing: border-box;
   }
 
+  p{
+    padding: 1em;
+  }
+
 
   .view{
     margin-top: 40px;
