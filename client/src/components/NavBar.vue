@@ -51,7 +51,6 @@
         methods: {
             showMenu: function () {
                 this.activate = !this.activate;
-                console.log(this.activate)
             },
             logout() {
                 localStorage.clear();

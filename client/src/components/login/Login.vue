@@ -72,7 +72,6 @@
 
                     this.$store.commit('userStats/setIsLoggedIn', true);
                     this.$store.commit('userStats/setUserCookieData', response.data.user)
-                    console.log(this.$store.getters['userStats/getIsLoggedIn'])
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("viewAdminPages", response.data.viewAdminPages);
 
@@ -84,7 +83,6 @@
                 })
                 .catch((error) => {
                     this.failMessage = "Username and password do not match an existing user";
-                    console.log(error)
                 })
             },
             register(){
@@ -104,7 +102,6 @@
                     })
                     .catch((error) => {
                         this.failMessage = "The username is already taken";
-                        console.log(error)
                     })
                 }
             },

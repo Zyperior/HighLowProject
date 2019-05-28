@@ -50,7 +50,7 @@
                                 }else{
                                     this.userNotFound = true;
                                     this.loading = false;
-                                    this.$router.push('/error');
+                                    //this.$router.push('/error');
                                 }
                             })
                             .catch(err => {

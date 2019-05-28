@@ -192,9 +192,9 @@
                         return (this.lastGuess === this.correctAnswer);
                     }
                 }
-                if (typeof interval.lowestGuess === 'undefined')
+                if (interval.lowestGuess === '')
                     interval.lowestGuess = 0;
-                if (typeof interval.highestGuess === 'undefined')
+                if (interval.highestGuess === '')
                     interval.highestGuess = 0;
 
                 return interval;

@@ -304,7 +304,6 @@ export default {
                         [p.name, p.score, 1, p.guessCount, p.correctAnswer])
 
                 }else if(p.isUser){
-                    console.log(p.correctAnswer);
                     store.dispatch('userStats/updateUser', [p.name, p.guessCount, p.score, p.correctAnswer])
                 }
 
