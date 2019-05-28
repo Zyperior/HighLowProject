@@ -1,33 +1,36 @@
 <template>
     <div>
-        <h1>Game Page</h1>
         <div v-show="isGameRunning">
-            <p>{{currentQuestion}}</p>
+            <QuestionCard/>
             <div>
-                <h2>Highest Guess: {{highGuess}}</h2>
-                <h2>Lowest Guess: {{lowGuess}} </h2>
-                <!-- <p v-for="player in players" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
+                <div class="aboveBelow">
+                    <div>Closest above:</div><div>{{highGuess}}</div>
+                    <div>Closest below:</div><div>{{lowGuess}}</div>
+                </div>
 
                 <div id="playerCardsDiv">
                     <PlayerCards :active-players="activePlayers" ref="myPlayerCards"></PlayerCards>
                 </div>
 
-                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
-                <!--<p>{{bot.name}}</p>-->
-                <!--</div>-->
-                <input
-                        v-model="answer"
-                        oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
-                        name="answer"
-                        placeholder="Enter your answer"
-                        :disabled="!playerTurn"
-                        autocomplete="off"
-                        v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
+                <input v-model="answer"
+                       oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                       name="answer"
+                       placeholder="Enter your answer"
+                       :disabled="!playerTurn"
+                       autocomplete="off"
+                       v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
                 />
 
                 <div>
-                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
-                    <button v-if="speechRecognitionAvailable" @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Click To Talk</button>
+                    <button @click="submitAnswer(answer); guess();"
+                            :disabled="!playerTurn || answer.length === 0"
+                            :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer
+                    </button>
+                    <button v-if="speechRecognitionAvailable"
+                            @click="startVoiceRecording"
+                            :disabled="!playerTurn"
+                            :class="{buttonDisabled: !playerTurn}">Click To Talk
+                    </button>
                 </div>
                 <div class="high-or-low" v-if="showHiOrLow">{{hilo}}</div>
                 <chat-message/>
@@ -42,6 +45,7 @@
     import ChatMessage from "./ChatMessage";
     import PlayerCards from '@/components/PlayerCards.vue';
     import {getCurrentSettings} from '@/modules/settingsData';
+    import QuestionCard from './QuestionCard';
 
     //Some voice recognition.
     if (window.hasOwnProperty('webkitSpeechRecognition')) {
@@ -49,6 +53,12 @@
     }
 
     export default {
+        components: {
+            ChatMessage,
+            Timer,
+            PlayerCards,
+            QuestionCard
+        },
         data(){
             return {
                 playerTurn: true,
@@ -61,7 +71,7 @@
             }
         },
         methods: {
-            
+
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -164,7 +174,7 @@
 
                     if(thisComponent.activePlayer.isHuman){
                         thisComponent.playerTurn = true;
-                        
+
                     }else {
                         thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
@@ -235,9 +245,6 @@
             lastGuess() {
               return this.$store.getters.getLastGuess;
             },
-            currentQuestion() {
-                return this.$store.getters.getCurrentQuestion;
-            },
             startTimer() {
                 return this.$store.getters.isStartTimer;
             },
@@ -280,42 +287,39 @@
                 this.submitAnswer(-1);
                 this.guess();
             }
-
-
-
-        },
-        components: {
-            ChatMessage,
-            Timer,
-            PlayerCards
         }
-
-
     }
 </script>
 <style scoped>
 
-* {
-    box-sizing: border-box;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-.activePlayer {
-    background-color: red;
-}
+    .activePlayer {
+        background-color: red;
+    }
 
-#playerCardsDiv {
-    width: 21vw;
-    height: 32vw;
-    margin: auto;
-    text-align: center;
-    /* border: 1px solid black; */
-}
+    #playerCardsDiv {
+        width: 21vw;
+        height: 32vw;
+        margin: auto;
+        text-align: center;
+        /* border: 1px solid black; */
+    }
 
 
-.buttonDisabled{
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+    .buttonDisabled{
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .aboveBelow{
+        display: grid;
+        grid-template-columns: 31% 19% 31% 19%;
+        font-size: 15px;
+        text-align: start;
+    }
 
 .high-or-low{
     position: absolute;
