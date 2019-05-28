@@ -31,7 +31,6 @@ router.post("/auth/register", (req, res) => {
                         req.body.email,
                         req.body.role
                     ]).then(newUser => {
-                        console.log("do something here")
                         res.status(201).send(newUser.rows[0])
                     }).catch(err => res.status(500).send("Something went wrong, user not created"));
                 }).catch(err => res.status(500).send("Something went wrong"));
