@@ -1,10 +1,21 @@
 <template>
-    $END$
+    <div class="questionFrame">
+        <div class="questionText"></div>
+        <div class="questionPoints"></div>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "questionCard"
+        name: "questionCard",
+        computed:{
+            currentQuestion() {
+                return this.$store.getters.getCurrentQuestion;
+            },
+            currentPoints(){
+
+            }
+        }
     }
 </script>
 

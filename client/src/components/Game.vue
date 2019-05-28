@@ -4,8 +4,8 @@
         <div v-show="isGameRunning">
             <p>{{currentQuestion}}</p>
             <div>
-                <h2>Highest Guess: {{highGuess}} </h2>
-                <h2>Lowest Guess: {{lowGuess}} </h2>
+                <h2>Closest above: {{highGuess}} </h2>
+                <h2>Closest below: {{lowGuess}} </h2>
                 <!-- <p v-for="player in players" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
 
                 <div id="playerCardsDiv">
@@ -55,7 +55,7 @@
           }
         },
         methods: {
-            
+
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -201,9 +201,6 @@
             },
             lastGuess() {
               return this.$store.getters.getLastGuess;
-            },
-            currentQuestion() {
-                return this.$store.getters.getCurrentQuestion;
             },
             startTimer() {
                 return this.$store.getters.isStartTimer;

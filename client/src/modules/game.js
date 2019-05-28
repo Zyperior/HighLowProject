@@ -9,6 +9,26 @@ const POINT_DEC_PERCENT = 0.01;
 const CORRECT_ANSWER = true;
 const INCORRECT_ANSWER = false;
 
+const DEFAULT_STATE = {
+    gameRunning: false,
+    gameCompleted: false,
+    startTimer: false,
+    muteSound: false,
+    chattyBots: true,
+    players: [],
+    questions: [],
+    lowGuess: '',
+    highGuess: '',
+    lastGuess: '',
+    botLoopTimeoutFunction: '',
+    speechToTextLanguage: '',
+    currentQuestion: { question: '', answer: '', points: 0, value: 0 },
+    guessCount: 0,
+    answerAttempts: 0,
+    questionCounter: 0,
+    playerTurn: 0
+};
+
 export default {
 
     state : {
@@ -39,6 +59,7 @@ export default {
         getPlayerTurn: state => { return state.playerTurn },
         getCorrectAnswer: state => { return state.currentQuestion.answer },
         getCurrentQuestion: state => { return state.currentQuestion.question },
+        getCurrentQuestionValue: state => { return state.currentQuestion.value },
         getLowGuess: state => { return state.lowGuess },
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
@@ -93,7 +114,10 @@ export default {
         incPlayerGuessCount: state => { state.players[state.playerTurn].guessCount++ },
 
         decQuestionValue: state => {
-            state.currentQuestion.value -= (state.currentQuestion.points * (state.guessCount * POINT_DEC_PERCENT))
+            state.currentQuestion.value -= (state.currentQuestion.points * (state.guessCount * POINT_DEC_PERCENT));
+            if(state.currentQuestion.value < 1){
+                state.currentQuestion.value = 1;
+            }
         },
 
         setLastGuess: (state, answer) => { state.lastGuess = answer },
@@ -314,9 +338,7 @@ export default {
 
             commit('resetLastGuess');
             commit('stopGame');
-            commit('resetQuestionCounter')
-
-
+            commit('resetQuestionCounter');
         }
     }
 }
