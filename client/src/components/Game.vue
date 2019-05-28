@@ -27,7 +27,7 @@
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
-                    <button v-if="speechRecognitionAvailable" @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Push To Talk</button>
+                    <button v-if="speechRecognitionAvailable" @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Click To Talk</button>
                 </div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
@@ -40,9 +40,9 @@
     import Timer from '@/components/Timer.vue';
     import ChatMessage from "./ChatMessage";
     import PlayerCards from '@/components/PlayerCards.vue';
+    import {getCurrentSettings} from '@/modules/settingsData';
 
     //Some voice recognition.
-
     if (window.hasOwnProperty('webkitSpeechRecognition')) {
         var recognition = new webkitSpeechRecognition();
     }
@@ -91,21 +91,20 @@
 
 
             startVoiceRecording() {
-                console.log('In start')
+                //Starts recording if player turn, when recording stops submit if it's still the player turn.
                 if (this.playerTurn) {
-                    console.log('In player turn')
                     let that = this;
                     let voiceResult = 0;
-                    recognition.lang = this.$store.state.game.speechToTextLanguage;
+                    recognition.lang = getCurrentSettings().micInputLanguage;
                     recognition.start();
                     recognition.onresult = function (event) {
-                        console.log('Inside voice recog onResult');
                         for (var i = event.resultIndex; i < event.results.length; i++) {
                             if (event.results[i].isFinal) {
                                 voiceResult = event.results[i][0].transcript;
-                                console.log(voiceResult);
-                                that.$store.commit('submitAnswer', voiceResult);
-                                that.guess();
+                                if(that.playerTurn) {
+                                    that.submitAnswer(voiceResult);
+                                    that.guess();
+                                }
                             }
                         }
                     };
