@@ -23,7 +23,7 @@
                         :disabled="!playerTurn"
                         autocomplete="off"
                         v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
-                >
+                />
 
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
@@ -55,13 +55,7 @@
           }
         },
         methods: {
-            // startGame() {
-            //     console.log("Start game!");
-
-            //     this.$refs.myPlayerCards.initIndexes();
-            //     this.$store.dispatch("startGame");
-
-            // },
+            
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -72,14 +66,16 @@
                     this.$store.dispatch("submitAnswer", a);
                     let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
 
-                    this.$refs.myPlayerCards.flipCards();
-
                     if(this.$store.state.game.chattyBots) {
                         this.$store.dispatch("chat", chatPayload);
                     }
                 }
 
+                this.answer = "";
+
             },
+
+
             submitAnswerWithEnter(answer) {
 
                 if (answer.length !== 0) {
@@ -155,6 +151,7 @@
 
                     if(thisComponent.activePlayer.isHuman){
                         thisComponent.playerTurn = true;
+                        
                     }else {
                         thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
@@ -252,7 +249,7 @@
                 this.guess();
             },
             isTimerZero(){
-                this.submitAnswer(0);
+                this.submitAnswer(-1);
                 this.guess();
             }
 

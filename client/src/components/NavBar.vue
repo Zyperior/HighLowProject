@@ -1,50 +1,47 @@
-<template>    
-    <div id="navBar">
-        <div>
-            <router-link to="/">Home</router-link>
+<template>
+    <div id="topnav">
+        <div class="searchPlaceHolder">
+            <input id="searchInput" v-model="username"><img id="glass" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)" />
         </div>
-        <div>
-            <router-link to="/rules">Rules</router-link>
+        <div id="myLinks" v-if="activate === true">
+            <div @click="showMenu"> </div>
+            <div @click="showMenu"><router-link to="/">Home</router-link></div>
+            <div @click="showMenu"><router-link to="/rules">Rules</router-link></div>
+            <div @click="showMenu"><router-link to="/about">About</router-link></div>
+            <div @click="showMenu"><router-link to="/bots">Bots</router-link></div>
+            <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
+            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
+                <router-link to="/profile">Profile</router-link>
+            </div>
+            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
+                <router-link to="/suggest-question">Suggest a question</router-link>
+            </div>
+            <div @click="showMenu" v-show="displayExclusivePages.loggedInAdmin">
+                <router-link to="/admin">Admin page</router-link>
+            </div>
+
+            <div @click="showMenu" v-show="!displayExclusivePages.loggedInUser">
+                <router-link to="/login">Login</router-link>
+            </div>
+            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
+                <button id="logout-button" @click="logout">Logout button</button>
+            </div>
+
         </div>
-        <div>
-            <router-link to="/about">About</router-link>
-        </div>
-        <div>
-            <router-link to="/bots">Bots</router-link>
-        </div>
-        <div>
-            <router-link to="/settings">Settings</router-link>
-        </div>
-        <mute-sound-button />
+            <a href="javascript:void(0);" class="icon" @click="showMenu">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <mute-sound-button id="mute" />
 
 
         <!--<div>-->
             <!--<router-link to="/auth-test">AuthenticationTest</router-link>-->
         <!--</div>-->
 
-        <div v-show="displayExclusivePages.loggedInUser">
-            <router-link to="/profile">Profile</router-link>
-        </div>
-        <div v-show="displayExclusivePages.loggedInUser">
-            <router-link to="/suggest-question">Suggest a question</router-link>
-        </div>
-        <div v-show="displayExclusivePages.loggedInAdmin">
-            <router-link to="/admin">Admin page</router-link>
-        </div>
-
-        <div v-show="!displayExclusivePages.loggedInUser">
-            <router-link to="/login">Login</router-link>
-        </div>
-        <div v-show="displayExclusivePages.loggedInUser">
-            <button id="logout-button" @click="logout">Logout button</button>
-        </div>
-        <div>
-            <p>Search for user:</p><input v-model="username">
-            <button @click="searchForUser(username)">Search</button>
-        </div>
 
 
-</div>
+    </div>
 </template>
 
 <script>
@@ -52,24 +49,19 @@
 
     export default {
         name: "NavBar",
-        components:{
-            'mute-sound-button': MuteSoundButton
-        },
-        data() {
-            return {
+        data(){
+            return{
+                activate : false,
                 username: ""
             }
         },
-        computed: {
-            displayExclusivePages(){
-                return {
-                    loggedInUser: this.$store.getters.displayExclusivePages.loggedInUser,
-                    loggedInAdmin: this.$store.getters.displayExclusivePages.admin
-                }
-            }
-        },
         methods: {
-            logout(){
+            showMenu: function () {
+                console.log("hej");
+                this.activate = !this.activate;
+                console.log(this.activate)
+            },
+            logout() {
                 localStorage.clear();
                 this.$store.commit('userStats/setIsLoggedIn', false);
                 this.$cookies.remove('userData');
@@ -81,23 +73,57 @@
                 this.$router.push("/login")
 
             },
-            searchForUser(username){
+            searchForUser(username) {
                 this.$store.dispatch('userStats/getUser', username)
                     .then((user) => {
-                        console.log("in user")
+                        console.log("in user");
                         console.log(user);
                     })
                     .catch(err => {
                         console.log("User does not exist");
                     })
+            },
+        },
+        components:{
+            'mute-sound-button': MuteSoundButton
+        },
+        computed: {
+            displayExclusivePages(){
+                return {
+                    loggedInUser: this.$store.getters.displayExclusivePages.loggedInUser,
+                    loggedInAdmin: this.$store.getters.displayExclusivePages.admin
+                }
             }
-        }
+        },
     }
 
 </script>
 
 <style scoped>
+    .searchPlaceHolder{
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+    }
+    #topnav{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
 
+        padding: 3px 3px 3px 3px;
+    }
+    #mute{
+        grid-column: 3;
+    }
+    #glass{
+        grid-column: 2;
+        height: 22px;
+        width: 22px;
+    }
+    #searchInput{
+        grid-column: 1;
+        max-height: 20px;
+        max-width: 90px;
+
+    }
      #navBar {
         margin: auto;
         width: 90%;
