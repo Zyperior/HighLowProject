@@ -47,5 +47,7 @@
 </script>
 
 <style scoped>
-
+    p{
+        padding: 0;
+    }
 </style>

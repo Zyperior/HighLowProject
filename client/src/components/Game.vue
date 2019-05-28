@@ -1,19 +1,16 @@
 <template>
     <div>
         <div v-show="isGameRunning">
-            <p>{{currentQuestion}}</p>
+            <h2>{{currentQuestion}}</h2>
+            <br>
             <div>
-                <h2>Highest Guess: {{highGuess}} </h2>
-                <h2>Lowest Guess: {{lowGuess}} </h2>
-                <!-- <p v-for="player in players" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
-
+                <p>Highest guess above answer: <span>{{highGuess}}</span> </p>
+                <p>Lowest guess below answer: <span>{{lowGuess}}</span> </p>
+                <br>
                 <div id="playerCardsDiv">
                     <PlayerCards :active-players="activePlayers" ref="myPlayerCards"></PlayerCards>
                 </div>
 
-                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
-                <!--<p>{{bot.name}}</p>-->
-                <!--</div>-->
                 <input
                         v-model="answer"
                         oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
@@ -24,6 +21,7 @@
                         v-on:keydown.enter="submitAnswerWithEnter(answer); guess();"
                 />
 
+                <br>
                 <div>
                     <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn || answer.length === 0" :class="{buttonDisabled: !playerTurn || answer.length === 0}">Submit Answer</button>
                     <button @click="startVoiceRecording" :disabled="!playerTurn" :class="{buttonDisabled: !playerTurn}">Push To Talk</button>
@@ -270,6 +268,13 @@
     box-sizing: border-box;
 }
 
+span{
+    font-weight: bold;
+    font-size: 18px;
+}
+p{
+    padding: 0;
+}
 .activePlayer {
     background-color: red;
 }
@@ -281,6 +286,7 @@
     text-align: center;
     /* border: 1px solid black; */
 }
+
 
 
 .buttonDisabled{

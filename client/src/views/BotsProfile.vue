@@ -1,6 +1,8 @@
 <template>
     <div>
     <h1>Bots</h1>
+        <br>
+        <hr><br>
     <div v-for="bot in bots">
         <botPresentation :bot="bot"></botPresentation><br>
         <hr>
@@ -25,5 +27,4 @@
 </script>
 
 <style scoped>
-
 </style>

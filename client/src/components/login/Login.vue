@@ -1,18 +1,28 @@
 <template>
     <div>
 
-            <h1>Login</h1>
-            <p class="errorMessage">{{errorMessage}}</p>
+        <h1>Login</h1>
+        <p class="errorMessage">{{errorMessage}}</p>
 
-            <p>Username</p>
-            <input v-model="usernameField">
-            <p>Password</p>
-            <input v-model="passwordField" type="password">
+        <p>Username</p>
+        <input v-model="usernameField">
+        <p>Password</p>
+        <input v-model="passwordField" type="password">
 
-            <br><br>
-            <button @click="login">Login</button>
-            <p>Don't have an account?</p>
-            <button class="smallerButton" @click="$router.push('/register')">Sign up</button>
+        <br><br>
+        <button @click="login">Login</button>
+        <p>Don't have an account?</p>
+        <button class="smallerButton" @click="$router.push('/register')">Sign up</button>
+
+
+        <br><br><hr><br><br>
+        <div id="info">
+            <p>Or test with an existing account:</p>
+            <br>
+            <p>username: <span>user</span>, password: <span>user</span></p>
+            <p>username: <span>admin</span>, password: <span>admin</span></p>
+        </div>
+
 
 
     </div>
@@ -80,5 +90,15 @@
         color: red;
         font-weight: bold;
     }
+
+
+    #info p{
+        padding: 0;
+    }
+    span{
+        font-weight: bold;
+    }
+
+
 
 </style>

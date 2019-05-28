@@ -14,9 +14,7 @@
 
 
             <div id="right-container">
-                <!--<div>-->
-                    <!--<mute-sound-button id="sound-icon"/>-->
-                <!--</div>-->
+                <mute-sound-button id="sound-icon"/>
 
                 <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/login')">Login</button>
                 <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/register')">Register</button>
@@ -180,9 +178,10 @@
         position: fixed;
         right: 0;
         margin-left: auto;
+        text-align: left;
     }
     #links > div{
-        padding: 0.5em;
+        padding: 0.3em;
     }
     #links a{
         color: white;
@@ -194,23 +193,8 @@
     }
 
 
-
-
-
-
-
-
-     #logout-button{
-         background: cornflowerblue;
-         color: white;
-         border-style: none;
-         border-radius: 0;
-         margin: 0;
-         padding: 3px;
-         width: auto;
-     }
-     #logout-button:hover{
-         cursor: pointer;
-     }
+    #sound-icon{
+        margin-top: 3px;
+    }
 
 </style>
