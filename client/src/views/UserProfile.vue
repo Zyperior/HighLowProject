@@ -41,7 +41,7 @@
             methods: {
                 getUser() {
                     if (!this.isUser) {
-                        this.$store.dispatch('userStats/getUser', this.username)
+                        this.$store.dispatch('userDB/getUser', this.username)
                             .then(res => {
                                 if(res.username) {
                                     this.user = res;

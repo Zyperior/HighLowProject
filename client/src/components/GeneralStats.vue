@@ -7,13 +7,6 @@
         <div>Guess / question:</div><div>{{averageGuesses}}</div>
 
     </div>
-    <div v-if="fetchedUsers">
-        Top players:
-        <p v-for="(user, index) in users">{{index+1}}. {{user.username}} {{user.points}} points</p>
-    </div>
-    <div v-else>
-        <h3>Failed to fetch top users</h3>
-    </div>
 </div>
 </template>
 
@@ -25,8 +18,6 @@
         data: function(){
             return {
                 stats : {totalGuesses:0, questionsAsked: 0},
-                users: [],
-                fetchedUsers: true
             }
 
         },
@@ -36,9 +27,6 @@
             }
         },
         created() {
-            this.$store.dispatch('userStats/getTopUsers', 10)
-                .then(users => this.users = users)
-                .catch(err => this.fetchedUsers = false)
 
             this.$store.dispatch('generalStats/getDBData');
 

@@ -54,7 +54,7 @@
             },
             logout() {
                 localStorage.clear();
-                this.$store.commit('userStats/setIsLoggedIn', false);
+                this.$store.commit('userDB/setIsLoggedIn', false);
                 this.$cookies.remove('userData');
                 this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
                     loggedInUser: false,

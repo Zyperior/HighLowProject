@@ -37,6 +37,21 @@ module.exports = {
             return axios.get(
                 'http://localhost:5000/users/top/'+limit
             ).then(res => res.data).catch(err => err);
+        },
+        login({commit}, userDataArray){
+            return axios.post("http://localhost:5000/users/auth/login", {
+                username: userDataArray[0],
+                password: userDataArray[1]
+            }).then(res => res.data)
+                .catch(err => err)
+        },
+        register({commit}, userDataArray){
+            return axios.post("http://localhost:5000/users/auth/register", {
+                username: userDataArray[0],
+                password: userDataArray[1],
+                email: userDataArray[2],
+                role: userDataArray[4],
+            }).then(res => res).catch(err => err);
         }
     }
 }

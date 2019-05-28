@@ -64,22 +64,21 @@
                 this.successMessage = "";
                 this.failMessage = "";
 
-                axios.post("http://localhost:5000/users/auth/login", {
-                    username: this.usernameField,
-                    password: this.passwordField
-                    })
+                this.$store.dispatch('userDB/login', [this.usernameField, this.passwordField])
                 .then((response) => {
 
-                    this.$store.commit('userStats/setIsLoggedIn', true);
-                    this.$store.commit('userStats/setUserCookieData', response.data.user)
-                    localStorage.setItem("token", response.data.token);
-                    localStorage.setItem("viewAdminPages", response.data.viewAdminPages);
+                    this.$store.commit('userDB/setUserCookieData', response.user)
+                    this.$store.commit('userDB/setIsLoggedIn', true);
+
+                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("viewAdminPages", response.viewAdminPages);
 
                     this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
                         loggedInUser: true,
-                        admin: response.data.viewAdminPages
+                        admin: response.viewAdminPages
                     });
-                    this.$router.push("/profile")
+
+                    this.$router.push("/profile/"+response.user.username);
                 })
                 .catch((error) => {
                     this.failMessage = "Username and password do not match an existing user";
@@ -90,12 +89,7 @@
                 this.failMessage = "";
 
                 if(this.validateInput()){
-                    axios.post("http://localhost:5000/users/auth/register", {
-                        username: this.usernameField,
-                        password: this.passwordField,
-                        email: this.emailField,
-                        role: "USER"
-                    })
+                    this.$store.dispatch('userDB/register', [this.usernameField, this.passwordField, this.emailField, "USER"])
                     .then((res) => {
                         this.displayLogin = true;
                         this.successMessage = "Registration successful, you can now login"
