@@ -18,8 +18,9 @@
                     <!--<mute-sound-button id="sound-icon"/>-->
                 <!--</div>-->
 
-                <button>Login</button>
-                <button>Register</button>
+                <button v-show="!displayExclusivePages.loggedInUser">Login</button>
+                <button v-show="!displayExclusivePages.loggedInUser">Register</button>
+                <button v-show="displayExclusivePages.loggedInUser" @click="logout">Logout</button>
 
 
                 <img @click="showMenu" id="menu-icon" src="../../public/menu.png">
@@ -51,9 +52,9 @@
             <div @click="showMenu" v-show="!displayExclusivePages.loggedInUser">
                 <router-link to="/login">Login</router-link>
             </div>
-            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <button id="logout-button" @click="logout">Logout button</button>
-            </div>
+<!--            <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">-->
+<!--                <button id="logout-button" @click="logout">Logout button</button>-->
+<!--            </div>-->
         </div>
 
 
@@ -164,8 +165,12 @@
 
     #menu-icon{
         color: white;
-        height: 50px;
+        height: 40px;
         margin-left: 1em;
+    }
+
+    button{
+        outline: none;
     }
 
 
