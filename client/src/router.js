@@ -31,7 +31,7 @@ const router = new Router({
     {
       path: '/complete',
       name: "GameComplete",
-      component: () => import('./components/GameComplete.vue')
+      component: () => import('./views/GameComplete.vue')
     },
     {
       path: '/about',

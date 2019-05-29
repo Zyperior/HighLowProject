@@ -130,8 +130,8 @@ export default {
 
         resetState (state) { state = getDefaultState() },
 
-        //Vet ej vad dessa två gör, låter dem ligga tills vidare /Andreas
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
+
         setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
     },
     actions : {
@@ -184,7 +184,7 @@ export default {
                     correctAnswer: 0,
                     isUser: store.getters['userDB/getIsLoggedIn'],
                     answer: ""
-                }
+                };
                 players.push(player);
 
                 // Create players from current settings and add to array
@@ -305,6 +305,7 @@ export default {
 
         endGame({state, commit}){
 
+            // noinspection JSIgnoredPromiseFromCall
             store.dispatch('generalStats/postDBData', [state.questions.length, state.answerAttempts]);
 
             state.players.forEach(p => {
@@ -325,7 +326,6 @@ export default {
             commit('displayResults');
 
             commit('resetLastGuess');
-
             commit('resetQuestionCounter');
         }
     }

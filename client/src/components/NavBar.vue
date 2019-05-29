@@ -17,7 +17,7 @@
                 <mute-sound-button id="sound-icon"/>
 
                 <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/login')">Login</button>
-                <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/register')">Register</button>
+                <!--<button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/register')">Register</button>-->
                 <button v-show="displayExclusivePages.loggedInUser" @click="logout">Logout</button>
 
 
@@ -39,7 +39,7 @@
             <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
 
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <router-link to="/profile">Profile</router-link>
+                <router-link to="/myprofile">Profile</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
                 <router-link to="/suggest-question">Suggest a question</router-link>
@@ -147,6 +147,7 @@
 
     #search-field{
         margin-right: 1em;
+        width: 9em;
     }
 
     #left-container img{

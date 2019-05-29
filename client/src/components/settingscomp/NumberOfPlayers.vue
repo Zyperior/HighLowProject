@@ -19,7 +19,7 @@
         },
         methods:{
             onChange(event){
-                this.$emit('changePlayerAmount', event.target.value)
+                this.$emit('changePlayerAmount', parseInt(event.target.value))
             }
         }
     }
