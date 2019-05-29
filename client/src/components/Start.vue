@@ -26,6 +26,7 @@
         margin: 0;
         padding: 0;
         width: auto;
+
     }
     .smallerButton:hover{
         cursor: pointer;
