@@ -1,17 +1,22 @@
+import Store from '../store'
+
 const bot1 = {
     name: 'Olle',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        return interval.lowestGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 1;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve(lowestGuess + 1);
+            } else {
+                resolve(lowestGuess + 1);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'easy',
@@ -49,26 +54,33 @@ const bot1 = {
         type: 'Confused',
         blurb: "A very confused man. Why is he even here?"
     }
-}
+};
 
 const bot2 = {
     name: 'Kerstin',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 10) {
-            return interval.lowestGuess + Math.floor(intervalSize * 0.5);
-        }
-        return Math.floor(Math.random() * (intervalSize - 1)) + interval.lowestGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 250;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                let intervalSize = highestGuess - lowestGuess;
+                if (intervalSize > 10) {
+                    resolve(lowestGuess + Math.floor(intervalSize * 0.5));
+                }
+                resolve(Math.floor(Math.random() * (intervalSize - 1)) + lowestGuess + 1);
+
+
+            } else {
+                resolve(lowestGuess + 250);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'hard',
@@ -106,21 +118,30 @@ const bot2 = {
         type: "Retired ol' woman",
         blurb: "Sweet old lady that wishes you well"
     }
-}
+};
 
 const bot3 = {
     name: 'The La Bossen',
-    guess: function(interval){
-        let bossLow = interval.correctAnswer * 0.9;
-        let bossHigh = interval.correctAnswer * 1.1;
+    guess(){
 
-        if(bossLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
-            bossLow = interval.lowestGuess;
-        }
-        if(bossHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
-            bossHigh = interval.highestGuess;
-        }
-        return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let correctAnswer = Store.getters.getCorrectAnswer;
+
+        let bossLow = correctAnswer * 0.9;
+        let bossHigh = correctAnswer * 1.1;
+
+        return new Promise((resolve)=>{
+
+            if(bossLow < lowestGuess && Number.isInteger(lowestGuess)) {
+                bossLow = lowestGuess;
+            }
+            if(bossHigh > highestGuess && highestGuess !== 0 && Number.isInteger(highestGuess)) {
+                bossHigh = highestGuess;
+            }
+            resolve(Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1));
+
+        });
 
     },
     unfair: true,
@@ -159,22 +180,26 @@ const bot3 = {
         type: 'Boss',
         blurb: 'Mafia boss with style, has contacts all over Italy'
     }
-}
+};
 
 const bot4 = {
     name: 'Bo',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-       return (interval.lowestGuess + 1) * 2;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve(Math.floor(Math.random() * (highestGuess - lowestGuess - 1) + lowestGuess + 1));
+            } else {
+                resolve((lowestGuess + 1) * 2);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'easy',
@@ -212,15 +237,24 @@ const bot4 = {
         type: "Retired ol' man",
         blurb: "An old man that's just happy to be here"
     }
-}
+};
 
 const bot5 = {
     name: 'Botinski',
-    guess: function(interval){
-        if (Math.floor(Math.random() * 100 + 1) == 10) {
-            return interval.correctAnswer;
-        }else
-            return Math.floor(Math.random() * 5000 + 1);
+    guess(){
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+
+        return new Promise((resolve)=>{
+
+            if (Math.floor(Math.random() * 100 + 1) === 10) {
+                resolve(correctAnswer);
+            }else {
+                resolve(Math.floor(Math.random() * 5000 + 1));
+            }
+
+        });
+
     },
     unfair: true,
     difficulty: 'easy',
@@ -258,23 +292,27 @@ const bot5 = {
         type: 'Comrade',
         blurb: 'Slightly drunk but proud Soviet citizen'
     }
-}
+};
 
 const bot6 =  {
     name: 'Das Boot',
     doubler: Math.random() + 1,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-            return Math.round(((interval.highestGuess - interval.lowestGuess) * 0.1) + 0.3) + interval.lowestGuess;
-        },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 1981;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve) => {
+
+            if(isInInterval) {
+                resolve(Math.round(((highestGuess - lowestGuess) * 0.1) + 0.3) + lowestGuess);
+            } else {
+                resolve(lowestGuess + 1981);
+            }
+
+        });
+
     },
     unfair: true,
     difficulty: 'hard',
@@ -312,40 +350,55 @@ const bot6 =  {
         type: 'Submarine',
         blurb: 'Is literally a submarine'
     }
-}
+};
 
 const bot7 = {
     name: 'Segelbot',
     lastGuess: 0,
     doubler: 2,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        if(interval.lastGuess > interval.highestGuess || interval.lastGuess < interval.lowestGuess){
-            return 0;
-        }
-        var intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize >= 1000)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.8);
-        else if(intervalSize >= 100)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.5);
-        else if(intervalSize >= 10)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.2);
-        else
-            return interval.lowestGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 486;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let lastGuess = Store.getters.getLastGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+        let answer = 0;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                if(lastGuess > highestGuess || lastGuess < lowestGuess){
+                    resolve(answer);
+                }
+
+                if(intervalSize >= 1000){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.8);
+
+                } else if (intervalSize >= 100){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.5);
+
+                } else if (intervalSize >= 10){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.2);
+
+                } else {
+                    answer = lowestGuess + 1;
+                }
+
+                resolve(answer);
+
+            } else {
+                resolve(lowestGuess + 486);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'medium',
     timing: 2,
-    isPlaying: true,
+    isPlaying: false,
     phrases: {
         guessing: [
             "Yarr!",
@@ -378,24 +431,28 @@ const bot7 = {
         type: 'Pirate',
         blurb: 'A thief of the sea, living the high-life with a bottle of rum'
     }
-}
+};
 
 const bot8 = {
     name: 'Anna',
     lastGuess: 0,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        var intervalSize = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
-        return Math.floor((Math.random() * (intervalSize - 1)) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 2006;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = Math.floor((highestGuess - lowestGuess) * 0.5);
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve(Math.floor((Math.random() * (intervalSize - 1)) + lowestGuess + 1));
+            } else {
+                resolve(lowestGuess + 2006);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'medium',
@@ -433,23 +490,27 @@ const bot8 = {
         type: 'Moderator',
         blurb: 'A very, very beautiful girl that can ban you very, very hard'
     }
-}
+};
 
 const bot9 = {
     name: 'Abbot',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        return (interval.highestGuess - 1 ) - Math.floor(Math.random() * (intervalSize * 0.5));
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 777;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve((highestGuess - 1 ) - Math.floor(Math.random() * (intervalSize * 0.5)));
+            } else {
+                resolve(lowestGuess + 777);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'medium',
@@ -487,16 +548,25 @@ const bot9 = {
         type: 'Preacher',
         blurb: 'A man of faith preaching to his flock'
     }
-}
+};
 
 const bot10 = {
     name: 'Inbotstjuven',
-    guess: function(interval){
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize > 0 && intervalSize <= 10) {
-            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
-        }
-        return 0;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(intervalSize > 0 && intervalSize <= 10) {
+                resolve(Math.floor(Math.random() * (highestGuess - lowestGuess - 1) + lowestGuess + 1));
+            }
+            return 0;
+
+        });
+
     },
     unfair: false,
     difficulty: 'medium',
@@ -534,26 +604,34 @@ const bot10 = {
         type: 'Burglar',
         blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
     }
-}
+};
 
 const bot11 = {
     name: 'CopyBot',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
-        }
-    },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30) {
-            return interval.lastGuess + 10;
-        } else
-            return interval.lastGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return 10 + interval.lowestGuess;
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let lastGuess = Store.getters.getLastGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                if (intervalSize > 30) {
+                    resolve(lastGuess + 10);
+                } else {
+                    resolve(lastGuess + 1);
+                }
+
+            } else {
+                resolve(lowestGuess + 10);
+            }
+
+        });
+
     },
     unfair: false,
     difficulty: 'medium',
@@ -591,14 +669,23 @@ const bot11 = {
         type: 'Robot',
         blurb: "01001001 00100000 01100001 01101101 00100000 01110010 01101111 01100010 01101111 01110100"
     }
-}
+};
 
 const bot12 = {
     name: 'Dungeon Master',
-    guess: function(interval){
-        if(Math.floor(Math.random() * 20 + 1) == 20) {
-            return interval.correctAnswer;
-        } else return 0;
+    guess(){
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+
+        return new Promise((resolve)=>{
+
+            if(Math.floor(Math.random() * 20 + 1) === 20) {
+                resolve(correctAnswer);
+
+            } else resolve(-1);
+
+        });
+
     },
     unfair: true,
     difficulty: 'hard',
@@ -636,29 +723,37 @@ const bot12 = {
         type: 'Dice thrower',
         blurb: "Rolls his dice and lets faith decide"
     }
-}
+};
 
 
 const bot13 = {
     name: "Not a bot",
-    guess: function(interval){
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let correctAnswer = Store.getters.getCorrectAnswer;
         let max = 0;
         let min = 0;
 
-        if(interval.highestGuess === 0 || interval.highestGuess > Math.ceil(interval.correctAnswer * 1.4)){
-            max = Math.ceil(interval.correctAnswer * (1.4));
-        } else {
-            max = interval.highestGuess;
-        }
+        return new Promise((resolve)=>{
 
-        if(interval.lowestGuess === 0 || interval.lowestGuess < Math.floor(interval.correctAnswer * 0.6)){
-            min = Math.floor(interval.correctAnswer * (0.6));
-        } else {
-            min = interval.lowestGuess;
-        }
+            if(highestGuess === 0 || highestGuess > Math.ceil(correctAnswer * 1.4)){
+                max = Math.ceil(correctAnswer * (1.4));
+            } else {
+                max = highestGuess;
+            }
 
-            return Math.floor(Math.random() * ((max - min) - 1)) + min + 1; //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+            if(lowestGuess === 0 || lowestGuess < Math.floor(correctAnswer * 0.6)){
+                min = Math.floor(correctAnswer * (0.6));
+            } else {
+                min = lowestGuess;
+            }
 
+            //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+            resolve(Math.floor(Math.random() * ((max - min) - 1)) + min + 1);
+
+        });
 
     },
     unfair: false,
@@ -697,21 +792,32 @@ const bot13 = {
         type: 'Human',
         blurb: 'A very normal human that is in no way a bot'
     }
-}
+};
 
 const bot14 = {
     name: 'BratBot',
-    guess: function(interval){
-        let bratLow = interval.correctAnswer * 0.75;
-        let bratHigh = interval.correctAnswer * 1.25;
+    guess(){
 
-        if(bratLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
-            bratLow = interval.lowestGuess;
-        }
-        if(bratHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
-            bratHigh = interval.highestGuess;
-        }
-        return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let correctAnswer = Store.getters.getCorrectAnswer;
+        let bratLow = correctAnswer * 0.75;
+        let bratHigh = correctAnswer * 1.25;
+
+        return new Promise((resolve)=>{
+
+            if(bratLow < lowestGuess && Number.isInteger(lowestGuess)) {
+                bratLow = lowestGuess;
+            }
+
+            if(bratHigh > highestGuess && highestGuess !== 0 && Number.isInteger(highestGuess)) {
+                bratHigh = highestGuess;
+            }
+
+            resolve(Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1));
+
+        });
+
     },
     unfair: true,
     difficulty: 'medium',
@@ -749,7 +855,7 @@ const bot14 = {
         type: 'Brat',
         blurb: "Like, whatever, you're not my mom!"
     }
-}
+};
 
 export default
  [bot1, bot2, bot3, bot4, bot5, bot6, bot7, bot8, bot9, bot10, bot11, bot12, bot13, bot14]
