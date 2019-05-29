@@ -1,6 +1,5 @@
 <template>
     <div class="selectDiv">
-        <p>Microphone Input Language:</p>
         <select @change="onChange($event)" v-model="language">
             <option v-for="languageOption in languageOptions" :value="languageOption.value">
                 {{languageOption.label}}

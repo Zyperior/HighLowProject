@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="availableDiv">
-            <b>Available bots:</b>
         </div>
         <div class="selectViewDiv" id="lastSelect">
             <select @change="onChange($event)" size="5" v-model="availableBotIndex">

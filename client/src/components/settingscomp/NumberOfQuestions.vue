@@ -1,6 +1,5 @@
 <template>
     <div class="selectDiv">
-        <p>Number of questions:</p>
         <select @change="onChange($event)" v-model="amount">
             <option v-for="amountOption in questionsAmount" :value="amountOption">
                 {{ amountOption }}
