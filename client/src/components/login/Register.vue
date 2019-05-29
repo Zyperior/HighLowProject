@@ -46,6 +46,9 @@
                         .then((res) => {
                             if(res === 409)
                                 this.errorMessage = "This username is already taken";
+                            else{
+                                this.$router.push('/login')
+                            }
                         })
                         .catch((error) => {
                             this.errorMessage = "Something went wrong";
