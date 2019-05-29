@@ -5,7 +5,7 @@
         <p id="difficultyText">Choose difficulty</p>
         <p id="shuffleText">Shuffle player start order</p>
         <p id="extraPlayersText">Extra players</p>
-        <p id="botText">Bot commentary</p>
+        <p id="botText">Turn Bot commentary off</p>
         <p id="micLangText">Microphone Input Language</p>
         <number-of-questions id="amount" @changeAmountQuestions="changeAmountOfQuestions" />
         <questions-category id="category" @changeCategory="changeCategory" />
