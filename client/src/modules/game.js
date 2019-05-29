@@ -48,7 +48,9 @@ export default {
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
         getPlayers: state => { return state.players },
-        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction }
+        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
+
+        getCurrentAnswer: state => {return state.currentQuestion.answer}
     },
     mutations : {
 
@@ -220,43 +222,56 @@ export default {
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
 
-            let correctAnswer = state.currentQuestion.answer;
-            let answer = parseInt(submittedAnswer);
 
-            commit('incAnswerAttempts');
-            commit('setLastGuess', answer);
-            commit("stopTimer", {root: true});
 
-            // First check if answer was correct, below or above and mutate the state accordingly..
-            this.dispatch('checkAnswer', [answer, correctAnswer])
 
-            // ..then end the game, go to next question or go to next player
-            .then( (answerWasCorrect) => {
-                if(answerWasCorrect){
 
-                    if (!state.muteSound){
-                        // noinspection JSIgnoredPromiseFromCall
-                        new Audio('/soundfx/correctAnswer.wav').play();
-                    }
+                    let correctAnswer = state.currentQuestion.answer;
+                    let answer = parseInt(submittedAnswer);
 
-                    if(state.questionCounter >= state.questions.length){
-                        dispatch('endGame');
-                    } else {
-                        commit('setNextQuestion');
-                        commit('incPlayerTurn');
-                        commit("startTimer", {root: true});
-                        store.commit("flipCards");
-                    }
+                    commit('incAnswerAttempts');
+                    commit('setLastGuess', answer);
+                    commit("stopTimer", {root: true});
 
-                } else {
+                    // First check if answer was correct, below or above and mutate the state accordingly..
+                    this.dispatch('checkAnswer', [answer, correctAnswer])
 
-                    commit('incPlayerTurn');
-                    commit("startTimer", {root: true});
-                    store.commit("flipCards");
+                    // ..then end the game, go to next question or go to next player
+                        .then( (answerWasCorrect) => {
+                            if(answerWasCorrect){
 
-                }
+                                commit("stopTimer", {root: true});
 
-            });
+                                setTimeout(() => {
+                                    if (!state.muteSound){
+                                        // noinspection JSIgnoredPromiseFromCall
+                                        new Audio('/soundfx/correctAnswer.wav').play();
+                                    }
+
+                                    if(state.questionCounter >= state.questions.length){
+                                        dispatch('endGame');
+                                    } else {
+                                        commit('setNextQuestion');
+                                        commit('incPlayerTurn');
+                                        commit("startTimer", {root: true});
+                                        store.commit("flipCards");
+                                    }
+                                }, 2000);
+
+
+                            } else {
+
+                                commit('incPlayerTurn');
+                                commit("startTimer", {root: true});
+                                store.commit("flipCards");
+
+                            }
+
+                        });
+
+
+
+
 
 
         },

@@ -37,6 +37,7 @@
                 <Timer ref="myTimer"/>
             </div>
         </div>
+        {{this.$store.getters.getCurrentAnswer}}
     </div>
 
 </template>
@@ -72,6 +73,7 @@
         },
         methods: {
 
+
             submitAnswer(a) {
 
                 if(this.isGameRunning){
@@ -80,16 +82,20 @@
                         answerSound.play();
                     }
 
-                    this.showFeedback();
                     this.$store.dispatch("submitAnswer", a);
 
-                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
-                    if(this.$store.state.game.chattyBots) {
-                        this.$store.dispatch("chat", chatPayload);
-                    }
+                    // this.showFeedback();
+                    //
+                    //
+                    // let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
+                    // if(this.$store.state.game.chattyBots) {
+                    //     this.$store.dispatch("chat", chatPayload);
+                    // }
                 }
 
                 this.answer = "";
+
+
 
             },
             showFeedback() {
@@ -163,21 +169,37 @@
 
             guess(){
 
-                let thisComponent = this;
+                this.activePlayer = this.activePlayers[this.playerCounter];
 
-                setTimeout(function() {
+                if(this.activePlayer.isHuman){
+                    this.playerTurn = true;
+                }
+                else{
+                    this.playerTurn = false;
+                }
 
-                    thisComponent.activePlayer = thisComponent.activePlayers[thisComponent.playerCounter];
+                setTimeout(() => {
+                    let thisComponent = this;
 
-                    if(thisComponent.activePlayer.isHuman){
-                        thisComponent.playerTurn = true;
 
-                    }else {
-                        thisComponent.playerTurn = false;
-                        thisComponent.botGuess(thisComponent.activePlayer);
-                    }
 
-                }, thisComponent.animationTime);
+                    setTimeout(function() {
+
+
+                        //thisComponent.activePlayer = thisComponent.activePlayers[thisComponent.playerCounter];
+
+                        if(thisComponent.activePlayer.isHuman){
+                            //thisComponent.playerTurn = true;
+
+                        }else {
+                            //thisComponent.playerTurn = false;
+                            thisComponent.botGuess(thisComponent.activePlayer);
+                        }
+
+                    }, thisComponent.animationTime);
+                }, 2000)
+
+
 
             }
 
