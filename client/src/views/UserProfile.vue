@@ -32,7 +32,7 @@
         },
         computed: {
             isUser() {
-                return this.$cookies.get('userData').username === this.username;
+                return this.$cookies.isKey('userData') && this.$cookies.get('userData').username === this.username;
             },
             errormsg() {
                 return "User with username " + this.username + " not found";
