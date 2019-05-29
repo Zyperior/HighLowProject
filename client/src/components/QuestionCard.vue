@@ -8,7 +8,7 @@
         </div>
         <div class="pointsGrid">
             <div>Points:</div>
-            <div>{{currentPoints}}</div>
+            <div>{{currentPoints}} <slot></slot></div>
         </div>
     </div>
 </template>
@@ -51,6 +51,12 @@
         grid-template-columns: 75px auto;
         text-align: start;
         border-top: solid rgb(205,226,203);
+    }
+
+    .feedback{
+        display: inline;
+        padding: 39%;
+        font-weight: 800;
     }
 
 </style>

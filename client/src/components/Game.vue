@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="isGameRunning">
-            <QuestionCard/>
+            <QuestionCard><div v-if="showHiOrLow" class="feedback">{{hilo}}</div></QuestionCard>
             <div>
                 <div class="aboveBelow">
                     <div>Closest above:</div><div>{{highGuess}}</div>
@@ -32,7 +32,6 @@
                             :class="{buttonDisabled: !playerTurn}">Click To Talk
                     </button>
                 </div>
-                <div class="high-or-low" v-if="showHiOrLow">{{hilo}}</div>
                 <chat-message/>
                 <Timer ref="myTimer"/>
             </div>
@@ -319,9 +318,6 @@
     }
 
 .high-or-low{
-    position: absolute;
-    left: 25%;
-    top: 43%;
     font-weight: 800;
     font-size: 20px;
 }
