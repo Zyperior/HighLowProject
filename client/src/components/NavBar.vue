@@ -39,7 +39,7 @@
             <div @click="showMenu"><router-link to="/settings">Settings</router-link></div>
 
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
-                <router-link to="/profile">Profile</router-link>
+                <router-link to="/myprofile">Profile</router-link>
             </div>
             <div @click="showMenu" v-show="displayExclusivePages.loggedInUser">
                 <router-link to="/suggest-question">Suggest a question</router-link>

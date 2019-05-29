@@ -3,16 +3,9 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const jwtSecret = require("../../config/jwtconfig");
-const mongoose = require("mongoose");
 const uuid = require('uuid')
 
 const db = require('../../postgresDB/PGdb.js')
-
-const User = require("../model/User");
-const PendingQuestion = require("../model/PendingQuestion");
-const Question = require("../model/question")
-
-
 
 router.post("/auth/register", (req, res) => {
 
@@ -31,7 +24,6 @@ router.post("/auth/register", (req, res) => {
                         req.body.email,
                         req.body.role
                     ]).then(newUser => {
-                        console.log(newUser)
                         res.status(201).send(newUser.rows[0])
                     }).catch(err => res.status(500).send("Something went wrong, user not created"));
                 }).catch(err => res.status(500).send("Something went wrong"));
@@ -61,8 +53,6 @@ router.post("/auth/login",  (req, res) => {
                         if(isMatching){
                             //secret must be the same as the one used to decrypt the token in passport.js
                             const token = jwt.sign({id: req.body.username}, jwtSecret.secret);
-                            console.log(foundUser.rows[0])
-                            console.log("wow")
                             res.status(200).send({
                                 token: token,
                                 viewAdminPages: foundUser.rows[0].role === "ADMIN",
@@ -111,8 +101,6 @@ router.put('/:username', (req, res) => {
                RETURNING username, totalguesses, points, correctguesses, gamesplayed`,
                [req.params.username, req.body.totalguesses, req.body.points, req.body.correctguesses])
         .then(updatedUser => {
-            console.log(updatedUser.rows[0])
-            console.log("wow")
             if(!updatedUser.rows[0]){
                 res.status(404).send("User not found")
             }else
@@ -123,48 +111,12 @@ router.put('/:username', (req, res) => {
 router.get('/top/:nr', (req, res) => {
     db.query('SELECT username, points FROM users ORDER BY points DESC LIMIT $1', [req.params.nr])
         .then(foundUsers => {
-            console.log(foundUsers)
             if(!foundUsers.rows){
                 res.status(200).send("No users")
             }else
                 res.status(200).send(foundUsers.rows)
         }).catch(err => res.status(500).send("Something went wrong"));
 })
-
-
-// router.get("/logout", (req, res) => {
-//     //vue clears local storage at logout in the frontend. Maybe/maybe not need backend logout.
-//     res.send("todo")
-// });
-
-
-
-//Authentication tests to test things work like it should
-//Maybe delete?
-
-// router.get("/auth-test-logged-in-user", (req, res, next) => {
-//     passport.authenticate("jwt", {session: false}, (error, user) => {
-//         if(user !== false){
-//             res.status(200).send("Authentication successful")
-//         }
-//         else{
-//             res.status(401).send("Authentication failed")
-//         }
-//     })(req, res, next);
-// });
-//
-// router.get("/auth-test-logged-in-admin", (req, res, next) => {
-//     passport.authenticate("jwt", {session: false}, (error, user) => {
-//         if(user !== false && user.role === "ADMIN"){
-//             res.status(200).send("Authentication successful")
-//         }
-//         else{
-//             res.status(401).send("Authentication failed")
-//         }
-//     })(req, res, next);
-// });
-
-
 
 
 module.exports = router;

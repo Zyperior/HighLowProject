@@ -148,23 +148,20 @@
                 let submitGuessFunction = this.submitAnswer;
                 let int = this.interval;
                 let loopFunction = this.guess;
-                let randTime = Math.floor(Math.random() * 5000);
+                let randTime = (Math.ceil(Math.random() * 5)) * 1000; //Milliseconds
+
                 if(this.isGameRunning){
                     this.botLoopTimeoutFunction = setTimeout(function () {
 
-                        let guess = bot.guess(int);
-                        submitGuessFunction(guess);
-                        loopFunction();
+                        let guess = bot.guess(int);  //Returns a guess based on the interval-object
+                        submitGuessFunction(guess);  //Submit the guess to the game
+                        loopFunction();             //Go back to original guess-method to get to next guesser
 
-                    }, randTime)
+                    }, randTime)  //Bot takes between 1-5 seconds to guess
                 }
             },
 
             guess(){
-
-                if (this.playerTurn) {
-                    this.playerTurn = false;
-                }
 
                 let thisComponent = this;
 
@@ -220,7 +217,7 @@
                 return this.$store.getters.playingBots;
             },
             interval(){
-                let interval = {
+                let interval = {           //This object is for the bots to use with information about current answer/round
                     lowestGuess: this.lowGuess,
                     highestGuess: this.highGuess,
                     correctAnswer: this.correctAnswer,

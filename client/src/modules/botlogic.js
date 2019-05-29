@@ -7,10 +7,10 @@ export default {
     },
     getters: {
         availableBots(state){
-            return state.bots.filter(bot => !bot.isPlaying)
+            return state.bots.filter(bot => !bot.isPlaying)   //Returns the bots not chosen by player
         },
         playingBots(state){
-            return state.bots.filter(bot => bot.isPlaying)
+            return state.bots.filter(bot => bot.isPlaying)   //Returns the bots chosen by player
         },
         bots(state){
             return state.bots;
