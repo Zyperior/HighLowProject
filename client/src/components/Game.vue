@@ -271,17 +271,26 @@
 }
 
 #playerCardsDiv {
-    width: 21vw;
-    height: 32vw;
+    width: 84vw;
+    height: 80vw;
     margin: auto;
     text-align: center;
-    /* border: 1px solid black; */
 }
 
 
 .buttonDisabled{
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+
+@media (min-width: 768px) {
+
+    #playerCardsDiv {
+        width: 21vw;
+        height: 32vw;
+    }
+
 }
 
 
