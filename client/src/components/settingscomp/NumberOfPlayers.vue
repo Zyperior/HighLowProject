@@ -1,6 +1,5 @@
 <template>
     <div class="selectDiv">
-        <p>Extra players:</p>
         <select @change="onChange($event)" v-model="amount">
             <option v-for="players in playersAmount" :value="players">
                 {{ players }}
@@ -20,7 +19,7 @@
         },
         methods:{
             onChange(event){
-                this.$emit('changePlayerAmount', event.target.value)
+                this.$emit('changePlayerAmount', parseInt(event.target.value))
             }
         }
     }

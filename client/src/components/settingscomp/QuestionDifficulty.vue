@@ -1,6 +1,5 @@
 <template>
     <div class="selectDiv">
-        <p>Question difficulty:</p>
         <select @change="onChange($event)" v-model="difficulty">
             <option v-for="difficultyOption in difficultyOptions" :value="difficultyOption.value">
                 {{ difficultyOption.label }}

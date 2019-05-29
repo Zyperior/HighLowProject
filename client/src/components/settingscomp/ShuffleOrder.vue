@@ -1,7 +1,6 @@
 <template>
     <div>
 
-        Shuffle start order
         <input type="checkbox"
                value="1"
                :checked="checked"

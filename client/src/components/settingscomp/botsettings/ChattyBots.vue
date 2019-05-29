@@ -1,6 +1,6 @@
 <template>
     <div>
-        Bot commentary:
+
         <input type="checkbox"
                value="1"
                :checked="checked"

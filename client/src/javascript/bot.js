@@ -174,7 +174,7 @@ const bot4 = {
         return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
     },
     guessAbove: function(interval) {
-       return interval.lowestGuess * 2;
+       return (interval.lowestGuess + 1) * 2;
     },
     unfair: false,
     difficulty: 'easy',
@@ -493,8 +493,8 @@ const bot10 = {
     name: 'Inbotstjuven',
     guess: function(interval){
         let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize < 5) {
-            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess) + interval.lowestGuess);
+        if(intervalSize > 0 && intervalSize <= 10) {
+            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
         }
         return 0;
     },
@@ -553,7 +553,6 @@ const bot11 = {
             return interval.lastGuess + 1;
     },
     guessAbove: function(interval) {
-
         return 10 + interval.lowestGuess;
     },
     unfair: false,
@@ -646,19 +645,20 @@ const bot13 = {
         let max = 0;
         let min = 0;
 
-        if(interval.highestGuess === 0 || interval.highestGuess > interval.correctAnswer * 1.4){
+        if(interval.highestGuess === 0 || interval.highestGuess > Math.ceil(interval.correctAnswer * 1.4)){
             max = Math.ceil(interval.correctAnswer * (1.4));
         } else {
             max = interval.highestGuess;
         }
 
-        if(interval.lowestGuess === 0 || interval.lowestGuess < interval.correctAnswer * 0.6){
+        if(interval.lowestGuess === 0 || interval.lowestGuess < Math.floor(interval.correctAnswer * 0.6)){
             min = Math.floor(interval.correctAnswer * (0.6));
         } else {
             min = interval.lowestGuess;
         }
 
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+            return Math.floor(Math.random() * ((max - min) - 1)) + min + 1; //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+
 
     },
     unfair: false,

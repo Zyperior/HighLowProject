@@ -9,11 +9,6 @@ const jwtSecret = require("./jwtconfig")
 const db = require('../postgresDB/PGdb.js')
 
 
-
-const User = require("../api/model/User");
-
-
-
 module.exports = function(passport){
 
 

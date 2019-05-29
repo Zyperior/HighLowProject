@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button v-if="directive === 'add'" @click="addAvailableBotToPlayingBots"><img src="../../../assets/arrow-up.png" alt="arrowUp"></button>
-        <button v-if="directive === 'remove'" @click="addPlayingBotToAvailableBots"><img src="../../../assets/arrow-down.png" alt="arrowDown"></button>
+        <img src="../../../assets/leftArrow.svg" alt="arrowUp" v-if="directive === 'add'" @click="addAvailableBotToPlayingBots" />
+        <img src="../../../assets/arrowRight.svg" alt="arrowDown" v-if="directive === 'remove'" @click="addPlayingBotToAvailableBots" />
     </div>
 </template>
 
@@ -26,7 +26,5 @@
 </script>
 
 <style scoped>
-    img {
-        width: 15%;
-    }
+
 </style>
