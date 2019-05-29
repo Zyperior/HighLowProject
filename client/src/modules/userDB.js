@@ -71,7 +71,7 @@ module.exports = {
                 username: userDataArray[0],
                 password: userDataArray[1],
                 email: userDataArray[2],
-                role: userDataArray[4],
+                role: userDataArray[3],
             }).then(res => res).catch(err => 409);
         }
     }
