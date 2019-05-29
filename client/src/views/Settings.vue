@@ -50,7 +50,8 @@
             changePlayerAmount(value) { Settings.setPlayerAmount(value) },
             botComment(value) { Settings.setBotCommentary(value) },
             shufflePlayers(value) { Settings.setShufflePlayers(value) },
-            changeMicLanguage(value) { Settings.setMicInputLanguage(value) }
+            changeMicLanguage(value) { Settings.setMicInputLanguage(value) },
+            setBotComment(value) { this.$emit('botComment', value) }
         }
     }
 </script>
