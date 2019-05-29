@@ -30,7 +30,7 @@
                     return 0;
             },
             isLoggedIn(){
-                return this.$cookies.get('userData').username === this.user.username
+                return this.$cookies.isKey('userData') && this.$cookies.get('userData').username === this.user.username
             }
         }
 
