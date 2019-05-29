@@ -165,6 +165,8 @@
 
                 let thisComponent = this;
 
+                thisComponent.playerTurn = false;       // I moved this line from below, in order to disable the input field
+                                                        // immediately after a user/guest has submitted a guess.   /Daniel
                 setTimeout(function() {
 
                     thisComponent.activePlayer = thisComponent.activePlayers[thisComponent.playerCounter];
@@ -173,7 +175,7 @@
                         thisComponent.playerTurn = true;
 
                     }else {
-                        thisComponent.playerTurn = false;
+                        //thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
                     }
 
