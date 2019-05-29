@@ -26,7 +26,8 @@
             General Statistics:
         </div>
 
-        <general-stats class="generalStats"/>
+        <general-stats class="generalStats stats"/>
+        <top-users></top-users>
         <div>
             <hr>
         </div>
@@ -38,17 +39,21 @@
 <script>
 
     import GeneralStats from '../components/GeneralStats'
+    import TopUsers from '../components/TopUsers'
 
     export default {
         name: "About",
         components:{
-            'general-stats' : GeneralStats
+            'general-stats' : GeneralStats,
+            'top-users': TopUsers
         }
     }
 
 </script>
 
 <style scoped>
+
+
 
     .about{
         display:grid;

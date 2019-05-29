@@ -1,8 +1,8 @@
 <template>
     <div>
-        <p >Only logged in admins can see this!</p>
         <br>
         <button @click="fetchAllPendingQuestions">Fetch all pending questions</button>
+        <br><br>
         <ul>
             <li v-for="(pendingQuestion, index) in pendingQuestions">
                 <hr v-show="index === 0">
@@ -20,6 +20,7 @@
                 <p>{{ pendingQuestion.category }}</p>
 
                 <h3 id="admin">Accept or deny question</h3>
+                <br>
                 <select v-model="pendingQuestions[index].acceptOrDeny">
                     <option v-for="acceptOrDenyOption in acceptOrDenyOptions">
                         {{ acceptOrDenyOption }}
@@ -30,7 +31,9 @@
             </li>
         </ul>
 
+        <br><br>
         <button @click="acceptOrDenyPendingQuestions" v-show="pendingQuestions.length !== 0">Submit</button>
+        <br><br>
 
     </div>
 </template>
@@ -47,14 +50,12 @@
         },
         methods: {
             fetchAllPendingQuestions(){
-                console.log("so fetch!!")
                 axios.get("http://localhost:5000/suggestedQuestions/", {
                     headers: {
                         Authorization: `JWT ${localStorage.getItem("token")}`
                     }
                 })
                 .then((response) => {
-                    console.log(response.data)
                     this.pendingQuestions = response.data;
                     this.pendingQuestions.forEach(pendingQuestion => {
                         pendingQuestion.acceptOrDeny = "Remain pending"
@@ -66,7 +67,6 @@
             },
 
             acceptOrDenyPendingQuestions(){
-                console.log(this.pendingQuestions)
 
                 const questionsToSend = this.pendingQuestions.filter(pendingQuestion =>
                     pendingQuestion.acceptOrDeny !== "Remain pending");

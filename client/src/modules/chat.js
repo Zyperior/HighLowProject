@@ -19,7 +19,7 @@ const actions = {
         3. Guessing.
          */
         if(Math.floor(Math.random() * 2) == 0) {
-            if (interval.isBadGuess()) {
+            if (interval.isBadGuess() && interval.answer !== -1) {
                 methods.badGuessChat(players)
             } else if (activePlayer.answer == interval.correctAnswer && state.game.questionCounter === state.game.questions.length) {
                 methods.winChat(players, activePlayer);
@@ -28,7 +28,7 @@ const actions = {
             } else {
                 methods.guessingChat(players, activePlayer);
             }
-            store.dispatch('removeChatMessage');   //Removes message after a while.
+            store.dispatch('removeChatMessage');   //Removes message after a while (setTimeout).
         } else {
         }
 

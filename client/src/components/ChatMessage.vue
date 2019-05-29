@@ -14,36 +14,13 @@
 </template>
 
 <script>
-    //<div v-show="showBubble" id="SpeechBubble">{{bubble.message}}</div>
     import store from '../store'
-
-    const Card = {
-        props: ['player', 'message'],
-
-    };
 
     export default {
         name: "ChatMessage",
         data: function () {
             return {
-                player: {
-                    name: "Testname",
-                    points: 8,
-                    correctGuesses: 2,
-                    phrases: {
-                        guessing: ["guessing1", "guessing2"],
-                        badGuess: "badGuess",
-                        thisBotCorrect: "thisCorrect",
-                        thisBotWinGame: "thisWinGame",
-                        otherCorrect: "otherCorrect",
-                        otherWinGame: "otherWin"
-                    }
-                },
-                showBubble: false,
                 showMessage: true,
-                question: {
-                    chatType: "otherWin"
-                },
             }
         },
         computed: {

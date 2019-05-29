@@ -8,6 +8,11 @@ Vue.use(Router)
 
 const router = new Router({
   routes: [
+      {
+        path: '/error',
+        name: 'error-page',
+        component: () => import('./components/error/error.vue')
+      },
     {
       path: '/',
       name: 'home',
@@ -43,6 +48,11 @@ const router = new Router({
       name: 'login',
       component: () => import('./components/login/Login.vue')
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./components/login/Register.vue')
+    },
 
 
 
@@ -52,13 +62,17 @@ const router = new Router({
       component: () => import('./components/login/AuthenticationTest.vue')
     },
     {
-      path: '/profile/',
+      path: '/profile/:username',
       name: 'user-profile',
       component: () => import('./views/UserProfile.vue'),
-      props: {
-        default: true,
-        sidebar: false
-      }
+      props: true
+    },
+    {
+        path: '/myprofile',
+        name: 'my-profile',
+        beforeEnter: (to, from, next) => {
+          next('/profile/'+window.$cookies.get('userData').username)
+    },
     },
       {
           path: '/suggest-question',

@@ -1,8 +1,7 @@
 <template>
     <div>
+
         <p>Send in your own idea for a question below!</p>
-        <p id="successMessage">{{successMessage}}</p>
-        <p id="failMessage">{{errorMessage}}</p>
         <p>Question</p>
         <input v-model="questionFields.question">
         <br>
@@ -25,8 +24,11 @@
                 {{ categoryOption }}
             </option>
         </select>
-        <br>
+        <br><br>
         <button @click="suggestQuestion">Submit!</button>
+
+        <p id="successMessage">{{successMessage}}</p>
+        <p id="failMessage">{{errorMessage}}</p>
     </div>
 </template>
 
@@ -72,7 +74,6 @@
                     .catch((error) => {
                         this.errorMessage = "You already have a pending question waiting for approval. " +
                             "You can only send in one question at once";
-                        console.log(error)
                     })
                 }
 
