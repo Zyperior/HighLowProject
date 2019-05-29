@@ -58,10 +58,10 @@
 <style scoped>
     .settingsContainer{
         display: grid;
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(9, auto);
         align-items: center;
-        padding: 10px 15px 0px 15px;
+        padding: 0px 15px 0px 15px;
     }
     #shuffleText{
         grid-row: 4;
@@ -199,5 +199,6 @@
 
 
     }
+
 
 </style>
