@@ -45,6 +45,7 @@
     //var recognition = new webkitSpeechRecognition() || SpeechRecognition();
 
     export default {
+        
         data(){
           return {
               playerTurn: true,

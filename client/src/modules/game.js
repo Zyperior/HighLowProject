@@ -10,7 +10,7 @@ const CORRECT_ANSWER = true;
 const INCORRECT_ANSWER = false;
 
 export default {
-
+    
     state : {
         gameRunning: false,
         gameCompleted: false,
