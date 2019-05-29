@@ -173,6 +173,7 @@
         right: 0;
         margin-left: auto;
         text-align: left;
+        z-index: 1;
     }
     #links > div{
         padding: 0.3em;

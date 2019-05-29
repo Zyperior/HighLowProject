@@ -13,11 +13,9 @@ const bot1 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 1;
     },
-    unfair: false,
     difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Lowest guess + 1",
+    behavior: "Adds 1 to lowest possible guess",
     phrases: {
         guessing: [
             "Is it my turn?",
@@ -70,11 +68,9 @@ const bot2 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 250;
     },
-    unfair: false,
     difficulty: 'hard',
-    timing: 2,
     isPlaying: true,
-    behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
+    behavior: "Guesses half-way if <10% chance, then guesses randomly",
     phrases: {
         guessing: [
             "Let's see how this goes.",
@@ -123,11 +119,8 @@ const bot3 = {
         return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
 
     },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses correctAnswer +- 10%, unless highest/lowest are closer",
+    behavior: "Guesses between +- 10% of the correct answer",
     phrases: {
         guessing: [
             "I’m gonna make him an offer he can’t refuse.",
@@ -176,11 +169,8 @@ const bot4 = {
     guessAbove: function(interval) {
        return (interval.lowestGuess + 1) * 2;
     },
-    unfair: false,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses randomly between highest and lowest guess",
+    behavior: "Guesses randomly between highest possible and lowest possible guess",
     phrases: {
         guessing: [
             "Jå gissar.",
@@ -222,9 +212,6 @@ const bot5 = {
         }else
             return Math.floor(Math.random() * 5000 + 1);
     },
-    unfair: true,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -237,7 +224,7 @@ const bot5 = {
         otherWinGame: "In Mother Russia, game wins you.",
         thisBotWinGame: "Radost.",
     },
-    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    behavior: 'Has a 1% chance of guessing correctly, otherwise random number',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -276,9 +263,6 @@ const bot6 =  {
     guessAbove: function(interval) {
         return interval.lowestGuess + 1981;
     },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -291,7 +275,7 @@ const bot6 =  {
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
     },
-    behavior: 'The smaller the interval is the smaller its guesses are',
+    behavior: "Guesses a tenth of the possible interval",
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -317,7 +301,6 @@ const bot6 =  {
 const bot7 = {
     name: 'Segelbot',
     lastGuess: 0,
-    doubler: 2,
     guess: function(interval){
         if(interval.isInInterval()) {
             return this.inIntervalGuess(interval);
@@ -342,10 +325,8 @@ const bot7 = {
     guessAbove: function(interval) {
         return interval.lowestGuess + 486;
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: true,
+    behavior: "The smaller the interval, the smaller percentage it's guesses are",
     phrases: {
         guessing: [
             "Yarr!",
@@ -357,7 +338,6 @@ const bot7 = {
         otherWinGame: "Scupper that!",
         thisBotWinGame: "Shiver me timbers!"
     },
-    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -412,7 +392,7 @@ const bot8 = {
         otherWinGame: "",
         thisBotWinGame: "No one can beat our bot"
     },
-    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    behavior: 'Guesses randomly within the lower half of the interval',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -455,7 +435,7 @@ const bot9 = {
     difficulty: 'medium',
     timing: 2,
     isPlaying: false,
-    behavior: "Looks above for answers, answering in the top half of the interval",
+    behavior: "Answers within the top half of the interval",
     phrases: {
         guessing: [
             "Proverbs 10:4",
@@ -498,11 +478,8 @@ const bot10 = {
         }
         return 0;
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Bides his time and refuses to answer, unless > 20% chance to win",
+    behavior: "Refuses to answer, unless > 10% chance to win",
     phrases: {
         guessing: [
             "...",
@@ -529,8 +506,8 @@ const bot10 = {
     correctAnswer: 0,
     imgSrc: '/botImg/inbotstjuven.jpg',
     description: {
-        dislikes: 'Alarms, the Police',
-        likes: 'Unlocked car-doors, crowbars',
+        dislikes: 'Alarms, the Police, angry dogs',
+        likes: 'Unlocked car-doors, crowbars, balaclavas',
         type: 'Burglar',
         blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
     }
@@ -550,16 +527,13 @@ const bot11 = {
         if (intervalSize > 30) {
             return interval.lastGuess + 10;
         } else
-            return interval.lastGuess + 1;
+            return interval.lastGuess + 2;
     },
     guessAbove: function(interval) {
         return 10 + interval.lowestGuess;
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Copies player's guess and adds 10 or 2 depending on how close to answer",
+    behavior: "Copies player's guess and adds 10 or 2 to it",
     phrases: {
         guessing: [
             "00111111",
@@ -657,13 +631,10 @@ const bot13 = {
             min = interval.lowestGuess;
         }
 
-            return Math.floor(Math.random() * ((max - min) - 1)) + min + 1; //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+            return Math.floor(Math.random() * ((max - min) - 1)) + min + 1;
 
 
     },
-    unfair: false,
-    difficulty: "medium",
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses suspiciously life like...",
     phrases: {
@@ -713,9 +684,6 @@ const bot14 = {
         }
         return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
     },
-    unfair: true,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses within 25% of the correct answer. Cheats",
     phrases: {
