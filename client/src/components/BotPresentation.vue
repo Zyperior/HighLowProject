@@ -71,16 +71,16 @@
     .container {
         display: grid;
         height: 600px;
-        grid-template-columns: 10em 1fr;
-        grid-template-rows: 15em 3fr;
+        grid-template-columns: 18em 1fr;
+        grid-template-rows: 19em 3fr;
         overflow: hidden;
     }
 
     .bot-img {
         grid-row: 1/2;
         grid-column: 1/2;
-        width: 10em;
-        height: 15em;
+        width: 18em;
+        height: 19em;
     }
 
     .bot-img img {
@@ -89,10 +89,12 @@
     }
 
     .statistics {
-        text-align: right;
-        height: 100%;
-        width: 100%;
-        margin-bottom: 50%;
+        overflow:hidden;
+        text-align: center;
+        width: 50%;
+        margin-left: 25%;
+        padding: 0;
+        border: 1px solid black;
     }
 
     .statistics p {
@@ -114,11 +116,9 @@
         margin-top: 12%;
         grid-row: 1/3;
         grid-column: 2/3;
+        width: 90%;
+        margin-left: 12%;
         text-align: center;
-    }
-
-    .bot-title h4 {
-
     }
 
     .bot-title h1 {
@@ -130,65 +130,37 @@
     }
     @media(max-width: 415px) {
         .container {
-            display: grid;
-            height: 600px;
             grid-template-columns: 10em 1fr;
             grid-template-rows: 15em 3fr;
-            overflow: hidden;
         }
 
         .bot-img {
-            grid-row: 1/2;
-            grid-column: 1/2;
             width: 10em;
             height: 15em;
         }
 
-        .bot-img img {
-            width: 100%;
-            height: 100%;
-        }
 
         .statistics {
             text-align: right;
             height: 100%;
             width: 100%;
             margin-bottom: 50%;
+            margin-left: 0;
+            border: 0;
         }
-
-        .statistics p {
-            display: block;
-        }
-
-        .info {
-            grid-row: 2/3;
-            grid-column: 1/2;
-            text-align: left;
-        }
-
         .info p {
             padding: 0;
-            margin-bottom: 0.5em;
+            margin: 1em;
+            font-size: small;
         }
-
+        .statistics p{
+            padding: 0.5em;
+        }
         .bot-title {
-            margin-top: 12%;
-            grid-row: 1/3;
-            grid-column: 2/3;
-            text-align: center;
+            margin-left: 0;
+            width: 100%;
         }
 
-        .bot-title h4 {
-
-        }
-
-        .bot-title h1 {
-            margin-bottom: 5%;
-        }
-
-        .bot-title p {
-
-        }
     }
 
 
