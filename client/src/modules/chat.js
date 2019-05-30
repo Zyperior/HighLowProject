@@ -47,7 +47,7 @@ export default {
                         audio.play();
                     }
 
-                    store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess});
+                    store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
                 } else if (activePlayer.answer === correctAnswer && questionCounter === questions.length) {
 
@@ -59,7 +59,7 @@ export default {
                             audio.play();
                         }
 
-                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotWinGame});
+                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotWinGame, img: speaker.imgSrc});
 
                     } else {
 
@@ -68,7 +68,7 @@ export default {
                             // noinspection JSIgnoredPromiseFromCall
                             audio.play();
                         }
-                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame});
+                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame, img: speaker.imgSrc});
                     }
 
                 } else if (activePlayer.answer === correctAnswer) {
@@ -78,7 +78,7 @@ export default {
                             audio.src = speaker.soundFx.thisBotCorrectSfx;
                             audio.play();
                         }
-                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotCorrect});
+                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotCorrect, img: speaker.imgSrc});
 
                     } else  {
 
@@ -87,7 +87,7 @@ export default {
                             // noinspection JSIgnoredPromiseFromCall
                             audio.play();
                         }
-                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherCorrect});
+                        store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherCorrect, img: speaker.imgSrc});
                     }
 
                 } else {
@@ -108,7 +108,7 @@ export default {
                             // noinspection JSIgnoredPromiseFromCall
                             audio.play();
                         }
-                        store.commit('addMessage', {name: nextPlayer.name, text: nextPlayer.phrases.guessing[phraseIndex]});
+                        store.commit('addMessage', {name: nextPlayer.name, text: nextPlayer.phrases.guessing[phraseIndex], img: nextPlayer.imgSrc});
                     }
 
                 }

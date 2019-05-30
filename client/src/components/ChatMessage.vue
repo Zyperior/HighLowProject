@@ -7,6 +7,7 @@
                  :key="index"
                  class="message-container">
                 <p class="messenger-name">{{message.name}}</p>
+                <img :src="message.img">
                 <p class="message">{{message.text}}</p>
             </div>
         </transition-group>
@@ -52,6 +53,10 @@
         display: flex;
         margin-left: 5%;
         padding-top: 10px;
+    }
+
+    img{
+        max-width: 60px;
     }
 
     .message {
