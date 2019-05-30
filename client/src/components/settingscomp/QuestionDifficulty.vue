@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "QuestionDifficulty",
         data(){
@@ -19,14 +21,19 @@
                     {label: "Medium", value: 2},
                     {label: "Hard", value: 3}
                 ],
-                difficulty: 0
+                difficulty: getCurrentSettings().questions.difficulty
             }
         },
         methods:{
             onChange(event){
                 this.$emit('changeDifficulty', event.target.value)
             }
-        }
+        },
+        // computed: {
+        //     getCurrentSettings(){
+        //         return getCurrentSettings()
+        //     }
+        // }
     }
 </script>
 

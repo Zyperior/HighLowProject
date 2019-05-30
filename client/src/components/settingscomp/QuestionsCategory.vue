@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "QuestionsCategory",
         data(){
@@ -22,7 +24,7 @@
                     {name: "Games", value: 5},
                     {name: "Miscellaneous", value:6}
                 ],
-                category: 0
+                category: getCurrentSettings().questions.category
             }
         },
         methods:{
