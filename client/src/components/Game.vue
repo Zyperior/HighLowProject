@@ -4,7 +4,7 @@
             <QuestionCard/>
             <div>
                 <div class="aboveBelow">
-                    <div>Closest above:</div><div>{{highGuess}}</div>
+                    <div>Closest above:</div><div class="highGuess">{{highGuess}}</div>
                     <div>Closest below:</div><div>{{lowGuess}}</div>
                 </div>
 
@@ -53,6 +53,7 @@
     }
 
     export default {
+        name: 'Game',
         components: {
             ChatMessage,
             Timer,
