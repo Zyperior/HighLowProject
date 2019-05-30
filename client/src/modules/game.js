@@ -244,16 +244,25 @@ export default {
                         new Audio('/soundfx/correctAnswer.wav').play();
                     }
 
-                    if(state.questionCounter >= state.questions.length){
-                        dispatch('endGame');
-                    } else {
-                        commit('setNextQuestion');
-                        commit('incPlayerTurn');
-                        commit("startTimer", {root: true});
-                        store.commit("flipCards");
-                    }
+                    setTimeout(() => {
+                        if(state.questionCounter >= state.questions.length){
+                            dispatch('endGame');
+                        } else {
+                            commit('setNextQuestion');
+                            commit('incPlayerTurn');
+                            commit("startTimer", {root: true});
+                            store.commit("flipCards");
+
+                            commit("resetPlayerAnswers");
+                        }
+                    }, 4000)
 
                 } else {
+
+                    if(!state.muteSounds){
+                        // noinspection JSIgnoredPromiseFromCall
+                        new Audio('/soundfx/testAudio.wav').play();
+                    }
 
                     commit('incPlayerTurn');
                     commit("startTimer", {root: true});
@@ -278,7 +287,7 @@ export default {
                     commit('incQuestionCounter');
                     commit('resetGuessCounter');
                     commit('resetLowestAndHighestAnswers');
-                    commit("resetPlayerAnswers");
+                    //commit("resetPlayerAnswers");
 
                     resolve(CORRECT_ANSWER)
                 }
