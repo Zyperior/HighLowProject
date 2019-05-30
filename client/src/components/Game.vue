@@ -154,12 +154,6 @@
 
                 if(this.isGameRunning){
 
-                    if(!this.muteSounds){
-                        let answerSound = new Audio('/soundfx/testAudio.wav');
-                        // noinspection JSIgnoredPromiseFromCall
-                        answerSound.play();
-                    }
-
                     this.showFeedback();
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
@@ -186,12 +180,6 @@
                     game.botLoopTimeoutFunction = setTimeout(function () {
 
                         game.activePlayer.guess().then((answer) =>{ //Returns a guess based on the interval-object
-
-                            if(!game.muteSounds){
-                                let answerSound = new Audio('/soundfx/testAudio.wav');
-                                // noinspection JSIgnoredPromiseFromCall
-                                answerSound.play();
-                            }
 
                             game.$store.dispatch("submitAnswer", answer).then(()=>{
                                 game.showFeedback();

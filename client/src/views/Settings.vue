@@ -14,7 +14,7 @@
         <number-of-players id="playerAmount" @changePlayerAmount="changePlayerAmount" />
         <bot-settings id="botContainer" @botComment="botComment" />
         <shuffle-order id="shuffle" @shuffle="shufflePlayers" />
-        <bot-commentary id="botComments" @botComment="setBotComment"/>
+        <bot-commentary id="botComments" @botComment="botComment"/>
         <mic-input-language id="language" @changeMicLanguage="changeMicLanguage" />
     </div>
 </template>
