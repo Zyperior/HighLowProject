@@ -5,24 +5,20 @@ const bot1 = {
     guess(){
 
         let lowestGuess = Store.getters.getLowGuess;
-        let isInInterval = Store.getters.isInInterval;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
 
         return new Promise((resolve)=>{
 
-            if(isInInterval) {
-                resolve(lowestGuess + 1);
-            } else {
-                resolve(lowestGuess + 1);
-            }
+            resolve(lowestGuess + 1);
 
         });
 
     },
-    unfair: false,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Lowest guess + 1",
+    behavior: "Adds 1 to lowest possible guess",
     phrases: {
         guessing: [
             "Is it my turn?",
@@ -64,6 +60,14 @@ const bot2 = {
         let highestGuess = Store.getters.getHighGuess;
         let isInInterval = Store.getters.isInInterval;
 
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         return new Promise((resolve)=>{
 
             if(isInInterval) {
@@ -82,11 +86,8 @@ const bot2 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: true,
-    behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
+    behavior: "Guesses half-way if <10% chance, then guesses randomly",
     phrases: {
         guessing: [
             "Let's see how this goes.",
@@ -126,8 +127,16 @@ const bot3 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
-        let correctAnswer = Store.getters.getCorrectAnswer;
 
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
         let bossLow = correctAnswer * 0.9;
         let bossHigh = correctAnswer * 1.1;
 
@@ -144,11 +153,8 @@ const bot3 = {
         });
 
     },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses correctAnswer +- 10%, unless highest/lowest are closer",
+    behavior: "Guesses between +- 10% of the correct answer",
     phrases: {
         guessing: [
             "I’m gonna make him an offer he can’t refuse.",
@@ -188,6 +194,15 @@ const bot4 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
 
         return new Promise((resolve)=>{
@@ -201,11 +216,8 @@ const bot4 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses randomly between highest and lowest guess",
+    behavior: "Guesses randomly between highest possible and lowest possible guess",
     phrases: {
         guessing: [
             "Jå gissar.",
@@ -256,9 +268,6 @@ const bot5 = {
         });
 
     },
-    unfair: true,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -271,7 +280,7 @@ const bot5 = {
         otherWinGame: "In Mother Russia, game wins you.",
         thisBotWinGame: "Radost.",
     },
-    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    behavior: 'Has a 1% chance of guessing correctly, otherwise random number',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -301,6 +310,15 @@ const bot6 =  {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
 
         return new Promise((resolve) => {
@@ -314,9 +332,6 @@ const bot6 =  {
         });
 
     },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -329,7 +344,7 @@ const bot6 =  {
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
     },
-    behavior: 'The smaller the interval is the smaller its guesses are',
+    behavior: "Guesses a tenth of the possible interval",
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -355,16 +370,24 @@ const bot6 =  {
 const bot7 = {
     name: 'Segelbot',
     lastGuess: 0,
-    doubler: 2,
     guess(){
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let lastGuess = Store.getters.getLastGuess;
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
         let answer = 0;
-
+        console.log(isInInterval);
         return new Promise((resolve)=>{
 
             if(isInInterval) {
@@ -395,10 +418,8 @@ const bot7 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: true,
+    behavior: "The smaller the interval, the smaller percentage it's guesses are",
     phrases: {
         guessing: [
             "Yarr!",
@@ -410,7 +431,6 @@ const bot7 = {
         otherWinGame: "Scupper that!",
         thisBotWinGame: "Shiver me timbers!"
     },
-    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -440,6 +460,15 @@ const bot8 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = Math.floor((highestGuess - lowestGuess) * 0.5);
 
@@ -454,9 +483,6 @@ const bot8 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -469,7 +495,7 @@ const bot8 = {
         otherWinGame: "",
         thisBotWinGame: "No one can beat our bot"
     },
-    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    behavior: 'Guesses randomly within the lower half of the interval',
     soundFx: {
         guessingSfx: '/soundfx/botTest1.wav',
         badGuessSfx: '/soundfx/botTest1.wav',
@@ -498,6 +524,15 @@ const bot9 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
 
@@ -512,11 +547,8 @@ const bot9 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Looks above for answers, answering in the top half of the interval",
+    behavior: "Answers within the top half of the interval",
     phrases: {
         guessing: [
             "Proverbs 10:4",
@@ -556,6 +588,15 @@ const bot10 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let intervalSize = highestGuess - lowestGuess;
 
         return new Promise((resolve)=>{
@@ -568,11 +609,8 @@ const bot10 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Bides his time and refuses to answer, unless > 20% chance to win",
+    behavior: "Refuses to answer, unless > 10% chance to win",
     phrases: {
         guessing: [
             "...",
@@ -599,8 +637,8 @@ const bot10 = {
     correctAnswer: 0,
     imgSrc: '/botImg/inbotstjuven.jpg',
     description: {
-        dislikes: 'Alarms, the Police',
-        likes: 'Unlocked car-doors, crowbars',
+        dislikes: 'Alarms, the Police, angry dogs',
+        likes: 'Unlocked car-doors, crowbars, balaclavas',
         type: 'Burglar',
         blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
     }
@@ -612,6 +650,15 @@ const bot11 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let lastGuess = Store.getters.getLastGuess;
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
@@ -633,11 +680,8 @@ const bot11 = {
         });
 
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Copies player's guess and adds 10 or 2 depending on how close to answer",
+    behavior: "Copies player's guess and adds 10 or 2 to it",
     phrases: {
         guessing: [
             "00111111",
@@ -732,6 +776,15 @@ const bot13 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let correctAnswer = Store.getters.getCorrectAnswer;
         let max = 0;
         let min = 0;
@@ -750,15 +803,12 @@ const bot13 = {
                 min = lowestGuess;
             }
 
-            //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+
             resolve(Math.floor(Math.random() * ((max - min) - 1)) + min + 1);
 
         });
 
     },
-    unfair: false,
-    difficulty: "medium",
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses suspiciously life like...",
     phrases: {
@@ -800,6 +850,15 @@ const bot14 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let correctAnswer = Store.getters.getCorrectAnswer;
         let bratLow = correctAnswer * 0.75;
         let bratHigh = correctAnswer * 1.25;
@@ -819,9 +878,6 @@ const bot14 = {
         });
 
     },
-    unfair: true,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses within 25% of the correct answer. Cheats",
     phrases: {

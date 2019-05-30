@@ -10,11 +10,13 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../../modules/settingsData'
+
     export default {
         name: "ChattyBots",
         data: function() {
             return {
-                checked: this.value
+                checked: getCurrentSettings().botCommentary
             };
         },
         props: ['value'],

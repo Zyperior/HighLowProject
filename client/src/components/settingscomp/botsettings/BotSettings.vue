@@ -80,11 +80,13 @@
         grid-column: 2;
         grid-row: 1;
         justify-self: center;
+        margin-top: 3em;
     }
     #removeButton{
         grid-column: 2;
         grid-row: 2;
         justify-self: center;
+        margin-top: 1em;
     }
 
 </style>

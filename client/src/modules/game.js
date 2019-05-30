@@ -53,7 +53,7 @@ export default {
         getPlayerTurn: state => { return state.playerTurn },
         getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
         isBadGuess: state => { return (state.lastGuess < state.lowGuess || state.lastGuess > state.highGuess) },
-        isInInterval: state => { return (state.lowGuess < state.correctAnswer && state.highGuess > state.correctAnswer) }
+        isInInterval: state => { return ( state.highGuess > state.currentQuestion.answer) }
     },
     mutations : {
 
@@ -125,7 +125,7 @@ export default {
 
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame (state) { state.isGameRunning = false; },
+        stopGame (state) { state.gameRunning = false; },
 
         displayResults (state) { state.gameCompleted = true; },
 
@@ -137,16 +137,16 @@ export default {
 
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
 
-        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
+        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction)
     },
     actions : {
 
         async loadGame({commit}) {
-
+            console.log("inside load game")
             commit('resetState');
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
-
+                console.log(players);
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -168,13 +168,17 @@ export default {
         },
 
         async loadPlayerSetup({commit}) {
-
+            console.log("inside loadplayer setup")
             commit('resetPlayersBeforeNewGame');
 
             return new Promise( (resolve) => {
 
+                const players = [];
                 // Add playing bots to array
-                const players = store.getters.playingBots.slice();
+                store.getters.playingBots.forEach(bot => {
+                    store.dispatch('cloneBot', bot)
+                        .then(copy => players.push(copy));
+                })
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
@@ -224,7 +228,7 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-
+                console.log("in submit answer")
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 
@@ -244,16 +248,25 @@ export default {
                         new Audio('/soundfx/correctAnswer.wav').play();
                     }
 
-                    if(state.questionCounter >= state.questions.length){
-                        dispatch('endGame');
-                    } else {
-                        commit('setNextQuestion');
-                        commit('incPlayerTurn');
-                        commit("startTimer", {root: true});
-                        store.commit("flipCards");
-                    }
+                    setTimeout(() => {
+                        if(state.questionCounter >= state.questions.length){
+                            dispatch('endGame');
+                        } else {
+                            commit('setNextQuestion');
+                            commit('incPlayerTurn');
+                            commit("startTimer", {root: true});
+                            store.commit("flipCards");
+
+                            commit("resetPlayerAnswers");
+                        }
+                    }, 3500)
 
                 } else {
+
+                    if(!state.muteSounds){
+                        // noinspection JSIgnoredPromiseFromCall
+                        new Audio('/soundfx/testAudio.wav').play();
+                    }
 
                     commit('incPlayerTurn');
                     commit("startTimer", {root: true});
@@ -278,7 +291,7 @@ export default {
                     commit('incQuestionCounter');
                     commit('resetGuessCounter');
                     commit('resetLowestAndHighestAnswers');
-                    commit("resetPlayerAnswers");
+                    //commit("resetPlayerAnswers");
 
                     resolve(CORRECT_ANSWER)
                 }

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-show="isGameRunning">
-            <QuestionCard>
+        <div v-if="isGameRunning">
+            <QuestionCard />
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
@@ -37,6 +37,9 @@
 
                 <chat-message />
             </div>
+        </div>
+        <div v-else>
+
         </div>
     </div>
 
@@ -153,12 +156,6 @@
 
                 if(this.isGameRunning){
 
-                    if(!this.muteSounds){
-                        let answerSound = new Audio('/soundfx/testAudio.wav');
-                        // noinspection JSIgnoredPromiseFromCall
-                        answerSound.play();
-                    }
-
                     this.showFeedback();
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
@@ -185,12 +182,6 @@
                     game.botLoopTimeoutFunction = setTimeout(function () {
 
                         game.activePlayer.guess().then((answer) =>{ //Returns a guess based on the interval-object
-
-                            if(!game.muteSounds){
-                                let answerSound = new Audio('/soundfx/testAudio.wav');
-                                // noinspection JSIgnoredPromiseFromCall
-                                answerSound.play();
-                            }
 
                             game.$store.dispatch("submitAnswer", answer).then(()=>{
                                 game.showFeedback();
@@ -243,6 +234,12 @@
                 }
             },
         },
+        beforeRouteLeave: (to, from, next) => {
+            next(vm => {
+                vm.$store.commit('stopTimer');
+                vm.$store.commit('stopGame');
+            })
+        }
     }
 </script>
 <style scoped>
