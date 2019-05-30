@@ -168,6 +168,7 @@
 
     #links{
         background: gray;
+        opacity: 0.9;
         width: 10em;
         position: fixed;
         right: 0;
