@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="isGameRunning">
-            <QuestionCard />
+            <QuestionCard>
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
@@ -131,18 +131,19 @@
             activePlayer : function(){
 
                 const game = this;
+                    game.$refs.myTimer.stopTimer();
 
-                game.$refs.myTimer.stopTimer();
+                    setTimeout(function () {
 
-                setTimeout(function() {
 
-                    game.$refs.myTimer.startTimer();
+                        if(game.isGameRunning)
+                            game.$refs.myTimer.startTimer();
 
-                    if(!game.activePlayer.isHuman){
-                        game.botGuess();
-                    }
+                        if (!game.activePlayer.isHuman) {
+                            game.botGuess();
+                        }
 
-                }, game.animationTime);
+                    }, game.animationTime);
 
             },
 
@@ -176,7 +177,6 @@
                 const game = this;
 
                 if(game.isGameRunning){
-
                     let guessTime = (Math.ceil(Math.random() * 5)) * 1000; //Bot takes between 1-5 seconds to guess
 
                     game.botLoopTimeoutFunction = setTimeout(function () {

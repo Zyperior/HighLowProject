@@ -9,8 +9,29 @@ const POINT_DEC_PERCENT = 0.01;
 const CORRECT_ANSWER = true;
 const INCORRECT_ANSWER = false;
 
-const getDefaultState = () => {
-    return {
+const getDefaultState = (state) => {
+        state.gameRunning = false;
+        state.gameCompleted = false;
+        state.startTimer = false;
+        state.muteSound = false;
+        state.chattyBots = true;
+        state.players = [];
+        state.questions = [];
+        state.lowGuess = '';
+        state.highGuess = '';
+        state.lastGuess = '';
+        state.botLoopTimeoutFunction = '';
+        state.speechToTextLanguage = '';
+        state.currentQuestion = { question: '', answer: '', points: 0, value: 0 };
+        state.guessCount = 0;
+        state.answerAttempts = 0;
+        state.questionCounter = 0;
+        state.playerTurn = 0;
+};
+
+export default {
+
+    state : {
         gameRunning: false,
         gameCompleted: false,
         startTimer: false,
@@ -23,17 +44,12 @@ const getDefaultState = () => {
         lastGuess: '',
         botLoopTimeoutFunction: '',
         speechToTextLanguage: '',
-        currentQuestion: { question: '', answer: '', points: 0, value: 0 },
+        currentQuestion: {question: '', answer: '', points: 0, value: 0},
         guessCount: 0,
         answerAttempts: 0,
         questionCounter: 0,
         playerTurn: 0
-    }
-};
-
-export default {
-
-    state : getDefaultState(),
+    },
 
     getters : {
         isStartTimer: state => { return state.startTimer },
@@ -62,6 +78,7 @@ export default {
         startGame (state) {
             state.gameRunning = true;
             state.startTimer = true;
+            store.commit('startTimer');
         },
 
         setNextQuestion (state) {
@@ -125,7 +142,7 @@ export default {
 
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame (state) { state.gameRunning = false; },
+        stopGame (state) { state.gameRunning = false; store.commit('stopTimer'); },
 
         displayResults (state) { state.gameCompleted = true; },
 
@@ -133,7 +150,7 @@ export default {
 
         setPlayerAnswer (state, answer) { state.players[state.playerTurn].answer = answer; },
 
-        resetState (state) { state = getDefaultState() },
+        resetState (state) { getDefaultState(state); },
 
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
 
@@ -142,11 +159,11 @@ export default {
     actions : {
 
         async loadGame({commit}) {
-            console.log("inside load game")
             commit('resetState');
+
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
-                console.log(players);
+
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -168,7 +185,6 @@ export default {
         },
 
         async loadPlayerSetup({commit}) {
-            console.log("inside loadplayer setup")
             commit('resetPlayersBeforeNewGame');
 
             return new Promise( (resolve) => {
@@ -228,7 +244,6 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-                console.log("in submit answer")
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 

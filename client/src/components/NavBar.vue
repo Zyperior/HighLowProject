@@ -72,7 +72,6 @@
         },
         methods: {
             showMenu: function () {
-                console.log("hej");
                 this.activate = !this.activate;
             },
             logout() {
