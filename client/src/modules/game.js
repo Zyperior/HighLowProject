@@ -40,15 +40,20 @@ export default {
         isMuteSound: state => { return state.muteSound },
         isGameCompleted: state => { return state.gameCompleted },
         isGameRunning: state => { return state.gameRunning },
-        getPlayerTurn: state => { return state.playerTurn },
         getCorrectAnswer: state => { return state.currentQuestion.answer },
         getCurrentQuestion: state => { return state.currentQuestion.question },
         getCurrentQuestionValue: state => { return state.currentQuestion.value },
+        getQuestions: state => { return state.questions },
+        getQuestionCounter: state => { return state.questionCounter },
         getLowGuess: state => { return state.lowGuess },
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
         getPlayers: state => { return state.players },
-        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction }
+        getActivePlayer: state => { return state.players[state.playerTurn] },
+        getPlayerTurn: state => { return state.playerTurn },
+        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
+        isBadGuess: state => { return (state.lastGuess < state.lowGuess || state.lastGuess > state.highGuess) },
+        isInInterval: state => { return ( state.highGuess > state.currentQuestion.answer) }
     },
     mutations : {
 
@@ -120,7 +125,7 @@ export default {
 
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame (state) { state.isGameRunning = false; },
+        stopGame (state) { state.gameRunning = false; },
 
         displayResults (state) { state.gameCompleted = true; },
 
@@ -132,16 +137,16 @@ export default {
 
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
 
-        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
+        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction)
     },
     actions : {
 
         async loadGame({commit}) {
-
+            console.log("inside load game")
             commit('resetState');
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
-
+                console.log(players);
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -163,13 +168,17 @@ export default {
         },
 
         async loadPlayerSetup({commit}) {
-
+            console.log("inside loadplayer setup")
             commit('resetPlayersBeforeNewGame');
 
             return new Promise( (resolve) => {
 
+                const players = [];
                 // Add playing bots to array
-                const players = store.getters.playingBots.slice();
+                store.getters.playingBots.forEach(bot => {
+                    store.dispatch('cloneBot', bot)
+                        .then(copy => players.push(copy));
+                })
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
@@ -219,7 +228,7 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-
+                console.log("in submit answer")
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 
