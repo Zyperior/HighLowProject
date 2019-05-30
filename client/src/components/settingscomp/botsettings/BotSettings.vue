@@ -4,7 +4,6 @@
        <add-remove-button id="addButton" directive="add" @addAvailableToPlaying="addAvailableToPlaying" />
        <add-remove-button id="removeButton" directive="remove" @addPlayingToAvailable="addPlayingToAvailable"/>
        <available-bots id="availableBots" @changeAvailableBotIndex="setAvailableBotIndex" />
-
    </div>
 </template>
 
@@ -12,7 +11,6 @@
     import SelectedBots from './SelectedBots'
     import AddRemoveBotButton from './AddRemoveBotButton'
     import AvailableBots from './AvailableBots'
-    import ChattyBots from './ChattyBots'
 
     export default {
         name: "BotSettings",
@@ -20,7 +18,6 @@
             'selected-bots': SelectedBots,
             'add-remove-button': AddRemoveBotButton,
             'available-bots': AvailableBots,
-            'bot-commentary': ChattyBots
         },
         data() {
             return {
@@ -56,14 +53,8 @@
 
                     this.playingBots[this.selectedIndex].isPlaying = false;
                 }
-
-            },
-            setBotComment(value) {
-                this.$emit('botComment', value)
             }
         }
-
-
     }
 </script>
 
@@ -89,11 +80,13 @@
         grid-column: 2;
         grid-row: 1;
         justify-self: center;
+        margin-top: 3em;
     }
     #removeButton{
         grid-column: 2;
         grid-row: 2;
         justify-self: center;
+        margin-top: 1em;
     }
 
 </style>

@@ -11,11 +11,13 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "ShuffleOrder",
         data: function() {
             return {
-                checked: this.value
+                checked: getCurrentSettings().shufflePlayers
             };
         },
         props: ['value'],

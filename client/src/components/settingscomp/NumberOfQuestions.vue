@@ -9,12 +9,14 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "NumberOfQuestions",
         data(){
             return{
                 questionsAmount: [1, 2, 3, 4, 5],
-                amount: 3
+                amount: getCurrentSettings().questions.amount
             }
         },
         methods:{

@@ -168,11 +168,13 @@
 
     #links{
         background: gray;
+        opacity: 0.9;
         width: 10em;
         position: fixed;
         right: 0;
         margin-left: auto;
         text-align: left;
+        z-index: 1;
     }
     #links > div{
         padding: 0.3em;
