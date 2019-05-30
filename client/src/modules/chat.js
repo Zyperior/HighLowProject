@@ -25,6 +25,7 @@ export default {
             let correctAnswer = store.getters.getCorrectAnswer;
             let questions = store.getters.getQuestions;
             let questionCounter = store.getters.getQuestionCounter;
+            let lastGuess = store.getters.getLastGuess;
 
             let speakerIndex = Math.floor(Math.random() * players.length);
             let speaker = players[speakerIndex];
@@ -46,7 +47,7 @@ export default {
 
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
-                } else if (activePlayer.answer === correctAnswer && questionCounter === questions.length) {
+                } else if (lastGuess === correctAnswer && questionCounter === questions.length) {
                     if(speaker === activePlayer) {
 
                         if (!store.getters.isMuteSound) {
@@ -67,7 +68,16 @@ export default {
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame, img: speaker.imgSrc});
                     }
 
-                } else if (activePlayer.answer === correctAnswer) {
+                } else if (lastGuess === correctAnswer) {
+
+                    let speakerIndex = Math.floor(Math.random() * players.length);
+                    let speaker = players[speakerIndex];
+
+                    while(speaker.isHuman){
+                        speakerIndex = Math.floor(Math.random() * players.length);
+                        speaker = players[speakerIndex];
+                    }
+
                     if(speaker === activePlayer) {
                         if (!store.getters.isMuteSound) {
                             audio.src = speaker.soundFx.thisBotCorrectSfx;
