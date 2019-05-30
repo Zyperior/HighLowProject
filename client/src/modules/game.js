@@ -255,7 +255,7 @@ export default {
 
                             commit("resetPlayerAnswers");
                         }
-                    }, 4000)
+                    }, 3500)
 
                 } else {
 
