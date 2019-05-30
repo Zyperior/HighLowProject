@@ -5,15 +5,14 @@ const bot1 = {
     guess(){
 
         let lowestGuess = Store.getters.getLowGuess;
-        let isInInterval = Store.getters.isInInterval;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
 
         return new Promise((resolve)=>{
 
-            if(isInInterval) {
-                resolve(lowestGuess + 1);
-            } else {
-                resolve(lowestGuess + 1);
-            }
+            resolve(lowestGuess + 1);
 
         });
 
@@ -63,6 +62,14 @@ const bot2 = {
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
         let isInInterval = Store.getters.isInInterval;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
 
         return new Promise((resolve)=>{
 
@@ -126,8 +133,16 @@ const bot3 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
-        let correctAnswer = Store.getters.getCorrectAnswer;
 
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
         let bossLow = correctAnswer * 0.9;
         let bossHigh = correctAnswer * 1.1;
 
@@ -188,6 +203,15 @@ const bot4 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
 
         return new Promise((resolve)=>{
@@ -301,6 +325,15 @@ const bot6 =  {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
 
         return new Promise((resolve) => {
@@ -360,11 +393,20 @@ const bot7 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let lastGuess = Store.getters.getLastGuess;
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
         let answer = 0;
-
+        console.log(isInInterval);
         return new Promise((resolve)=>{
 
             if(isInInterval) {
@@ -440,6 +482,15 @@ const bot8 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = Math.floor((highestGuess - lowestGuess) * 0.5);
 
@@ -498,6 +549,15 @@ const bot9 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
 
@@ -556,6 +616,15 @@ const bot10 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let intervalSize = highestGuess - lowestGuess;
 
         return new Promise((resolve)=>{
@@ -612,6 +681,15 @@ const bot11 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let lastGuess = Store.getters.getLastGuess;
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
@@ -732,6 +810,15 @@ const bot13 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let correctAnswer = Store.getters.getCorrectAnswer;
         let max = 0;
         let min = 0;
@@ -800,6 +887,15 @@ const bot14 = {
 
         let lowestGuess = Store.getters.getLowGuess;
         let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
         let correctAnswer = Store.getters.getCorrectAnswer;
         let bratLow = correctAnswer * 0.75;
         let bratHigh = correctAnswer * 1.25;
