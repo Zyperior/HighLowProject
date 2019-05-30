@@ -65,4 +65,22 @@
         text-align: center;
     }
 
+    @media screen and (min-width: 600px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, 200px);
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, 256px);
+        }
+    }
+
+    @media screen and (min-width: 100px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, auto);
+        }
+    }
+
 </style>

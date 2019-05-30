@@ -34,10 +34,8 @@
                             :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
                     </button>
                 </div>
-                <HigherLowerFeedBack class="high-or-low" v-if="showHiOrLow" />
 
                 <chat-message />
-                <Timer ref="myTimer" />
             </div>
         </div>
     </div>
@@ -70,7 +68,7 @@
                 recording: false,
                 answer: '',
                 speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
-                showHiOrLow: true//false,
+                showHiOrLow: false,
             }
         },
         computed: {
