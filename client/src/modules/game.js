@@ -53,7 +53,7 @@ export default {
         getPlayerTurn: state => { return state.playerTurn },
         getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
         isBadGuess: state => { return (state.lastGuess < state.lowGuess || state.lastGuess > state.highGuess) },
-        isInInterval: state => { return (state.lowGuess < state.correctAnswer && state.highGuess > state.correctAnswer) }
+        isInInterval: state => { return ( state.highGuess > state.currentQuestion.answer) }
     },
     mutations : {
 
