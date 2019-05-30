@@ -1,7 +1,9 @@
 <template>
     <div>
         <div v-show="isGameRunning">
-            <QuestionCard><div v-if="showHiOrLow" slot="feedback" id="feedback">{{hilo}}</div><Timer id="timer" slot="timer" ref="myTimer"/>
+            <QuestionCard>
+                <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
+                <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
             <div>
                 <div class="aboveBelow">
@@ -32,7 +34,8 @@
                             :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
                     </button>
                 </div>
-                <HigherLowerFeedBack class="high-or-low" v-if="showHiLo" />
+                <HigherLowerFeedBack class="high-or-low" v-if="showHiOrLow" />
+
                 <chat-message />
                 <Timer ref="myTimer" />
             </div>
@@ -67,7 +70,7 @@
                 recording: false,
                 answer: '',
                 speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
-                showHiLo: false,
+                showHiOrLow: true//false,
             }
         },
         computed: {
@@ -202,9 +205,9 @@
 
             showFeedback() {
                 //Timeout for "Higher!" "Lower!" messages.
-                this.showHiLo = true;
+                this.showHiOrLow = true;
                 setTimeout(() => {
-                    this.showHiLo = false;
+                    this.showHiOrLow = false;
                 }, 1500);
             },
 
