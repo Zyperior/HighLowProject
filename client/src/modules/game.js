@@ -125,7 +125,7 @@ export default {
 
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame (state) { state.isGameRunning = false; },
+        stopGame (state) { state.gameRunning = false; },
 
         displayResults (state) { state.gameCompleted = true; },
 
@@ -137,12 +137,11 @@ export default {
 
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
 
-        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction),
+        setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction)
     },
     actions : {
 
         async loadGame({commit}) {
-
             commit('resetState');
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {

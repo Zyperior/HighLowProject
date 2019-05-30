@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-show="isGameRunning">
+        <div v-if="isGameRunning">
             <QuestionCard />
             <div>
                 <div class="aboveBelow">
@@ -35,6 +35,9 @@
                 <chat-message />
                 <Timer ref="myTimer" />
             </div>
+        </div>
+        <div v-else>
+
         </div>
     </div>
 
@@ -241,6 +244,12 @@
                 }
             },
         },
+        beforeRouteLeave: (to, from, next) => {
+            next(vm => {
+                vm.$store.commit('stopTimer');
+                vm.$store.commit('stopGame');
+            })
+        }
     }
 </script>
 <style scoped>
