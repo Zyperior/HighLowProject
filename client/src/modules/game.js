@@ -40,15 +40,20 @@ export default {
         isMuteSound: state => { return state.muteSound },
         isGameCompleted: state => { return state.gameCompleted },
         isGameRunning: state => { return state.gameRunning },
-        getPlayerTurn: state => { return state.playerTurn },
         getCorrectAnswer: state => { return state.currentQuestion.answer },
         getCurrentQuestion: state => { return state.currentQuestion.question },
         getCurrentQuestionValue: state => { return state.currentQuestion.value },
+        getQuestions: state => { return state.questions },
+        getQuestionCounter: state => { return state.questionCounter },
         getLowGuess: state => { return state.lowGuess },
         getHighGuess: state => { return state.highGuess },
         getLastGuess: state => { return state.lastGuess },
         getPlayers: state => { return state.players },
-        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction }
+        getActivePlayer: state => { return state.players[state.playerTurn] },
+        getPlayerTurn: state => { return state.playerTurn },
+        getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
+        isBadGuess: state => { return (state.lastGuess < state.lowGuess || state.lastGuess > state.highGuess) },
+        isInInterval: state => { return (state.lowGuess < state.correctAnswer && state.highGuess > state.correctAnswer) }
     },
     mutations : {
 
