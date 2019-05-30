@@ -398,7 +398,7 @@ const bot7 = {
     unfair: false,
     difficulty: 'medium',
     timing: 2,
-    isPlaying: false,
+    isPlaying: true,
     phrases: {
         guessing: [
             "Yarr!",
