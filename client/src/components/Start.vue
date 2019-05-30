@@ -19,7 +19,7 @@
 
 <style scoped>
 
-    .smallerButton{
+    .smallerButton {
         background: none;
         text-decoration: underline;
         border-style: none;
@@ -27,9 +27,12 @@
         padding: 0;
         width: auto;
     }
-    .smallerButton:hover{
+
+
+    .smallerButton:hover {
         cursor: pointer;
     }
+
 
     img {
         width: 15%;
@@ -40,12 +43,6 @@
         text-decoration: underline;
     }
 
-    .selectDiv select {
-        width: 50%;
-        font: var(--fonts);
-        font-size: var(--defaultFontSizeMobile);
-        color: var(--defaultFontColor);
-    }
 
     .infoDiv div {
         margin: 1em;
@@ -57,32 +54,49 @@
     }
 
 
-    .selectViewDiv select{
-        width: 65%;
-        font: var(--fonts);
-        font-size: var(--defaultFontSizeMobile);
-        color: var(--defaultFontColor);
-    }
-
     #lastSelect {
         margin-bottom: 2em;
     }
 
 
+    @media (max-width: 767px) {
+
+        .selectDiv select {
+            width: 50%;
+            font: var(--fonts);
+            font-size: var(--defaultFontSizeMobile);
+            color: var(--defaultFontColor);
+        }
+
+
+        .selectViewDiv select {
+            width: 65%;
+            font: var(--fonts);
+            font-size: var(--defaultFontSizeMobile);
+            color: var(--defaultFontColor);
+        }
+
+    }
+
+
     @media (min-width: 768px) {
 
-    .selectDiv select {
-      font-size: var(--defaultFontSize);
+        .selectDiv select {
+            width: 50%;
+            font: var(--fonts);
+            font-size: var(--defaultFontSize);
+            color: var(--defaultFontColor);
+        }
+
+
+        .selectViewDiv select {
+            width: 65%;
+            font: var(--fonts);
+            font-size: var(--defaultFontSize);
+            color: var(--defaultFontColor);
+        }
+
     }
-
-    .selectViewDiv select {
-      font-size: var(--defaultFontSize);
-    }
-
-
-  }
-
-
 
 
 </style>
