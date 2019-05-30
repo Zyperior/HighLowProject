@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="isGameRunning">
-            <QuestionCard />
+            <QuestionCard>
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
@@ -155,16 +155,10 @@
             submitAnswer(answer) {
 
                 if(this.isGameRunning){
-
                     this.showFeedback();
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
                     });
-
-                    if(this.$store.state.game.chattyBots) {
-                        // noinspection JSIgnoredPromiseFromCall
-                        this.$store.dispatch("chat", answer);
-                    }
                 }
 
                 this.answer = "";

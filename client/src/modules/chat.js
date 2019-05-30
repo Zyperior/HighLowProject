@@ -36,12 +36,9 @@ export default {
 
             let audio = new Audio(speaker.soundFx.badGuessSfx);
 
-            if (Math.floor(Math.random() * 2) === 0) { // 33% chance to show chat message
-
-                console.log("show message");
+            /*if (Math.floor(Math.random() * 2) === 0) */{ // 33% chance to show chat message
 
                 if (isBadGuess && answer !== -1) {
-
                     if (!store.getters.isMuteSound) {
                         // noinspection JSIgnoredPromiseFromCall
                         audio.play();
@@ -50,7 +47,6 @@ export default {
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
                 } else if (activePlayer.answer === correctAnswer && questionCounter === questions.length) {
-
                     if(speaker === activePlayer) {
 
                         if (!store.getters.isMuteSound) {
@@ -72,7 +68,6 @@ export default {
                     }
 
                 } else if (activePlayer.answer === correctAnswer) {
-
                     if(speaker === activePlayer) {
                         if (!store.getters.isMuteSound) {
                             audio.src = speaker.soundFx.thisBotCorrectSfx;
@@ -95,9 +90,9 @@ export default {
                     let nextPlayer;
                     let playerTurn = store.getters.getPlayerTurn;
 
-                    if(playerTurn < players.length) {
-                        nextPlayer = players[players.indexOf(activePlayer) + 1];
-                    } else if (players.indexOf(activePlayer)+1 === players.length){
+                    if(playerTurn !== players.length -1) {
+                        nextPlayer = players[playerTurn+1];
+                    } else {
                         nextPlayer = players[0];
                     }
 
@@ -123,10 +118,5 @@ export default {
                 store.commit('removeFirstChatMessage');
             }, 2850); //2.85s to remove messages
         }
-    },
-    methods : {
-        //50% chance to return true.
-        randomTalk: function () { return (Math.floor(Math.random() * 2) === 0); },
-
     }
 }
