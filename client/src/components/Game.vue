@@ -165,6 +165,8 @@
 
                 let thisComponent = this;
 
+                thisComponent.playerTurn = false;       // I moved this line from below, in order to disable the input field
+                                                        // immediately after a user/guest has submitted a guess.   /Daniel
                 setTimeout(function() {
 
                     thisComponent.activePlayer = thisComponent.activePlayers[thisComponent.playerCounter];
@@ -173,7 +175,7 @@
                         thisComponent.playerTurn = true;
 
                     }else {
-                        thisComponent.playerTurn = false;
+                        //thisComponent.playerTurn = false;
                         thisComponent.botGuess(thisComponent.activePlayer);
                     }
 
@@ -297,13 +299,12 @@
         background-color: red;
     }
 
-    #playerCardsDiv {
-        width: 21vw;
-        height: 32vw;
-        margin: auto;
-        text-align: center;
-        /* border: 1px solid black; */
-    }
+#playerCardsDiv {
+    width: 84vw;
+    height: 80vw;
+    margin: auto;
+    text-align: center;
+}
 
 
     .buttonDisabled{
@@ -325,5 +326,15 @@
     font-weight: 800;
     font-size: 20px;
 }
+
+@media (min-width: 768px) {
+
+    #playerCardsDiv {
+        width: 21vw;
+        height: 32vw;
+    }
+
+}
+
 
 </style>
