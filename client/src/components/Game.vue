@@ -1,7 +1,8 @@
 <template>
     <div>
         <div v-show="isGameRunning">
-            <QuestionCard><div v-if="showHiOrLow" class="feedback">{{hilo}}</div></QuestionCard>
+            <QuestionCard><div v-if="showHiOrLow" slot="feedback" id="feedback">{{hilo}}</div><Timer id="timer" slot="timer" ref="myTimer"/>
+            </QuestionCard>
             <div>
                 <div class="aboveBelow">
                     <div>Closest above:</div><div>{{highGuess}}</div>
@@ -303,7 +304,6 @@
         text-align: center;
         /* border: 1px solid black; */
     }
-
 
     .buttonDisabled{
       opacity: 0.6;

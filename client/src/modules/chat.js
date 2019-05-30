@@ -10,7 +10,6 @@ const actions = {
         let interval = object[0];
         let activePlayer = object[1];
         let players = object[2];
-        let phraseArray = [];
         /*
         1. isBadGuess?
         2. Rätt svar?
