@@ -142,10 +142,11 @@ export default {
     actions : {
 
         async loadGame({commit}) {
+            console.log("inside load game")
             commit('resetState');
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
-
+                console.log(players);
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -167,13 +168,17 @@ export default {
         },
 
         async loadPlayerSetup({commit}) {
-
+            console.log("inside loadplayer setup")
             commit('resetPlayersBeforeNewGame');
 
             return new Promise( (resolve) => {
 
+                const players = [];
                 // Add playing bots to array
-                const players = store.getters.playingBots.slice();
+                store.getters.playingBots.forEach(bot => {
+                    store.dispatch('cloneBot', bot)
+                        .then(copy => players.push(copy));
+                })
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
@@ -223,7 +228,7 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-
+                console.log("in submit answer")
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 
