@@ -299,42 +299,50 @@
         background-color: red;
     }
 
-#playerCardsDiv {
-    width: 84vw;
-    height: 80vw;
-    margin: auto;
-    text-align: center;
-}
 
-
-    .buttonDisabled{
+    .buttonDisabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
-    .aboveBelow{
+    .aboveBelow {
         display: grid;
         grid-template-columns: 31% 19% 31% 19%;
         font-size: 15px;
         text-align: start;
     }
 
-.high-or-low{
-    position: absolute;
-    left: 25%;
-    top: 43%;
-    font-weight: 800;
-    font-size: 20px;
-}
-
-@media (min-width: 768px) {
-
-    #playerCardsDiv {
-        width: 21vw;
-        height: 32vw;
+    .high-or-low {
+        position: absolute;
+        left: 25%;
+        top: 43%;
+        font-weight: 800;
+        font-size: 20px;
     }
 
-}
+
+    @media (max-width: 767px) {
+
+        #playerCardsDiv {
+            width: 84vw;
+            height: 80vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
+
+
+    @media (min-width: 768px) {
+
+        #playerCardsDiv {
+            width: 21vw;
+            height: 32vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
 
 
 </style>
