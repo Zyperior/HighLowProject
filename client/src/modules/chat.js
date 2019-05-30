@@ -34,18 +34,17 @@ export default {
                 speaker = players[speakerIndex];
             }
 
-            let audio = new Audio(speaker.soundFx.badGuessSfx);
+            let audio = new Audio('/soundfx/botTest1.wav');
 
             if (Math.floor(Math.random() * 2) === 0) { // 33% chance to show chat message
 
                 console.log("show message");
-
+                
+                if (!store.getters.isMuteSound) {
+                    // noinspection JSIgnoredPromiseFromCall
+                    audio.play();
+                }
                 if (isBadGuess && answer !== -1) {
-
-                    if (!store.getters.isMuteSound) {
-                        // noinspection JSIgnoredPromiseFromCall
-                        audio.play();
-                    }
 
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
@@ -53,40 +52,21 @@ export default {
 
                     if(speaker === activePlayer) {
 
-                        if (!store.getters.isMuteSound) {
-                            audio.src = speaker.soundFx.thisBotWinGameSfx;
-                            // noinspection JSIgnoredPromiseFromCall
-                            audio.play();
-                        }
-
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotWinGame, img: speaker.imgSrc});
 
                     } else {
 
-                        if (!store.getters.isMuteSound) {
-                            audio.src = speaker.soundFx.otherWinGameSfx;
-                            // noinspection JSIgnoredPromiseFromCall
-                            audio.play();
-                        }
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame, img: speaker.imgSrc});
                     }
 
                 } else if (activePlayer.answer === correctAnswer) {
 
                     if(speaker === activePlayer) {
-                        if (!store.getters.isMuteSound) {
-                            audio.src = speaker.soundFx.thisBotCorrectSfx;
-                            audio.play();
-                        }
+                    
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotCorrect, img: speaker.imgSrc});
 
                     } else  {
 
-                        if (!store.getters.isMuteSound) {
-                            audio.src = speaker.soundFx.otherCorrectSfx;
-                            // noinspection JSIgnoredPromiseFromCall
-                            audio.play();
-                        }
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherCorrect, img: speaker.imgSrc});
                     }
 
@@ -103,11 +83,6 @@ export default {
 
                     if (!nextPlayer.isHuman) {
                         let phraseIndex = Math.floor(Math.random() * (nextPlayer.phrases.guessing.length));
-                        if (!store.getters.isMuteSound) {
-                            audio.src = nextPlayer.soundFx.guessingSfx;
-                            // noinspection JSIgnoredPromiseFromCall
-                            audio.play();
-                        }
                         store.commit('addMessage', {name: nextPlayer.name, text: nextPlayer.phrases.guessing[phraseIndex], img: nextPlayer.imgSrc});
                     }
 
