@@ -228,7 +228,7 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-                console.log("in submit answer")
+
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 
@@ -263,7 +263,7 @@ export default {
 
                 } else {
 
-                    if(!state.muteSounds){
+                    if(!state.muteSound){
                         // noinspection JSIgnoredPromiseFromCall
                         new Audio('/soundfx/testAudio.wav').play();
                     }
