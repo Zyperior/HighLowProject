@@ -50,7 +50,7 @@
 
     .questionFooter{
         display: grid;
-        grid-template-columns: repeat(3, 132px);
+        grid-template-columns: repeat(3, 33%);
         text-align: start;
         border-top: solid rgb(205,226,203);
     }
@@ -64,24 +64,9 @@
     #timer{
         grid-column: 3;
         text-align: center;
+        white-space: nowrap;
     }
 
-    @media screen and (min-width: 600px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, 200px);
-        }
-    }
 
-    @media screen and (min-width: 768px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, 256px);
-        }
-    }
-
-    @media screen and (min-width: 100px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, auto);
-        }
-    }
 
 </style>
