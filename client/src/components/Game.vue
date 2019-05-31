@@ -275,12 +275,10 @@
     }
 
     @media (min-width: 768px) {
-
         #playerCardsDiv {
             width: 21vw;
             height: 32vw;
         }
-
     }
 
 

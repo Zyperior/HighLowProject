@@ -6,9 +6,11 @@
                  :message="messages[index]"
                  :key="index"
                  class="message-container">
-                <p class="messenger-name">{{message.name}}</p>
                 <img :src="message.img">
-                <p class="message">{{message.text}}</p>
+                <div>
+                    <p class="messenger-name">{{message.name}}</p>
+                    <p class="message">{{message.text}}</p>
+                </div>
             </div>
         </transition-group>
     </div>
@@ -46,17 +48,18 @@
     .message-container {
         background: rgba(0,0,0,.6);
         border-radius: 20px;
+        display: grid;
+        grid-template-columns: 40% 60%;
     }
 
     .messenger-name {
         font-weight: 600;
-        display: flex;
-        margin-left: 5%;
         padding-top: 10px;
     }
 
     img{
-        max-width: 60px;
+        max-width: 100%;
+        align-self: center;
     }
 
     .message {
