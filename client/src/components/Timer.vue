@@ -22,7 +22,7 @@ export default {
             return this.$store.getters.getTimeLeft;
         },
     }
-    
+
 }
 </script>
 

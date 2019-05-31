@@ -34,6 +34,7 @@
         display: grid;
         font-size: 15px;
         border: solid rgb(205,226,203);
+        background-color: rgb(251,255,251);;
     }
 
     .questionGrid{

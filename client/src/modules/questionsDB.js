@@ -7,7 +7,6 @@ function setQuestions(questionsFromDB) {
 }
 
 async function loadQuestions(settings) {
-
     const response = await axios.get(
         `http://localhost:5000/questions/${settings.amount}/${settings.difficulty}/${settings.category}`
     );
@@ -22,14 +21,13 @@ async function loadQuestions(settings) {
 export default {
 
     async getQuestions(settings) {
-
         return new Promise( (resolve) =>{
 
-            if(!questions.length) {
+            // if(true) {
 
                 loadQuestions(settings).then( () => { resolve(questions); })
 
-            } else { resolve(questions); }
+            // } else { resolve(questions); }
 
         })
 
