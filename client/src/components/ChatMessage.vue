@@ -8,8 +8,8 @@
                  class="message-container">
                 <img :src="message.img">
                 <div>
-                    <p class="messenger-name">{{message.name}}</p>
-                    <p class="message">{{message.text}}</p>
+                    <div class="messenger-name">{{message.name}}</div>
+                    <div class="message">{{message.text}}</div>
                 </div>
             </div>
         </transition-group>
@@ -38,32 +38,34 @@
 
     .message-area {
         position: absolute;
-        left: 25%;
         color: whitesmoke;
-        top: 0;
-        width: 50%;
+        bottom: 0;
         transition: height 0.2s;
+        align-self: center;
+        padding-left: 25%;
+        padding-right: 25%;
     }
 
     .message-container {
         background: rgba(0,0,0,.6);
         border-radius: 20px;
         display: grid;
-        grid-template-columns: 40% 60%;
+        grid-template-columns: 30% 70%;
     }
 
     .messenger-name {
         font-weight: 600;
-        padding-top: 10px;
+        padding-top: 5px;
     }
 
     img{
-        max-width: 100%;
+        max-width: 80%;
         align-self: center;
+        border-radius: 100%;
     }
 
     .message {
-        padding: 10px;
+        padding: 5px;
     }
     .v-enter-active {
         animation: expand-bounce 0.3s;

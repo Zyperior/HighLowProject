@@ -1,9 +1,8 @@
 <template>
     <div class="wrapper">
         <div class="questionGrid">
-            <div>Question:</div>
-            <div class="questionText"
-                 :class="{ smaller : currentQuestion.length > 90}">{{currentQuestion}}
+            <div class="questionText">
+                {{currentQuestion}}
             </div>
         </div>
         <div class="questionFooter">
@@ -32,20 +31,21 @@
 
     .wrapper{
         display: grid;
-        font-size: 15px;
+        font-size: 18px;
         border: solid rgb(205,226,203);
         background-color: rgb(251,255,251);;
     }
 
-    .questionGrid{
-        display: grid;
-        grid-template-columns: 75px auto;
-        min-height: 10vh;
-        text-align: start;
+    .questionText{
+        padding: 4px;
     }
 
-    .smaller{
-        font-size: 14px;
+    .questionGrid{
+        display: grid;
+        min-height: 15vh;
+        max-height: 15vh;
+        text-align: center;
+        padding: 2px;
     }
 
     .questionFooter{
