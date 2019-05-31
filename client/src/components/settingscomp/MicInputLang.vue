@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "MicInputLang",
         data(){
@@ -18,7 +20,7 @@
                     {label: "English", value: "en-US"},
                     {label: "Norwegian", value: "no-NO"}
                 ],
-                language: "sv-SE"
+                language: getCurrentSettings().micInputLanguage //"sv-SE"
             }
         },
         methods:{

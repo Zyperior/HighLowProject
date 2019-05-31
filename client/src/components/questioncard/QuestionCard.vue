@@ -6,9 +6,10 @@
                  :class="{ smaller : currentQuestion.length > 90}">{{currentQuestion}}
             </div>
         </div>
-        <div class="pointsGrid">
-            <div>Points:</div>
-            <div>{{currentPoints}}</div>
+        <div class="questionFooter">
+            <div>Points: {{currentPoints}}</div>
+            <slot id="feedback" name="feedback"/>
+            <slot id="timer" name="timer"/>
         </div>
     </div>
 </template>
@@ -46,11 +47,40 @@
         font-size: 14px;
     }
 
-    .pointsGrid{
+    .questionFooter{
         display: grid;
-        grid-template-columns: 75px auto;
+        grid-template-columns: repeat(3, 132px);
         text-align: start;
         border-top: solid rgb(205,226,203);
+    }
+
+    #feedback{
+        grid-column: 2;
+        font-weight: 800;
+        text-align: center;
+    }
+
+    #timer{
+        grid-column: 3;
+        text-align: center;
+    }
+
+    @media screen and (min-width: 600px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, 200px);
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, 256px);
+        }
+    }
+
+    @media screen and (min-width: 100px) {
+        .questionFooter{
+            grid-template-columns: repeat(3, auto);
+        }
     }
 
 </style>

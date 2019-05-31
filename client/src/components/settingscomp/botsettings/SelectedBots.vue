@@ -2,6 +2,7 @@
     <div>
         <div class="availableDiv">
         </div>
+        <p>Playing bots</p>
         <div class="selectViewDiv">
             <select @change="onChange($event)" size="5" v-model="selectedBotIndex">
                 <option v-for="(playingBot, index) in playingBots"
@@ -38,5 +39,9 @@
 </script>
 
 <style scoped>
-
+    p{
+        font-size: 13px;
+        font-style: italic;
+        margin-bottom: 0;
+    }
 </style>

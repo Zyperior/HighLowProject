@@ -5,7 +5,7 @@
         <p id="difficultyText">Choose difficulty</p>
         <p id="shuffleText">Shuffle player start order</p>
         <p id="extraPlayersText">Extra players</p>
-        <p id="botText">Bot commentary</p>
+        <p id="botText">Turn Bot commentary off</p>
         <p id="micLangText">Microphone Input Language</p>
         <number-of-questions id="amount" @changeAmountQuestions="changeAmountOfQuestions" />
         <questions-category id="category" @changeCategory="changeCategory" />
@@ -14,7 +14,7 @@
         <number-of-players id="playerAmount" @changePlayerAmount="changePlayerAmount" />
         <bot-settings id="botContainer" @botComment="botComment" />
         <shuffle-order id="shuffle" @shuffle="shufflePlayers" />
-        <bot-commentary id="botComments" @botComment="setBotComment"/>
+        <bot-commentary id="botComments" @botComment="botComment"/>
         <mic-input-language id="language" @changeMicLanguage="changeMicLanguage" />
     </div>
 </template>
@@ -50,7 +50,8 @@
             changePlayerAmount(value) { Settings.setPlayerAmount(value) },
             botComment(value) { Settings.setBotCommentary(value) },
             shufflePlayers(value) { Settings.setShufflePlayers(value) },
-            changeMicLanguage(value) { Settings.setMicInputLanguage(value) }
+            changeMicLanguage(value) { Settings.setMicInputLanguage(value) },
+            setBotComment(value) { this.$emit('botComment', value) }
         }
     }
 </script>
@@ -59,10 +60,10 @@
 
     .settingsContainer{
         display: grid;
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(9, auto);
         align-items: center;
-        padding: 10px 15px 0px 15px;
+        padding: 0px 15px 0px 15px;
     }
 
     #shuffleText{

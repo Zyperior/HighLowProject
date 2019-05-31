@@ -1,5 +1,7 @@
 <template>
    <div class="botContainer">
+       <p id="selectedBotsText">Selected bots</p>
+       <p id="availaBotsText">Available bots</p>
        <selected-bots id="selectedBots" @setSelectedBotIndex="setSelectedBotIndex" />
        <add-remove-button id="addButton" directive="add" @addAvailableToPlaying="addAvailableToPlaying" />
        <add-remove-button id="removeButton" directive="remove" @addPlayingToAvailable="addPlayingToAvailable"/>
@@ -58,9 +60,7 @@
                 }
 
             },
-            setBotComment(value) {
-                this.$emit('botComment', value)
-            }
+
         }
 
 
@@ -75,25 +75,83 @@
         justify-items: center;
 
     }
+    #selectedBotsText{
+        grid-row: 1;
+        grid-column: 1;
+        font-size: 14px;
+    }
+    #availaBotsText{
+        grid-row: 1;
+        grid-column: 3;
+        font-size: 14px;
+    }
     #selectedBots{
         grid-column: 1;
-        grid-row: 1 / span 2;
+        grid-row: 2 / span 3;
 
     }
     #availableBots{
         grid-column: 3;
-        grid-row: 1 / span 2;
+        grid-row: 2 / span 3;
 
     }
     #addButton{
         grid-column: 2;
-        grid-row: 1;
+        grid-row: 2;
         justify-self: center;
     }
     #removeButton{
         grid-column: 2;
-        grid-row: 2;
+        grid-row: 3;
         justify-self: center;
+    }
+    @media only screen and (min-width: 900px) {
+        .botContainer{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            justify-items: center;
+
+
+        }
+        #selectedBotsText{
+            grid-row: 1;
+            grid-column: 1;
+            font-size: 14px;
+            ;
+            justify-self: start;
+        }
+        #availaBotsText{
+            grid-row: 1;
+            grid-column: 3;
+            font-size: 14px;
+            padding-right: 90px;
+
+        }
+        #selectedBots{
+            grid-column: 1;
+            grid-row: 2 / span 3;
+            justify-self: start;
+            padding-left: 14px;
+
+        }
+        #availableBots{
+            grid-column: 3;
+            grid-row: 2 / span 3;
+            padding-right: 73px;
+
+        }
+        #addButton{
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: center;
+
+        }
+        #removeButton{
+            grid-column: 2;
+            grid-row: 3;
+            justify-self: center;
+        }
     }
 
 </style>
