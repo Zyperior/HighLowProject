@@ -2,7 +2,7 @@
     <div>
         <div class="gameView" v-if="isGameRunning">
 
-            <QuestionCard >
+            <QuestionCard>
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
@@ -73,7 +73,7 @@
         data(){
             return {
                 number: 0,
-                recording: false,
+                recognizing: false,
                 answer: '',
                 speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
                 showHiOrLow: false,
@@ -157,16 +157,10 @@
             submitAnswer(answer) {
 
                 if(this.isGameRunning){
-
                     this.showFeedback();
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
                     });
-
-                    if(this.$store.state.game.chattyBots) {
-                        // noinspection JSIgnoredPromiseFromCall
-                        this.$store.dispatch("chat", answer);
-                    }
                 }
 
                 this.answer = "";
@@ -215,23 +209,29 @@
                     let game = this;
                     let voiceResult = 0;
                     recognition.lang = getCurrentSettings().micInputLanguage;
-                    if(!game.recording) {
+
+                    if (!game.$store.state.recognizing) {
                         recognition.start();
-                        game.recording = true;
                         recognition.onresult = function (event) {
                             for (let i = event.resultIndex; i < event.results.length; i++) {
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
-                                    if (game.activePlayer.isHuman) {
+                                    if (game.activePlayer.isHuman && Number.isInteger(Number.parseInt(voiceResult))) {
                                         game.submitAnswer(voiceResult);
                                     }
                                 }
                             }
                         };
                     }
-                    recognition.onend = function() {
-                        this.recording = false;
+                    recognition.onstart = function (event) {
+                        game.$store.state.recognizing = true;
                     };
+                    recognition.onend = function (event) {
+                        game.$store.state.recognizing = false;
+                    };
+                    recognition.onerror= function(event) {
+                        game.$store.state.recognizing = false;
+                    }
                 }
             },
         },
@@ -263,14 +263,8 @@
         background-color: red;
     }
 
-    #playerCardsDiv {
-        width: 84vw;
-        height: 80vw;
-        margin: auto;
-        text-align: center;
-    }
 
-    .buttonDisabled{
+    .buttonDisabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
@@ -308,11 +302,25 @@
     }
 
 
+    @media (max-width: 767px) {
+
+        #playerCardsDiv {
+            width: 84vw;
+            height: 80vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
+
+
     @media (min-width: 768px) {
 
         #playerCardsDiv {
             width: 21vw;
             height: 32vw;
+            margin: auto;
+            text-align: center;
         }
 
     }
