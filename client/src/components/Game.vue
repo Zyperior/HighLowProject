@@ -26,11 +26,11 @@
             </div>
 
             <div class="buttonGrid">
-                <button class="submitButton"
+                <div class="submitButton"
                         @click="submitAnswer(answer)"
                         :disabled="!activePlayer.isHuman || answer.length === 0"
-                        :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
-                </button>
+                        :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit answer
+                </div>
                 <img    class="pushToTalk"
                         src="../assets/PTT.svg"
                         v-if="speechRecognitionAvailable"
@@ -259,10 +259,6 @@
         padding: 3px;
     }
 
-    .submitButton{
-        max-width: 50%;
-    }
-
     .activePlayer {
         background-color: red;
     }
@@ -299,17 +295,33 @@
         font-size: 20px;
     }
 
+    .buttonGrid{
+        display: grid;
+        width: 295.35px;
+        grid-template-columns: auto fit-content(10vmin);
+        margin-bottom: 20px;
+    }
+
+    .submitButton{
+        display: grid;
+        height: 40px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--fonts);
+        color: var(--defaultFontColor);
+        background-color: var(--buttonColor);
+        border-width: 2px;
+        border-style: outset;
+        border-color: buttonface;
+        border-image: initial;
+    }
+
     .pushToTalk{
         width: 40px;
         padding: 2px;
         border: solid #ADD8E6
     }
-
-    .buttonGrid{
-        display: grid;
-        grid-template-columns: auto auto;
-    }
-
 
     @media (max-width: 767px) {
 
