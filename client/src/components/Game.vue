@@ -7,14 +7,10 @@
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
 
-            <div id="playerCardsDiv">
-                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
-            </div>
-
             <div class="answerGrid">
 
                 <div class="aboveBelowGrid">
-                    Below:
+                    Less than:
                     <div class="aboveBelowValue">{{highGuess}}</div>
                 </div>
 
@@ -23,7 +19,7 @@
                        autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
 
                 <div class="aboveBelowGrid">
-                    Above:
+                    More than:
                     <div class="aboveBelowValue">{{lowGuess}}</div>
                 </div>
 
@@ -38,6 +34,10 @@
                     :disabled="!activePlayer.isHuman"
                     :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
             </button>
+
+            <div id="playerCardsDiv">
+                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+            </div>
 
             <chat-message />
         </div>
@@ -284,7 +284,7 @@
 
     .aboveBelowGrid{
         display: grid;
-        grid-template-columns: 15% auto;
+        grid-template-columns: 25% auto;
         font-size: 12px;
         text-align: start;
         margin-top: 10px;
