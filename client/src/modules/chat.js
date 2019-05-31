@@ -12,7 +12,7 @@ export default {
         },
         removeFirstChatMessage: (state) => {
             state.messages.shift();
-        }
+        },
     },
 
     actions : {
@@ -47,10 +47,9 @@ export default {
 
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
-                } else if (questionCounter === questions.length) {
+                } else if (answer === correctAnswer && questionCounter === questions.length) {
                     console.log('game over chat')
                     if(speaker === activePlayer) {
-
                         if (!store.getters.isMuteSound) {
                             audio.src = speaker.soundFx.thisBotWinGameSfx;
                             // noinspection JSIgnoredPromiseFromCall

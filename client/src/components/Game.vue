@@ -68,7 +68,7 @@
         data(){
             return {
                 number: 0,
-                recording: false,
+                recognizing: false,
                 answer: '',
                 speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
                 showHiOrLow: false,
@@ -208,23 +208,30 @@
                     let game = this;
                     let voiceResult = 0;
                     recognition.lang = getCurrentSettings().micInputLanguage;
-                    if(!game.recording) {
-                        recognition.start();
-                        game.recording = true;
+
+                    if (!game.$store.state.recognizing) {
+                        recognition.start(); //Avoid error if already recording by stopping first.
                         recognition.onresult = function (event) {
                             for (let i = event.resultIndex; i < event.results.length; i++) {
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
                                     if (game.activePlayer.isHuman) {
                                         game.submitAnswer(voiceResult);
+                                        console.log(voiceResult)
                                     }
                                 }
                             }
                         };
                     }
-                    recognition.onend = function() {
-                        this.recording = false;
+                    recognition.onstart = function (event) {
+                        game.$store.state.recognizing = true;
                     };
+                    recognition.onend = function (event) {
+                        game.$store.state.recognizing = false;
+                    };
+                    recognition.onerror= function(event) {
+                        game.$store.state.recognizing = false;
+                    }
                 }
             },
         },

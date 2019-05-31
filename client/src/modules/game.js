@@ -141,6 +141,7 @@ export default {
     },
     actions : {
 
+
         async loadGame({commit}) {
             console.log("inside load game")
             commit('resetState');
@@ -256,6 +257,7 @@ export default {
                     setTimeout(() => {
                         if(state.questionCounter >= state.questions.length){
                             dispatch('endGame');
+
                         } else {
                             commit('setNextQuestion');
                             commit('incPlayerTurn');
