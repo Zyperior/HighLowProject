@@ -252,15 +252,6 @@
         background-color: red;
     }
 
-<<<<<<< HEAD
-=======
-    #playerCardsDiv {
-        width: 84vw;
-        height: 80vw;
-        margin: auto;
-        text-align: center;
-    }
->>>>>>> master
 
     .buttonDisabled {
       opacity: 0.6;
@@ -274,18 +265,13 @@
         text-align: start;
     }
 
-<<<<<<< HEAD
-    .high-or-low {
-=======
     .high-or-low{
->>>>>>> master
         position: absolute;
         left: 25%;
         top: 43%;
         font-weight: 800;
         font-size: 20px;
     }
-<<<<<<< HEAD
 
 
     @media (max-width: 767px) {
@@ -309,16 +295,6 @@
             text-align: center;
         }
 
-=======
-
-    @media (min-width: 768px) {
-
-        #playerCardsDiv {
-            width: 21vw;
-            height: 32vw;
-        }
-
->>>>>>> master
     }
 
 
