@@ -17,4 +17,6 @@ root.style.setProperty('--selectSelectedColor', 'bisque');
 
 root.style.setProperty('--defaultFontSize', '1vw');
 
-root.style.setProperty('--playerCardColor', 'lightblue');
+root.style.setProperty('--botCardColor', 'lightblue');
+
+root.style.setProperty('--humanCardColor', 'lightgoldenrodyellow');
