@@ -131,15 +131,15 @@
             activePlayer : function(){
 
                 const game = this;
-
                 game.$refs.myTimer.stopTimer();
 
-                setTimeout(function() {
+                setTimeout(function () {
 
-                    game.$refs.myTimer.startTimer();
+                    if(game.isGameRunning)
+                            game.$refs.myTimer.startTimer();
 
-                    if(!game.activePlayer.isHuman){
-                        game.botGuess();
+                    if (!game.activePlayer.isHuman) {
+                            game.botGuess();
                     }
 
                 }, game.animationTime);
@@ -176,7 +176,6 @@
                 const game = this;
 
                 if(game.isGameRunning){
-
                     let guessTime = (Math.ceil(Math.random() * 5)) * 1000; //Bot takes between 1-5 seconds to guess
 
                     game.botLoopTimeoutFunction = setTimeout(function () {
