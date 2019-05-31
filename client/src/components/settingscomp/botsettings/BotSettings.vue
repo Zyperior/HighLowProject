@@ -60,9 +60,7 @@
                 }
 
             },
-            setBotComment(value) {
-                this.$emit('botComment', value)
-            }
+
         }
 
 

@@ -5,7 +5,7 @@
         <p id="difficultyText">Choose difficulty</p>
         <p id="shuffleText">Shuffle player start order</p>
         <p id="extraPlayersText">Extra players</p>
-        <p id="botText">Bot commentary</p>
+        <p id="botText">Turn Bot commentary off</p>
         <p id="micLangText">Microphone Input Language</p>
         <number-of-questions id="amount" @changeAmountQuestions="changeAmountOfQuestions" />
         <questions-category id="category" @changeCategory="changeCategory" />
@@ -50,7 +50,8 @@
             changePlayerAmount(value) { Settings.setPlayerAmount(value) },
             botComment(value) { Settings.setBotCommentary(value) },
             shufflePlayers(value) { Settings.setShufflePlayers(value) },
-            changeMicLanguage(value) { Settings.setMicInputLanguage(value) }
+            changeMicLanguage(value) { Settings.setMicInputLanguage(value) },
+            setBotComment(value) { this.$emit('botComment', value) }
         }
     }
 </script>
