@@ -12,6 +12,7 @@
             This project focuses on SCRUM and Vue.
             
             Team-members (link to Github):
+
             <div><a href="https://github.com/Zyperior" target="_blank">Andreas Albihn</a></div>
             <div><a href="https://github.com/Bagenholm" target="_blank">Patrik Bågenholm</a></div>
             <div><a href="https://github.com/IdaFagerlund" target="_blank">Ida Fagerlund</a></div>
@@ -19,6 +20,7 @@
             <div><a href="https://github.com/DaniellaNoren" target="_blank">Daniella Norén</a></div>
             <div><a href="https://github.com/ChristoffersonFilip" target="_blank">Filip Christofferson</a></div>
             <div><a href="https://github.com/daniel-bjornberger" target="_blank">Daniel Björnberger</a></div>
+
         </div>
 
         <div class="statsTitle">
@@ -27,6 +29,7 @@
         </div>
 
         <general-stats class="generalStats stats"/>
+        <hr>
         <top-users></top-users>
         <div>
             <hr>
@@ -57,13 +60,19 @@
 
     .about{
         display:grid;
+        grid-template-columns: repeat(1, auto);
+        grid-template-rows: repeat(3, auto);
         /* min-width: 96vmin; */
         justify-content: center;
         margin: 1em;
+        padding: 0px 15px 0px 15px
     }
 
     .title {
         text-decoration: underline;
+        grid-row: 1;
+        grid-column: 1;
+
     }
 
     .info{
@@ -82,7 +91,7 @@
         min-width: 60%;
         grid-template-columns: auto auto;
         justify-self: center;
-        justify-items: flex-start;
+        justify-items: center;
     }
 
 </style>
