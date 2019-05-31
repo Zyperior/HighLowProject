@@ -45,7 +45,7 @@
 
 
   .view{
-    margin-top: 40px;
+    margin-top: 15px;
   }
 
 
