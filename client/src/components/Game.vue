@@ -25,15 +25,17 @@
 
             </div>
 
-            <button @click="submitAnswer(answer)"
+            <button class="submitButton"
+                    @click="submitAnswer(answer)"
                     :disabled="!activePlayer.isHuman || answer.length === 0"
                     :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
             </button>
-            <button v-if="speechRecognitionAvailable"
+            <img    class="pushToTalk"
+                    src="../assets/PTT.svg"
+                    v-if="speechRecognitionAvailable"
                     @click="startVoiceRecording"
                     :disabled="!activePlayer.isHuman"
-                    :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
-            </button>
+                    :class="{buttonDisabled: !activePlayer.isHuman}"/>
 
             <div id="playerCardsDiv">
                 <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
@@ -253,6 +255,10 @@
         padding: 3px;
     }
 
+    .submitButton{
+        max-width: 50%;
+    }
+
     .activePlayer {
         background-color: red;
     }
@@ -293,6 +299,12 @@
 
     input{
         font-size: 20px;
+    }
+
+    .pushToTalk{
+        width: 40px;
+        padding: 2px;
+        border: solid #ADD8E6
     }
 
 
