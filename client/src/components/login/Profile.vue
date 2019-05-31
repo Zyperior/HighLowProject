@@ -1,12 +1,13 @@
 <template>
-    <div>
+    <div id="profile">
+        <img src="../../assets/avatar.svg" alt="profile-picture">
+        <h1 v-if="isLoggedIn">Welcome, {{user.username}}</h1>
+        <h1 v-else>{{user.username}}</h1>
         <div class="statistics">
-            <h1 v-if="isLoggedIn">Welcome, {{user.username}}</h1>
-            <h1 v-else>{{user.username}}</h1>
-            <h4>Points:</h4> {{user.points}}<br>
-            <h4>Correct answers percentage:</h4> {{percentage}}%<br>
-            <h4>Games played:</h4> {{user.gamesplayed}}<br>
-            <h4>Total guesses:</h4> {{user.totalguesses}}
+            <h3>Points:</h3> <p>{{user.points}}</p>
+            <h3>Correct answers percentage:</h3> <p>{{percentage}}%</p>
+            <h3>Games played:</h3> <p>{{user.gamesplayed}}</p>
+            <h3>Total guesses:</h3> <p>{{user.totalguesses}}</p>
         </div>
     </div>
 </template>
@@ -40,12 +41,22 @@
 </script>
 
 <style scoped>
- h4{
-     display: inline-block;
- }
-    .statistics {
-        display: inline-block;
-        border: 1px solid black;
-        background-color: lightgoldenrodyellow;
+    @media(max-width: 415px){
+        img {
+            width: 50%;
+            height: 50%;
+            border: solid rgb(205,226,203);
+        }
+        h4{
+            display: inline-block;
+        }
+        .statistics {
+            margin: 1em;
+            padding: 2em 1em 3em 1em;
+            display: inline-block;
+            border: solid rgb(205,226,203);
+            background-color: rgb(251,255,251);
+        }
     }
+
 </style>
