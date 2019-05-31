@@ -9,18 +9,39 @@ const POINT_DEC_PERCENT = 0.01;
 const CORRECT_ANSWER = true;
 const INCORRECT_ANSWER = false;
 
-const getDefaultState = () => {
-    return {
+const getDefaultState = (state) => {
+    state.gameRunning = false;
+    state.gameCompleted = false;
+    state.startTimer = false;
+    state.muteSound = false;
+    state.chattyBots = true;
+    state.players = [];
+    state.questions = [];
+    state.lowGuess = '';
+    state.highGuess = '';
+    state.lastGuess = '';
+    state.botLoopTimeoutFunction = '';
+    state.speechToTextLanguage = '';
+    state.currentQuestion = { question: '', answer: '', points: 0, value: 0 };
+    state.guessCount = 0;
+    state.answerAttempts = 0;
+    state.questionCounter = 0;
+    state.playerTurn = 0;
+};
+
+export default {
+
+    state : {
         gameRunning: false,
         gameCompleted: false,
         startTimer: false,
         muteSound: false,
         chattyBots: true,
+        lastGuess: '',
         players: [],
         questions: [],
         lowGuess: '',
         highGuess: '',
-        lastGuess: '',
         botLoopTimeoutFunction: '',
         speechToTextLanguage: '',
         currentQuestion: { question: '', answer: '', points: 0, value: 0 },
@@ -28,12 +49,7 @@ const getDefaultState = () => {
         answerAttempts: 0,
         questionCounter: 0,
         playerTurn: 0
-    }
-};
-
-export default {
-
-    state : getDefaultState(),
+    },
 
     getters : {
         isStartTimer: state => { return state.startTimer },
