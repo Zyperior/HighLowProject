@@ -37,7 +37,7 @@ export default {
 
             let audio = new Audio(speaker.soundFx.badGuessSfx);
 
-            /*if (Math.floor(Math.random() * 2) === 0) */{ // 33% chance to show chat message
+            if (Math.floor(Math.random() * 2) === 0) { // 33% chance to show chat message
                 //BadGuess
                 if (isBadGuess && answer !== -1) {
                     if (!store.getters.isMuteSound) {
@@ -48,7 +48,6 @@ export default {
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
                 } else if (answer === correctAnswer && questionCounter === questions.length) {
-                    console.log('game over chat')
                     if(speaker === activePlayer) {
                         if (!store.getters.isMuteSound) {
                             audio.src = speaker.soundFx.thisBotWinGameSfx;

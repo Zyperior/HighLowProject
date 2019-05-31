@@ -217,7 +217,6 @@
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
                                     if (game.activePlayer.isHuman && Number.isInteger(Number.parseInt(voiceResult))) {
-                                        console.log(voiceResult)
                                         game.submitAnswer(voiceResult);
                                     }
                                 }
