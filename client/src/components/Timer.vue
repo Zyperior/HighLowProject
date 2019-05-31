@@ -1,6 +1,6 @@
 <template>
     <div>
-        Time left: {{ timeLeft }}s
+        Time: {{ timeLeft }}s
     </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
             return this.$store.getters.getTimeLeft;
         },
     }
-    
+
 }
 </script>
 
