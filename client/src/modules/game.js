@@ -62,6 +62,7 @@ export default {
         startGame (state) {
             state.gameRunning = true;
             state.startTimer = true;
+            store.commit('startTimer');
         },
 
         setNextQuestion (state) {
@@ -125,7 +126,7 @@ export default {
 
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
-        stopGame (state) { state.gameRunning = false; },
+        stopGame (state) { state.gameRunning = false; store.commit('stopTimer'); },
 
         displayResults (state) { state.gameCompleted = true; },
 
@@ -133,7 +134,7 @@ export default {
 
         setPlayerAnswer (state, answer) { state.players[state.playerTurn].answer = answer; },
 
-        resetState (state) { state = getDefaultState() },
+        resetState (state) { getDefaultState(state); },
 
         breakOutOfBotLoop: (state) => (clearTimeout(state.botLoopTimeoutFunction)),
 
@@ -142,11 +143,11 @@ export default {
     actions : {
 
         async loadGame({commit}) {
-            console.log("inside load game")
             commit('resetState');
+
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
-                console.log(players);
+
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -168,7 +169,6 @@ export default {
         },
 
         async loadPlayerSetup({commit}) {
-            console.log("inside loadplayer setup")
             commit('resetPlayersBeforeNewGame');
 
             return new Promise( (resolve) => {
@@ -228,7 +228,7 @@ export default {
         },
 
         async submitAnswer({state, commit, dispatch}, submittedAnswer) {
-                console.log("in submit answer")
+
             let correctAnswer = state.currentQuestion.answer;
             let answer = parseInt(submittedAnswer);
 
@@ -263,7 +263,7 @@ export default {
 
                 } else {
 
-                    if(!state.muteSounds){
+                    if(!state.muteSound){
                         // noinspection JSIgnoredPromiseFromCall
                         new Audio('/soundfx/testAudio.wav').play();
                     }

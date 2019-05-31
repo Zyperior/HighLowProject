@@ -2,7 +2,6 @@
     <div>
         <div class="availableDiv">
         </div>
-        <p>Available bots</p>
         <div class="selectViewDiv" id="lastSelect">
             <select @change="onChange($event)" size="5" v-model="availableBotIndex">
                 <option v-for="(availableBot, index) in availableBots"

@@ -1,42 +1,47 @@
 <template>
     <div>
-        <div v-if="isGameRunning">
-            <QuestionCard />
+        <div class="gameView" v-if="isGameRunning">
+
+            <QuestionCard >
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
-            <div>
-                <div class="aboveBelow">
-                    <div>Closest above:</div><div>{{highGuess}}</div>
-                    <div>Closest below:</div><div>{{lowGuess}}</div>
+
+            <div class="answerGrid">
+
+                <div class="aboveBelowGrid">
+                    Less than:
+                    <div class="aboveBelowValue">{{highGuess}}</div>
                 </div>
 
-                <div id="playerCardsDiv">
-                    <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                       name="answer" placeholder="Enter your answer" :disabled="!activePlayer.isHuman"
+                       autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
+
+                <div class="aboveBelowGrid">
+                    More than:
+                    <div class="aboveBelowValue">{{lowGuess}}</div>
                 </div>
 
-                <input v-model="answer"
-                       oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
-                       name="answer"
-                       placeholder="Enter your answer"
-                       :disabled="!activePlayer.isHuman"
-                       autocomplete="off"
-                       v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
-
-                <div>
-                    <button @click="submitAnswer(answer)"
-                            :disabled="!activePlayer.isHuman || answer.length === 0"
-                            :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
-                    </button>
-                    <button v-if="speechRecognitionAvailable"
-                            @click="startVoiceRecording"
-                            :disabled="!activePlayer.isHuman"
-                            :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
-                    </button>
-                </div>
-
-                <chat-message />
             </div>
+
+            <button class="submitButton"
+                    @click="submitAnswer(answer)"
+                    :disabled="!activePlayer.isHuman || answer.length === 0"
+                    :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
+            </button>
+            <img    class="pushToTalk"
+                    src="../assets/PTT.svg"
+                    v-if="speechRecognitionAvailable"
+                    @click="startVoiceRecording"
+                    :disabled="!activePlayer.isHuman"
+                    :class="{buttonDisabled: !activePlayer.isHuman}"/>
+
+            <div id="playerCardsDiv">
+                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+            </div>
+
+            <chat-message />
         </div>
         <div v-else>
 
@@ -105,9 +110,6 @@
             animationTime() {
                 return this.$store.getters.getAnimationTime;
             },
-            muteSounds(){
-                return this.$store.getters.isMuteSound;
-            },
             botLoopTimeoutFunction: {
                 get(){
                     return this.$store.getters.getBotLoopTimeoutFunction;
@@ -131,15 +133,15 @@
             activePlayer : function(){
 
                 const game = this;
-
                 game.$refs.myTimer.stopTimer();
 
-                setTimeout(function() {
+                setTimeout(function () {
 
-                    game.$refs.myTimer.startTimer();
+                    if(game.isGameRunning)
+                            game.$refs.myTimer.startTimer();
 
-                    if(!game.activePlayer.isHuman){
-                        game.botGuess();
+                    if (!game.activePlayer.isHuman) {
+                            game.botGuess();
                     }
 
                 }, game.animationTime);
@@ -176,7 +178,6 @@
                 const game = this;
 
                 if(game.isGameRunning){
-
                     let guessTime = (Math.ceil(Math.random() * 5)) * 1000; //Bot takes between 1-5 seconds to guess
 
                     game.botLoopTimeoutFunction = setTimeout(function () {
@@ -248,6 +249,16 @@
         box-sizing: border-box;
     }
 
+    .gameView{
+        display: grid;
+        justify-items: center;
+        padding: 3px;
+    }
+
+    .submitButton{
+        max-width: 50%;
+    }
+
     .activePlayer {
         background-color: red;
     }
@@ -258,19 +269,36 @@
       cursor: not-allowed;
     }
 
-    .aboveBelow {
-        display: grid;
-        grid-template-columns: 31% 19% 31% 19%;
-        font-size: 15px;
-        text-align: start;
-    }
-
     .high-or-low{
         position: absolute;
         left: 25%;
         top: 43%;
         font-weight: 800;
         font-size: 20px;
+    }
+
+    .answerGrid{
+        display: grid;
+        min-width: 80%;
+    }
+
+    .aboveBelowGrid{
+        display: grid;
+        grid-template-columns: 25% auto;
+        font-size: 12px;
+        text-align: start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    input{
+        font-size: 20px;
+    }
+
+    .pushToTalk{
+        width: 40px;
+        padding: 2px;
+        border: solid #ADD8E6
     }
 
 
