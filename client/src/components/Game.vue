@@ -267,14 +267,8 @@
         background-color: red;
     }
 
-    #playerCardsDiv {
-        width: 84vw;
-        height: 80vw;
-        margin: auto;
-        text-align: center;
-    }
 
-    .buttonDisabled{
+    .buttonDisabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
@@ -317,11 +311,25 @@
     }
 
 
+    @media (max-width: 767px) {
+
+        #playerCardsDiv {
+            width: 84vw;
+            height: 80vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
+
+
     @media (min-width: 768px) {
 
         #playerCardsDiv {
             width: 21vw;
             height: 32vw;
+            margin: auto;
+            text-align: center;
         }
 
     }
