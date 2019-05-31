@@ -3,6 +3,7 @@
         <router-link to="game"><button @click="startGame">Start Game</button></router-link>
         <br><br>
         <button class="smallerButton" @click="$router.push('/settings')">Change game settings</button>
+        <img id="logo" src="../assets/IpfadodLogo.svg">
     </div>
 </template>
 
@@ -36,6 +37,10 @@
         width: 15%;
     }
 
+    #logo{
+        width: 23em;
+        height: 25em;
+    }
 
     h3 {
         text-decoration: underline;

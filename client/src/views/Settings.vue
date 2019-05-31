@@ -14,8 +14,10 @@
         <number-of-players id="playerAmount" @changePlayerAmount="changePlayerAmount" />
         <bot-settings id="botContainer" @botComment="botComment" />
         <shuffle-order id="shuffle" @shuffle="shufflePlayers" />
+
         <bot-commentary id="botComments" @botComment="botComment"/>
         <mic-input-language id="language" @changeMicLanguage="changeMicLanguage" />
+        <router-link id="startButton" to="game"><button @click="startGame">Start Game</button></router-link>
     </div>
 </template>
 
@@ -29,6 +31,7 @@
     import BotSettings from '../components/settingscomp/botsettings/BotSettings'
     import Settings from '../modules/settingsData'
     import ChattyBots from '../components/settingscomp/botsettings/ChattyBots.vue'
+    import Start from '../components/Start.vue'
 
 
     export default {
@@ -41,7 +44,8 @@
             'number-of-players' : NumberOfPlayers,
             'mic-input-language' : MicInputLang,
             'bot-settings': BotSettings,
-            'bot-commentary': ChattyBots
+            'bot-commentary': ChattyBots,
+            'start': Start
         },
         methods:{
             changeAmountOfQuestions(value) { Settings.setQuestionsAmount(value) },
@@ -51,7 +55,8 @@
             botComment(value) { Settings.setBotCommentary(value) },
             shufflePlayers(value) { Settings.setShufflePlayers(value) },
             changeMicLanguage(value) { Settings.setMicInputLanguage(value) },
-            setBotComment(value) { this.$emit('botComment', value) }
+            setBotComment(value) { this.$emit('botComment', value) },
+            startGame() { this.$store.dispatch("loadGame"); },
         }
     }
 </script>
@@ -60,7 +65,7 @@
     .settingsContainer{
         display: grid;
         grid-template-columns: repeat(2, auto);
-        grid-template-rows: repeat(9, auto);
+        grid-template-rows: repeat(10, auto);
         align-items: center;
         padding: 0px 15px 0px 15px;
     }
@@ -77,6 +82,11 @@
         justify-self: start;
         margin-right: 10px;
         font-size: 14px;
+    }
+
+    #startButton{
+        grid-row: 10;
+        grid-column: 1 / span 2;
     }
     #difficulty{
         grid-row: 3;
