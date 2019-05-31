@@ -1,6 +1,6 @@
 <template>
     
-    <div id="container">
+    <div id="container" :class="{humanPlayer: player.isHuman}">
 
         <div id="image">
             <img v-if="!player.isHuman" :src="player.imgSrc" alt="Bot image">
@@ -98,6 +98,12 @@
             'image playerName'
             'image latestGuessHeading'
             'image latestGuess';
+        background-color: var(--botCardColor);
+    }
+
+
+    #container.humanPlayer {
+        background-color: var(--humanCardColor);
     }
 
 

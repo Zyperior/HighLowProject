@@ -77,11 +77,6 @@
     }
 
 
-    #card-div div {
-        background-color: var(--playerCardColor);;
-    }
-
-
     #card-div p {
         font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     }
