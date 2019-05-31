@@ -52,7 +52,7 @@ export default {
         getActivePlayer: state => { return state.players[state.playerTurn] },
         getPlayerTurn: state => { return state.playerTurn },
         getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
-        isBadGuess: state => { return (state.lastGuess < state.lowGuess || state.lastGuess > state.highGuess) },
+        isBadGuess: state => { return ((state.lastGuess < state.lowGuess && Number.isInteger(state.lowGuess)) || (state.lastGuess > state.highGuess && Number.isInteger(state.highGuess)))},
         isInInterval: state => { return ( state.highGuess > state.currentQuestion.answer) }
     },
     mutations : {
@@ -141,6 +141,7 @@ export default {
         setBotTimeoutFunction: (state, timeoutFunction) => (state.botLoopTimeoutFunction = timeoutFunction)
     },
     actions : {
+
 
         async loadGame({commit}) {
             commit('resetState');
@@ -236,6 +237,11 @@ export default {
             commit('setLastGuess', answer);
             commit("stopTimer", {root: true});
 
+            if(state.chattyBots) {
+                // noinspection JSIgnoredPromiseFromCall
+                dispatch("chat", answer);
+            }
+
             // First check if answer was correct, below or above and mutate the state accordingly..
             this.dispatch('checkAnswer', [answer, correctAnswer])
 
@@ -251,6 +257,7 @@ export default {
                     setTimeout(() => {
                         if(state.questionCounter >= state.questions.length){
                             dispatch('endGame');
+
                         } else {
                             commit('setNextQuestion');
                             commit('incPlayerTurn');
