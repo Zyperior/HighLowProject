@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar/>
-    <router-view/>
+    <router-view class="view"/>
   </div>
 </template>
 <script>
@@ -18,24 +18,51 @@
           this.$store.commit("breakOutOfBotLoop")
         }
       }
+    },
+    mounted() {
+      this.$store.commit("updateWhichPagesThatShouldBeVisibleToTheUser", {
+        loggedInUser: localStorage.getItem("token"),
+        admin: localStorage.getItem("viewAdminPages") == "true"
+      })
+       if(window.$cookies.isKey('userData')) {
+           this.$store.commit('userDB/setIsLoggedIn', true)
+       }
     }
   }
 </script>
 
 <style>
 
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  p{
+    padding: 1em;
+  }
+
+
+  .view{
+    margin-top: 15px;
+  }
+
 
   body {
-    margin: 0.5em;
+    /*margin: 0.5em;*/
     background-color: var(--backGroundColor);
     box-sizing: border-box;
   }
+
+
+
 
   #app {
     font-family: var(--fonts);
     color: var(--defaultFontColor);
     text-align: center;
-    font-size: var(--defaultFontSizeMobile);
+    /*font-size: var(--defaultFontSizeMobile);*/
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -44,27 +71,22 @@
     font-family: var(--fonts);
     color: var(--defaultFontColor);
     background-color: var(--buttonColor);
-    width: 80%;
-    font-size: var(--defaultFontSizeMobile);
-    padding: 1em;
-    border-radius: 1em;
-    border-style: outset;
-    border-width: 8px;
-    border-color: var(--buttonBorderColor);
-    margin: 1em 1em 0em 1em;
+    padding: 1em 8em;
+    /*width: 80%;*/
+    /*font-size: var(--defaultFontSizeMobile);*/
+    /*padding: 1em;*/
+    /*margin: 1em 1em 0em 1em;*/
   }
 
-  @media (min-width: 768px) {
+  /*@media (min-width: 768px) {*/
 
-    #app {
-      font-size: var(--defaultFontSize);
-    }
+  /*  #app {*/
+  /*    font-size: var(--defaultFontSize);*/
+  /*  }*/
 
-    button {
-      font-size: var(--defaultFontSize);
-      width: 20%;
-    }
-
-
-  }
+  /*  button {*/
+  /*    font-size: var(--defaultFontSize);*/
+  /*    width: 20%;*/
+  /*  }*/
+  /*}*/
 </style>

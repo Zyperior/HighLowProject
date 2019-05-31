@@ -1,202 +1,97 @@
 <template>
-    <div v-show="isRunning">
-        <h1>Game Page</h1>
-        <div v-show="isGameRunning">
-            <p>{{currentQuestion}}</p>
-            <div>
-                <h2>Highest Guess: {{highGuess[0]}} </h2>
-                <h2>Lowest Guess: {{lowGuess[0]}} </h2>
-                <!-- <p v-for="player in activePlayers" :class="{'activePlayer' : player == activePlayer}">{{player.name}}: <b>{{player.answer}}</b></p> -->
+    <div>
+        <div class="gameView" v-if="isGameRunning">
 
-                <div id="playerCardsDiv">
-                    <PlayerCards :active-players="activePlayers" ref="myPlayerCards"></PlayerCards>
+            <QuestionCard>
+                <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
+                <Timer id="timer" slot="timer" ref="myTimer"/>
+            </QuestionCard>
+
+            <div class="answerGrid">
+
+                <div class="aboveBelowGrid">
+                    Less than:
+                    <div class="aboveBelowValue">{{highGuess}}</div>
                 </div>
 
-                <!--<div v-for="bot in activeBots" :class="{'activeBot' : bot == activeBot}">-->
-                <!--<p>{{bot.name}}</p>-->
-                <!--</div>-->
-                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')" name="answer" placeholder="Enter your answer" :disabled="!playerTurn" autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer); guess();">
-                <div>
-                    <button @click="submitAnswer(answer); guess();" :disabled="!playerTurn">Submit Answer</button>
-                    <button @click="startVoiceRecording">Push To Talk</button>
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                       name="answer" placeholder="Enter your answer" :disabled="!activePlayer.isHuman"
+                       autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
+
+                <div class="aboveBelowGrid">
+                    More than:
+                    <div class="aboveBelowValue">{{lowGuess}}</div>
                 </div>
-                <chat-message/>
-                <Timer ref="myTimer"/>
+
             </div>
+
+            <div class="buttonGrid">
+                <div class="submitButton"
+                        @click="submitAnswer(answer)"
+                        :disabled="!activePlayer.isHuman || answer.length === 0"
+                        :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit answer
+                </div>
+                <img    class="pushToTalk"
+                        src="../assets/PTT.svg"
+                        v-if="speechRecognitionAvailable"
+                        @click="startVoiceRecording"
+                        :disabled="!activePlayer.isHuman"
+                        :class="{buttonDisabled: !activePlayer.isHuman}"
+                />
+            </div>
+
+
+            <div id="playerCardsDiv">
+                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+            </div>
+
+            <chat-message />
+        </div>
+        <div v-else>
+
         </div>
     </div>
 
 </template>
 <script>
-    import Timer from '@/components/Timer.vue';    
+    import Timer from './Timer.vue';
     import ChatMessage from "./ChatMessage";
-    import PlayerCards from '@/components/PlayerCards.vue';
+    import PlayerCards from './PlayerCards.vue';
+    import {getCurrentSettings} from '../modules/settingsData';
+    import QuestionCard from './questioncard/QuestionCard';
+    import HigherLowerFeedBack from './game/HigherLowerFeedBack'
 
     //Some voice recognition.
-    var recognition = new webkitSpeechRecognition() || SpeechRecognition();
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+        var recognition = new webkitSpeechRecognition();
+    }
 
     export default {
-        data(){
-          return {
-              playerTurn: true,
-              number: 0,
-              activePlayer: {},
-              recording: false
-          }
+        components: {
+            ChatMessage,
+            Timer,
+            PlayerCards,
+            QuestionCard,
+            HigherLowerFeedBack
         },
-        methods: {
-            // startGame() {
-            //     console.log("Start game!");
-                
-            //     this.$refs.myPlayerCards.initIndexes();
-            //     this.$store.dispatch("startGame");
-                
-            // },
-            submitAnswer(a) {
-
-                if(this.isGameRunning){
-                    if(!this.muteSounds){
-                    let answerSound = new Audio('/soundfx/testAudio.wav');
-                    answerSound.play();
-                    }
-                    this.$store.dispatch("submitAnswer", a);
-                    let chatPayload = [this.interval, this.activePlayer, this.activePlayers];
-
-                    this.$refs.myPlayerCards.flipCards();
-                    
-                    if(this.$store.state.game.chattyBots) {
-                        this.$store.dispatch("chat", chatPayload);
-                    }
-                }
-
-            },
-
-
-            submitAnswerWithEnter(answer) {
-
-                this.submitAnswer(answer);                
-
-            },
-            startVoiceRecording() {
-                if(this.playerTurn) {
-                    if(!this.recording) {
-                        this.recording = !this.recording;
-                        let that = this;
-                        let voiceResult = 0;
-                        recognition.lang = this.$store.state.game.speechToTextLanguage;
-                        recognition.start();
-                        recognition.onresult = function (event) {
-                            for (var i = event.resultIndex; i < event.results.length; i++) {
-                                if (event.results[i].isFinal) {
-                                    voiceResult = event.results[i][0].transcript;
-                                    if(this.playerTurn) {
-                                        that.$store.commit('submitAnswer', voiceResult);
-                                        that.guess();
-                                    }
-                                }
-                            }
-                        }
-                        this.recording = false;
-                    }
-                }
-            },
-            add(){
-              this.number++;
-            },
-            reset(){
-                this.number = 0;
-                this.playerTurn = true;
-            },
-            botGuess(bot){
-                let submitGuessFunction = this.submitAnswer;
-                let int = this.interval;
-                let loopFunction = this.guess;
-                let audio = new Audio();
-                if(!this.muteSounds){
-                    audio.src = bot.soundFx[0];
-                    audio.play();
-                }
-                let randTime = Math.floor(Math.random() * 5000) + this.animationTime + 200;
-                if(this.isGameRunning){
-                    this.botLoopTimeoutFunction = setTimeout(function () {
-
-                        let guess = bot.guess(int);
-                        submitGuessFunction(guess);
-                        loopFunction();
-
-                    }, randTime)
-                }
-            },
-
-            guess(){
-                this.activePlayer = this.activePlayers[this.playerCounter];
-
-                if(this.activePlayer.isHuman){
-                    this.playerTurn = true;
-                }else {
-                    this.playerTurn = false;
-                    this.botGuess(this.activePlayer);
-                }
+        data(){
+            return {
+                number: 0,
+                recognizing: false,
+                answer: '',
+                speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
+                showHiOrLow: false,
             }
         },
         computed: {
             isGameRunning(){
-              return this.$store.getters.getIsGameRunning;
-            },
-            botLoopTimeoutFunction: {
-                get(){
-                    return this.$store.getters.getBotLoopTimeoutFunction;
-                },
-                set(timeoutFunction){
-                    this.$store.commit("setBotTimeoutFunction", timeoutFunction)
-                }
-
-            },
-            playerCounter(){
-              return this.$store.getters.getPlayerTurn;
-            },
-            activeBots(){
-                return this.$store.getters.playingBots;
-            },
-            interval(){
-                let interval = {
-                    lowestGuess: this.lowGuess[0],
-                    highestGuess: this.highGuess[0],
-                    correctAnswer: this.correctAnswer,
-                    isInInterval: function () {
-                        return (this.lowestGuess < this.correctAnswer && this.highestGuess > this.correctAnswer);
-                    },
-                    lastGuess: this.lastGuess,
-                    isBadGuess: function() {
-                        return (this.lastGuess < this.lowestGuess || this.lastGuess > this.highestGuess)
-                    },
-                    isCorrect: function() {
-                        return (this.lastGuess === this.correctAnswer);
-                    }
-                }
-                if (typeof interval.lowestGuess === 'undefined')
-                    interval.lowestGuess = 0;
-                if (typeof interval.highestGuess === 'undefined')
-                    interval.highestGuess = 0;
-
-                return interval;
+              return this.$store.getters.isGameRunning;
             },
             lastGuess() {
               return this.$store.getters.getLastGuess;
             },
-            answer: {
-                get() {
-                    return this.$store.getters.getAnswer;
-                },
-                set(answer) {
-                    this.$store.dispatch('updateAnswer', answer);
-                }
-            },
-            currentQuestion() {
-                return this.$store.getters.getCurrentQuestion;
-            },
             startTimer() {
-                return this.$store.getters.getStartTimer;
+                return this.$store.getters.isStartTimer;
             },
             lowGuess() {
                 return this.$store.getters.getLowGuess;
@@ -207,66 +102,249 @@
             players(){
                 return this.$store.getters.getPlayers;
             },
-            correctAnswer(){
-                return this.$store.getters.correctAnswer;
+            activePlayer(){
+                return this.$store.getters.getActivePlayer;
             },
-            activePlayers(){
-                return this.$store.getters.getActivePlayers;
+            correctAnswer(){
+                return this.$store.getters.getCorrectAnswer;
             },
             isTimerZero(){
                 return this.$store.getters.getIsTimerZero;
             },
-
             animationTime() {
                 return this.$store.getters.getAnimationTime;
             },
-
-            muteSounds(){
-                return this.$store.getters.getMuteSound;
-            }
+            botLoopTimeoutFunction: {
+                get(){
+                    return this.$store.getters.getBotLoopTimeoutFunction;
+                },
+                set(timeoutFunction){
+                    this.$store.commit("setBotTimeoutFunction", timeoutFunction)
+                }
+            },
 
         },
         watch: {
-            startTimer(){
-                this.$refs.myTimer.stopTimer();
-                this.$refs.myTimer.startTimer();
-                this.activePlayer = this.players[this.playerCounter]
-                this.guess();
+            //Executes first guess if starting player is Bot
+            isGameRunning : function(){
+
+                if(this.isGameRunning && !this.activePlayer.isHuman){
+                    this.botGuess();
+                }
+
             },
+
+            activePlayer : function(){
+
+                const game = this;
+                game.$refs.myTimer.stopTimer();
+
+                setTimeout(function () {
+
+                    if(game.isGameRunning)
+                            game.$refs.myTimer.startTimer();
+
+                    if (!game.activePlayer.isHuman) {
+                            game.botGuess();
+                    }
+
+                }, game.animationTime);
+
+            },
+
             isTimerZero(){
-                this.submitAnswer(0);
-                this.guess();
+                this.submitAnswer(-1);
             }
-
-
-
         },
-        components: {
-            ChatMessage,
-            Timer,
-            PlayerCards
-        }      
+        methods: {
 
+            submitAnswer(answer) {
 
+                if(this.isGameRunning){
+                    this.showFeedback();
+                    this.$store.dispatch("submitAnswer", answer).then(()=>{
+                        this.showFeedback();
+                    });
+                }
+
+                this.answer = "";
+
+            },
+
+            botGuess(){
+
+                const game = this;
+
+                if(game.isGameRunning){
+                    let guessTime = (Math.ceil(Math.random() * 5)) * 1000; //Bot takes between 1-5 seconds to guess
+
+                    game.botLoopTimeoutFunction = setTimeout(function () {
+
+                        game.activePlayer.guess().then((answer) =>{ //Returns a guess based on the interval-object
+
+                            game.$store.dispatch("submitAnswer", answer).then(()=>{
+                                game.showFeedback();
+                            });
+                        });
+
+                    }, guessTime)
+                }
+            },
+
+            showFeedback() {
+                //Timeout for "Higher!" "Lower!" messages.
+                this.showHiOrLow = true;
+                setTimeout(() => {
+                    this.showHiOrLow = false;
+                }, 1500);
+            },
+
+            submitAnswerWithEnter(answer) {
+
+                if (answer.length !== 0) {
+                    this.submitAnswer(answer);
+                }
+
+            },
+
+            startVoiceRecording() {
+                //Starts recording if player turn and not currently recording, when recording stops submit if it's still the player turn.
+                if (this.activePlayer.isHuman) {
+                    let game = this;
+                    let voiceResult = 0;
+                    recognition.lang = getCurrentSettings().micInputLanguage;
+
+                    if (!game.$store.state.recognizing) {
+                        recognition.start();
+                        recognition.onresult = function (event) {
+                            for (let i = event.resultIndex; i < event.results.length; i++) {
+                                if (event.results[i].isFinal) {
+                                    voiceResult = event.results[i][0].transcript;
+                                    if (game.activePlayer.isHuman && Number.isInteger(Number.parseInt(voiceResult))) {
+                                        game.submitAnswer(voiceResult);
+                                    }
+                                }
+                            }
+                        };
+                    }
+                    recognition.onstart = function (event) {
+                        game.$store.state.recognizing = true;
+                    };
+                    recognition.onend = function (event) {
+                        game.$store.state.recognizing = false;
+                    };
+                    recognition.onerror= function(event) {
+                        game.$store.state.recognizing = false;
+                    }
+                }
+            },
+        },
+        beforeRouteLeave: (to, from, next) => {
+            next(vm => {
+                vm.$store.commit('stopTimer');
+                vm.$store.commit('stopGame');
+            })
+        }
     }
 </script>
 <style scoped>
 
-* {
-    box-sizing: border-box;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-.activePlayer {
-    background-color: red;
-}
+    .gameView{
+        display: grid;
+        justify-items: center;
+        padding: 3px;
+    }
 
-#playerCardsDiv {
-    width: 21vw;
-    height: 32vw;
-    margin: auto;
-    text-align: center;
-    /* border: 1px solid black; */
-}
+    .activePlayer {
+        background-color: red;
+    }
+
+
+    .buttonDisabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .high-or-low{
+        position: absolute;
+        left: 25%;
+        top: 43%;
+        font-weight: 800;
+        font-size: 20px;
+    }
+
+    .answerGrid{
+        display: grid;
+        min-width: 80%;
+    }
+
+    .aboveBelowGrid{
+        display: grid;
+        grid-template-columns: 25% auto;
+        font-size: 12px;
+        text-align: start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    input{
+        font-size: 20px;
+    }
+
+    .buttonGrid{
+        display: grid;
+        width: 295.35px;
+        grid-template-columns: auto fit-content(10vmin);
+        margin-bottom: 20px;
+    }
+
+    .submitButton{
+        display: grid;
+        height: 40px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--fonts);
+        color: var(--defaultFontColor);
+        background-color: var(--buttonColor);
+        border-width: 2px;
+        border-style: outset;
+        border-color: buttonface;
+        border-image: initial;
+    }
+
+    .pushToTalk{
+        width: 40px;
+        padding: 2px;
+        border: solid #ADD8E6
+    }
+
+    @media (max-width: 767px) {
+
+        #playerCardsDiv {
+            width: 84vw;
+            height: 80vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
+
+
+    @media (min-width: 768px) {
+
+        #playerCardsDiv {
+            width: 21vw;
+            height: 32vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
 
 
 </style>

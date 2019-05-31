@@ -1,10 +1,13 @@
 <template>
+<div>
     <div v-if="stats.totalGuesses > 0">
         <div>Games played:</div><div>{{stats.gamesPlayed}}</div>
         <div>Total questions:</div><div>{{stats.questionsAsked}}</div>
         <div>Total guesses:</div><div>{{stats.totalGuesses}}</div>
         <div>Guess / question:</div><div>{{averageGuesses}}</div>
+
     </div>
+</div>
 </template>
 
 <script>
@@ -14,7 +17,7 @@
         name: "GeneralStats",
         data: function(){
             return {
-                stats : {totalGuesses:0, questionsAsked: 0}
+                stats : {totalGuesses:0, questionsAsked: 0},
             }
 
         },
@@ -35,5 +38,7 @@
 </script>
 
 <style scoped>
-
+    p{
+        padding: 0;
+    }
 </style>
