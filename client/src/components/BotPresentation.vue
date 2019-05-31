@@ -141,7 +141,7 @@
 
 
         .statistics {
-            text-align: right;
+            text-align: center;
             height: 100%;
             width: 100%;
             margin-bottom: 50%;
