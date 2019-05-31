@@ -1,42 +1,45 @@
 <template>
     <div>
-        <div v-if="isGameRunning">
-            <QuestionCard />
+        <div class="gameView" v-if="isGameRunning">
+
+            <QuestionCard >
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
-            <div>
-                <div class="aboveBelow">
-                    <div>Closest above:</div><div>{{highGuess}}</div>
-                    <div>Closest below:</div><div>{{lowGuess}}</div>
-                </div>
 
-                <div id="playerCardsDiv">
-                    <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
-                </div>
-
-                <input v-model="answer"
-                       oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
-                       name="answer"
-                       placeholder="Enter your answer"
-                       :disabled="!activePlayer.isHuman"
-                       autocomplete="off"
-                       v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
-
-                <div>
-                    <button @click="submitAnswer(answer)"
-                            :disabled="!activePlayer.isHuman || answer.length === 0"
-                            :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
-                    </button>
-                    <button v-if="speechRecognitionAvailable"
-                            @click="startVoiceRecording"
-                            :disabled="!activePlayer.isHuman"
-                            :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
-                    </button>
-                </div>
-
-                <chat-message />
+            <div id="playerCardsDiv">
+                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
             </div>
+
+            <div class="answerGrid">
+
+                <div class="aboveBelowGrid">
+                    Below:
+                    <div class="aboveBelowValue">{{highGuess}}</div>
+                </div>
+
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                       name="answer" placeholder="Enter your answer" :disabled="!activePlayer.isHuman"
+                       autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
+
+                <div class="aboveBelowGrid">
+                    Above:
+                    <div class="aboveBelowValue">{{lowGuess}}</div>
+                </div>
+
+            </div>
+
+            <button @click="submitAnswer(answer)"
+                    :disabled="!activePlayer.isHuman || answer.length === 0"
+                    :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
+            </button>
+            <button v-if="speechRecognitionAvailable"
+                    @click="startVoiceRecording"
+                    :disabled="!activePlayer.isHuman"
+                    :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
+            </button>
+
+            <chat-message />
         </div>
         <div v-else>
 
@@ -104,9 +107,6 @@
             },
             animationTime() {
                 return this.$store.getters.getAnimationTime;
-            },
-            muteSounds(){
-                return this.$store.getters.isMuteSound;
             },
             botLoopTimeoutFunction: {
                 get(){
@@ -248,6 +248,12 @@
         box-sizing: border-box;
     }
 
+    .gameView{
+        display: grid;
+        justify-items: center;
+        padding: 3px;
+    }
+
     .activePlayer {
         background-color: red;
     }
@@ -259,17 +265,9 @@
         text-align: center;
     }
 
-
     .buttonDisabled{
       opacity: 0.6;
       cursor: not-allowed;
-    }
-
-    .aboveBelow{
-        display: grid;
-        grid-template-columns: 31% 19% 31% 19%;
-        font-size: 15px;
-        text-align: start;
     }
 
     .high-or-low{
@@ -279,6 +277,25 @@
         font-weight: 800;
         font-size: 20px;
     }
+
+    .answerGrid{
+        display: grid;
+        min-width: 80%;
+    }
+
+    .aboveBelowGrid{
+        display: grid;
+        grid-template-columns: 15% auto;
+        font-size: 12px;
+        text-align: start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    input{
+        font-size: 20px;
+    }
+
 
     @media (min-width: 768px) {
 
