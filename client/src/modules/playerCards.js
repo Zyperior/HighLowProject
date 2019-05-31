@@ -63,7 +63,7 @@ const mutations = {
 
             state.flipCards = false;
 
-        }, state.animationTime);
+        }, state.animationTime + 100);
 
     },
 

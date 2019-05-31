@@ -9,12 +9,14 @@
 </template>
 
 <script>
+    import {getCurrentSettings} from '../../modules/settingsData'
+
     export default {
         name: "NumberOfPlayers",
         data(){
             return{
                 playersAmount: [0, 1, 2, 3, 4, 5, 6],
-                amount: 0
+                amount: getCurrentSettings().playerAmount
             }
         },
         methods:{

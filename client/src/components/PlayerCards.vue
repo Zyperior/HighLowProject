@@ -163,6 +163,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -194,6 +195,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -225,6 +227,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -256,6 +259,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -289,6 +293,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -322,6 +327,7 @@ export default {
     animation-duration: var(--animation-time);
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
 
@@ -429,6 +435,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
 
@@ -461,6 +468,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
 
@@ -493,6 +501,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
 
@@ -524,6 +533,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
     /* Safari 4.0 - 8.0 */
@@ -556,6 +566,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
 
@@ -588,6 +599,7 @@ export default {
         animation-duration: var(--animation-time);
         -webkit-animation-timing-function: linear;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
     }
 
 
