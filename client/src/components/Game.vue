@@ -161,11 +161,6 @@
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
                     });
-
-                    if(this.$store.state.game.chattyBots) {
-                        // noinspection JSIgnoredPromiseFromCall
-                        this.$store.dispatch("chat", answer);
-                    }
                 }
 
                 this.answer = "";
@@ -216,12 +211,13 @@
                     recognition.lang = getCurrentSettings().micInputLanguage;
 
                     if (!game.$store.state.recognizing) {
-                        recognition.start(); //Avoid error if already recording by stopping first.
+                        recognition.start();
                         recognition.onresult = function (event) {
                             for (let i = event.resultIndex; i < event.results.length; i++) {
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
-                                    if (game.activePlayer.isHuman) {
+                                    if (game.activePlayer.isHuman && Number.isInteger(Number.parseInt(voiceResult))) {
+                                        console.log(voiceResult)
                                         game.submitAnswer(voiceResult);
                                     }
                                 }
