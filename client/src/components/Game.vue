@@ -25,17 +25,21 @@
 
             </div>
 
-            <button class="submitButton"
-                    @click="submitAnswer(answer)"
-                    :disabled="!activePlayer.isHuman || answer.length === 0"
-                    :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
-            </button>
-            <img    class="pushToTalk"
-                    src="../assets/PTT.svg"
-                    v-if="speechRecognitionAvailable"
-                    @click="startVoiceRecording"
-                    :disabled="!activePlayer.isHuman"
-                    :class="{buttonDisabled: !activePlayer.isHuman}"/>
+            <div class="buttonGrid">
+                <button class="submitButton"
+                        @click="submitAnswer(answer)"
+                        :disabled="!activePlayer.isHuman || answer.length === 0"
+                        :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
+                </button>
+                <img    class="pushToTalk"
+                        src="../assets/PTT.svg"
+                        v-if="speechRecognitionAvailable"
+                        @click="startVoiceRecording"
+                        :disabled="!activePlayer.isHuman"
+                        :class="{buttonDisabled: !activePlayer.isHuman}"
+                />
+            </div>
+
 
             <div id="playerCardsDiv">
                 <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
@@ -305,6 +309,11 @@
         width: 40px;
         padding: 2px;
         border: solid #ADD8E6
+    }
+
+    .buttonGrid{
+        display: grid;
+        grid-template-columns: auto auto;
     }
 
 
