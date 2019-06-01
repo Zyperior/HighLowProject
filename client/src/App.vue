@@ -58,8 +58,6 @@
   }
 
 
-
-
   #app {
     font-family: var(--fonts);
     color: var(--defaultFontColor);
@@ -91,4 +89,5 @@
   /*    width: 20%;*/
   /*  }*/
   /*}*/
+
 </style>
