@@ -1,0 +1,24 @@
+
+:root {
+
+    --backGroundColor: honeydew;
+
+    --fonts: Montserrat, Arial, Helvetica, sans-serif;
+
+    --defaultFontSizeMobile: 5vw;
+
+    --defaultFontColor: darkblue;
+
+    --buttonColor: bisque;
+
+    --buttonBorderColor: beige;
+
+    --selectSelectedColor: bisque;
+
+    --defaultFontSize: 1vw;
+
+    --botCardColor: lightblue;
+
+    --humanCardColor: lightgoldenrodyellow;
+
+}

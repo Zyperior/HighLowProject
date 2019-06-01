@@ -1,42 +1,51 @@
 <template>
     <div>
-        <div v-if="isGameRunning">
-            <QuestionCard />
+        <div class="gameView" v-if="isGameRunning">
+
+            <QuestionCard>
                 <HigherLowerFeedBack id="feedback" slot="feedback" v-if="showHiOrLow" />
                 <Timer id="timer" slot="timer" ref="myTimer"/>
             </QuestionCard>
-            <div>
-                <div class="aboveBelow">
-                    <div>Closest above:</div><div class="highGuess">{{highGuess}}</div>
-                    <div>Closest below:</div><div>{{lowGuess}}</div>
+
+            <div class="answerGrid">
+
+                <div class="aboveBelowGrid">
+                    Less than:
+                    <div class="aboveBelowValue">{{highGuess}}</div>
                 </div>
 
-                <div id="playerCardsDiv">
-                    <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+                <input v-model="answer" oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
+                       name="answer" placeholder="Enter your answer" :disabled="!activePlayer.isHuman"
+                       autocomplete="off" v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
+
+                <div class="aboveBelowGrid">
+                    More than:
+                    <div class="aboveBelowValue">{{lowGuess}}</div>
                 </div>
 
-                <input v-model="answer"
-                       oninput="this.value=this.value.replace(/[^0-9]/g, '').replace(/^0/, '')"
-                       name="answer"
-                       placeholder="Enter your answer"
-                       :disabled="!activePlayer.isHuman"
-                       autocomplete="off"
-                       v-on:keydown.enter="submitAnswerWithEnter(answer)"/>
-
-                <div>
-                    <button @click="submitAnswer(answer)"
-                            :disabled="!activePlayer.isHuman || answer.length === 0"
-                            :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit Answer
-                    </button>
-                    <button v-if="speechRecognitionAvailable"
-                            @click="startVoiceRecording"
-                            :disabled="!activePlayer.isHuman"
-                            :class="{buttonDisabled: !activePlayer.isHuman}">Click To Talk
-                    </button>
-                </div>
-
-                <chat-message />
             </div>
+
+            <div class="buttonGrid">
+                <div class="submitButton"
+                        @click="submitAnswer(answer)"
+                        :disabled="!activePlayer.isHuman || answer.length === 0"
+                        :class="{buttonDisabled: !activePlayer.isHuman || answer.length === 0}">Submit answer
+                </div>
+                <img    class="pushToTalk"
+                        src="../assets/PTT.svg"
+                        v-if="speechRecognitionAvailable"
+                        @click="startVoiceRecording"
+                        :disabled="!activePlayer.isHuman"
+                        :class="{buttonDisabled: !activePlayer.isHuman}"
+                />
+            </div>
+
+
+            <div id="playerCardsDiv">
+                <PlayerCards :active-players="players" ref="myPlayerCards"></PlayerCards>
+            </div>
+
+            <chat-message />
         </div>
         <div v-else>
 
@@ -69,7 +78,7 @@
         data(){
             return {
                 number: 0,
-                recording: false,
+                recognizing: false,
                 answer: '',
                 speechRecognitionAvailable: window.hasOwnProperty('webkitSpeechRecognition'),
                 showHiOrLow: false,
@@ -106,9 +115,6 @@
             animationTime() {
                 return this.$store.getters.getAnimationTime;
             },
-            muteSounds(){
-                return this.$store.getters.isMuteSound;
-            },
             botLoopTimeoutFunction: {
                 get(){
                     return this.$store.getters.getBotLoopTimeoutFunction;
@@ -132,15 +138,15 @@
             activePlayer : function(){
 
                 const game = this;
-
                 game.$refs.myTimer.stopTimer();
 
-                setTimeout(function() {
+                setTimeout(function () {
 
-                    game.$refs.myTimer.startTimer();
+                    if(game.isGameRunning)
+                            game.$refs.myTimer.startTimer();
 
-                    if(!game.activePlayer.isHuman){
-                        game.botGuess();
+                    if (!game.activePlayer.isHuman) {
+                            game.botGuess();
                     }
 
                 }, game.animationTime);
@@ -156,16 +162,10 @@
             submitAnswer(answer) {
 
                 if(this.isGameRunning){
-
                     this.showFeedback();
                     this.$store.dispatch("submitAnswer", answer).then(()=>{
                         this.showFeedback();
                     });
-
-                    if(this.$store.state.game.chattyBots) {
-                        // noinspection JSIgnoredPromiseFromCall
-                        this.$store.dispatch("chat", answer);
-                    }
                 }
 
                 this.answer = "";
@@ -177,7 +177,6 @@
                 const game = this;
 
                 if(game.isGameRunning){
-
                     let guessTime = (Math.ceil(Math.random() * 5)) * 1000; //Bot takes between 1-5 seconds to guess
 
                     game.botLoopTimeoutFunction = setTimeout(function () {
@@ -215,23 +214,29 @@
                     let game = this;
                     let voiceResult = 0;
                     recognition.lang = getCurrentSettings().micInputLanguage;
-                    if(!game.recording) {
+
+                    if (!game.$store.state.recognizing) {
                         recognition.start();
-                        game.recording = true;
                         recognition.onresult = function (event) {
                             for (let i = event.resultIndex; i < event.results.length; i++) {
                                 if (event.results[i].isFinal) {
                                     voiceResult = event.results[i][0].transcript;
-                                    if (game.activePlayer.isHuman) {
+                                    if (game.activePlayer.isHuman && Number.isInteger(Number.parseInt(voiceResult))) {
                                         game.submitAnswer(voiceResult);
                                     }
                                 }
                             }
                         };
                     }
-                    recognition.onend = function() {
-                        this.recording = false;
+                    recognition.onstart = function (event) {
+                        game.$store.state.recognizing = true;
                     };
+                    recognition.onend = function (event) {
+                        game.$store.state.recognizing = false;
+                    };
+                    recognition.onerror= function(event) {
+                        game.$store.state.recognizing = false;
+                    }
                 }
             },
         },
@@ -249,28 +254,20 @@
         box-sizing: border-box;
     }
 
+    .gameView{
+        display: grid;
+        justify-items: center;
+        padding: 3px;
+    }
+
     .activePlayer {
         background-color: red;
     }
 
-    #playerCardsDiv {
-        width: 84vw;
-        height: 80vw;
-        margin: auto;
-        text-align: center;
-    }
 
-
-    .buttonDisabled{
+    .buttonDisabled {
       opacity: 0.6;
       cursor: not-allowed;
-    }
-
-    .aboveBelow{
-        display: grid;
-        grid-template-columns: 31% 19% 31% 19%;
-        font-size: 15px;
-        text-align: start;
     }
 
     .high-or-low{
@@ -281,11 +278,71 @@
         font-size: 20px;
     }
 
+    .answerGrid{
+        display: grid;
+        min-width: 80%;
+    }
+
+    .aboveBelowGrid{
+        display: grid;
+        grid-template-columns: 25% auto;
+        font-size: 12px;
+        text-align: start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    input{
+        font-size: 20px;
+    }
+
+    .buttonGrid{
+        display: grid;
+        width: 295.35px;
+        grid-template-columns: auto fit-content(10vmin);
+        margin-bottom: 20px;
+    }
+
+    .submitButton{
+        display: grid;
+        height: 40px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--fonts);
+        color: var(--defaultFontColor);
+        background-color: var(--buttonColor);
+        border-width: 2px;
+        border-style: outset;
+        border-color: buttonface;
+        border-image: initial;
+    }
+
+    .pushToTalk{
+        width: 40px;
+        padding: 2px;
+        border: solid #ADD8E6
+    }
+
+    @media (max-width: 767px) {
+
+        #playerCardsDiv {
+            width: 84vw;
+            height: 80vw;
+            margin: auto;
+            text-align: center;
+        }
+
+    }
+
+
     @media (min-width: 768px) {
 
         #playerCardsDiv {
             width: 21vw;
             height: 32vw;
+            margin: auto;
+            text-align: center;
         }
 
     }

@@ -12,7 +12,7 @@ export default {
         },
         removeFirstChatMessage: (state) => {
             state.messages.shift();
-        }
+        },
     },
 
     actions : {
@@ -25,6 +25,7 @@ export default {
             let correctAnswer = store.getters.getCorrectAnswer;
             let questions = store.getters.getQuestions;
             let questionCounter = store.getters.getQuestionCounter;
+            let lastGuess = store.getters.getLastGuess;
 
             let speakerIndex = Math.floor(Math.random() * players.length);
             let speaker = players[speakerIndex];
@@ -48,8 +49,7 @@ export default {
 
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
-                } else if (activePlayer.answer === correctAnswer && questionCounter === questions.length) {
-
+                } else if (answer === correctAnswer && questionCounter === questions.length) {
                     if(speaker === activePlayer) {
 
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotWinGame, img: speaker.imgSrc});
@@ -59,7 +59,15 @@ export default {
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame, img: speaker.imgSrc});
                     }
 
-                } else if (activePlayer.answer === correctAnswer) {
+                } else if (lastGuess === correctAnswer) {
+
+                    let speakerIndex = Math.floor(Math.random() * players.length);
+                    let speaker = players[speakerIndex];
+
+                    while(speaker.isHuman){
+                        speakerIndex = Math.floor(Math.random() * players.length);
+                        speaker = players[speakerIndex];
+                    }
 
                     if(speaker === activePlayer) {
                     
@@ -75,9 +83,9 @@ export default {
                     let nextPlayer;
                     let playerTurn = store.getters.getPlayerTurn;
 
-                    if(playerTurn < players.length) {
-                        nextPlayer = players[players.indexOf(activePlayer) + 1];
-                    } else if (players.indexOf(activePlayer)+1 === players.length){
+                    if(playerTurn !== players.length -1) {
+                        nextPlayer = players[playerTurn+1];
+                    } else {
                         nextPlayer = players[0];
                     }
 
@@ -98,10 +106,5 @@ export default {
                 store.commit('removeFirstChatMessage');
             }, 2850); //2.85s to remove messages
         }
-    },
-    methods : {
-        //50% chance to return true.
-        randomTalk: function () { return (Math.floor(Math.random() * 2) === 0); },
-
     }
 }

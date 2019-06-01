@@ -211,7 +211,7 @@ const bot5 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '/botImg/botinski.png',
+    imgSrc: '/botImg/botinski.jpg',
     description: {
         dislikes: 'Capitalist swine, when bear attack botinski house',
         likes: 'When мама make Borscht-soup, bear traps',
@@ -533,7 +533,7 @@ const bot12 = {
     isHuman: false,
     score: 0,
     correctAnswer: 0,
-    imgSrc: '../botImg/dungeonMaster.png',
+    imgSrc: '../botImg/dungeonMaster.jpg',
     description: {
         dislikes: 'Critical failures, interrupted game nights',
         likes: "Nat 20's, Pizza rolls, cool robes",

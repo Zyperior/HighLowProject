@@ -2,9 +2,8 @@
     <div>
         <div class="availableDiv">
         </div>
-        <p>Available bots</p>
         <div class="selectViewDiv" id="lastSelect">
-            <select @change="onChange($event)" size="5" v-model="availableBotIndex">
+            <select class="box" @change="onChange($event)" size="5" v-model="availableBotIndex">
                 <option v-for="(availableBot, index) in availableBots"
                         :value="index"
                         :title="'Difficulty: ' + availableBot.difficulty + '\nBehavior: ' + availableBot.behavior">
@@ -41,5 +40,9 @@
 p{
     font-size: 13px;
     font-style: italic;
+}
+
+.box{
+    min-width: 9em;
 }
 </style>

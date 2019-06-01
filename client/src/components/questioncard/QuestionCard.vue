@@ -1,9 +1,8 @@
 <template>
     <div class="wrapper">
         <div class="questionGrid">
-            <div>Question:</div>
-            <div class="questionText"
-                 :class="{ smaller : currentQuestion.length > 90}">{{currentQuestion}}
+            <div class="questionText">
+                {{currentQuestion}}
             </div>
         </div>
         <div class="questionFooter">
@@ -32,24 +31,26 @@
 
     .wrapper{
         display: grid;
-        font-size: 15px;
+        font-size: 18px;
         border: solid rgb(205,226,203);
+        background-color: rgb(251,255,251);;
+    }
+
+    .questionText{
+        padding: 4px;
     }
 
     .questionGrid{
         display: grid;
-        grid-template-columns: 75px auto;
-        min-height: 10vh;
-        text-align: start;
-    }
-
-    .smaller{
-        font-size: 14px;
+        min-height: 15vh;
+        max-height: 15vh;
+        text-align: center;
+        padding: 2px;
     }
 
     .questionFooter{
         display: grid;
-        grid-template-columns: repeat(3, 132px);
+        grid-template-columns: repeat(3, 33%);
         text-align: start;
         border-top: solid rgb(205,226,203);
     }
@@ -63,24 +64,9 @@
     #timer{
         grid-column: 3;
         text-align: center;
+        white-space: nowrap;
     }
 
-    @media screen and (min-width: 600px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, 200px);
-        }
-    }
 
-    @media screen and (min-width: 768px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, 256px);
-        }
-    }
-
-    @media screen and (min-width: 100px) {
-        .questionFooter{
-            grid-template-columns: repeat(3, auto);
-        }
-    }
 
 </style>
