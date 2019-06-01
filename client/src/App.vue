@@ -33,6 +33,8 @@
 
 <style>
 
+  @import './assets/css/style.css';
+
   *{
     margin: 0;
     padding: 0;
