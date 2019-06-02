@@ -51,21 +51,22 @@
         width: 15%;
         height: 15%;
         display: inline-block;
-        margin-bottom: 15em;
     }
 
     h4{
         display: inline-block;
     }
+    h1{
+        margin-bottom: 0.5em;
+    }
     .statistics {
-        margin: 1em;
-        padding: 2em 1em 2em 1em;
+        padding: 2em 1em 0em 1em;
         display: inline-block;
         background-color: rgb(251,255,251);
     }
     .user-info{
-        display: inline-block;
-        margin-top: 3em;
+        display: block;
+        margin-top: 2em;
     }
     @media(max-width: 415px){
         img {
@@ -75,10 +76,14 @@
         }
         .statistics {
             margin: 1em;
-            padding: 2em 1em 3em 1em;
+            padding: 2em 1em 1em 1em;
             display: inline-block;
             border: solid rgb(205,226,203);
             background-color: rgb(251,255,251);
+        }
+        h1{
+            margin-bottom: 0;
+            margin-top: 0;
         }
     }
 

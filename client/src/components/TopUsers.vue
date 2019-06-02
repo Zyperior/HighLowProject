@@ -1,7 +1,6 @@
 <template>
     <div v-if="fetchedUsers">
-        Top players:
-        <p v-for="(user, index) in users">{{index+1}}. {{user.username}} {{user.points}} points</p>
+        <p v-for="(user, index) in users"><span class="nr">{{index+1}}.</span> {{user.username}} {{user.points}} points</p>
     </div>
     <div v-else>
         <h3>Failed to fetch top users</h3>
@@ -26,6 +25,14 @@
         }
     }
 </script>
-<style>
+<style scoped>
+    div{
+        text-align: center;
+        margin-top: 1em;
+        background-color: rgb(251,255,251);
+        border: solid rgb(205,226,203);
+    }
+    .nr{
 
+    }
 </style>
