@@ -10,7 +10,7 @@
                 if (this.lastGuess === -1) {
                     return "Too slow!"
                 } else if (this.lastGuess === this.correctAnswer) {
-                    return "Correct!"
+                    return "Correct! "+this.correctAnswer;
                 } else if (this.lastGuess > this.correctAnswer) {
                     return "Lower!"
                 } else if (this.lastGuess < this.correctAnswer) {

@@ -307,7 +307,7 @@ export default {
             return new Promise( (resolve) => {
 
                 if(answer === correctAnswer){
-
+                    commit("setPlayerAnswer", answer);
                     commit('incPlayerCorrectAnswers');
                     commit('incPlayerScore');
                     commit('incPlayerGuessCount');
