@@ -9,7 +9,7 @@ describe('Rules', () => {
   it('renders the correct html', () => {
     expect(wrapper.html()).toContain('<div class="title">Rules for High/Low</div>')
   })
-  it('has not button', () => {
+  it('has no button', () => {
     expect(wrapper.contains('button')).toBe(false)
   })
 
