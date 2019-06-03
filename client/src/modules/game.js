@@ -167,6 +167,16 @@ export default {
             // Load players from current settings, (see action below)..
             await this.dispatch('loadPlayerSetup', commit).then( (players) => {
 
+                //Shuffle array
+                if(getCurrentSettings().shufflePlayers){
+                    for(let i = players.length - 1; i >= 0; i--){
+                        let rand = Math.floor(Math.random() * i);
+                        let temp = players[i];
+                        players[i] = players[rand];
+                        players[rand] = temp;
+                    }
+                }
+
                 // ..set the players array
                 commit('setPlayers', players);
 
@@ -228,17 +238,6 @@ export default {
                         answer: ""
                     };
                     players.push(player);
-                }
-
-                // Shuffle array
-                if(getCurrentSettings().shufflePlayers){
-                    for(let i = players.length - 1; i >= 0; i--){
-                        let rand = Math.floor(Math.random() * i);
-                        let temp = players[i];
-                        players[i] = players[rand];
-                        players[rand] = temp;
-                    }
-
                 }
 
                 resolve(players);
