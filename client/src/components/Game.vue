@@ -240,6 +240,7 @@
                 }
             },
         },
+        //If re-routed/refreshed stop the game and timer
         beforeRouteLeave: (to, from, next) => {
             next(vm => {
                 vm.$store.commit('stopTimer');

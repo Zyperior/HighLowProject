@@ -33,7 +33,7 @@
                 else
                     return 0;
             },
-            isLoggedIn(){
+            isLoggedIn(){  //If user is logged in and the prop 'user' username matches logged in user
                 return this.$cookies.isKey('userData') && this.$cookies.get('userData').username === this.user.username
             }
         }
