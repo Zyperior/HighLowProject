@@ -1,5 +1,29 @@
 import Store from '../store'
 
+/*
+    Sample template for bot:
+
+    name: The bot's name in the game
+    guess(): The logic for the bot's guess.
+    isPlaying: Whether the bot is in the current game or not.
+    behavior: Text-description of the bot's guess() logic.
+    phrases: The bot's phrases used for its chat messages.
+        guessing: The bot's default guess phrases.
+        badGuess: If someone guesses outside of the "less than" and "more than".
+        otherCorrect: When someone other than the bot guesses right.
+        thisBotCorrect: When this bot guesses right.
+        otherWinGame: When someone other than the bot wins the game.
+        thisBotWinGame: When the bot wins the game.
+    soundFx: Sounds for the bot.
+    answer: The bot's answer.
+    guessCount: How many times the bot has made a guess.
+    correctAnswer: How many times the bot made a correct answer.
+    isHuman: If the bot is a human player or not. False on all bots.
+    score: The bot's score in the current game.
+    imgSrc: Profile image for the bot.
+    description: Text-descriptions used on the bot presentation page.
+ */
+
 const bot1 = {
     name: 'Olle',
     guess(){
