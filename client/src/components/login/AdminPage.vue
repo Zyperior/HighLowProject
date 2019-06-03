@@ -67,10 +67,8 @@
             },
 
             acceptOrDenyPendingQuestions(){
-
                 const questionsToSend = this.pendingQuestions.filter(pendingQuestion =>
                     pendingQuestion.acceptOrDeny !== "Remain pending");
-
 
 
                 axios.post("http://localhost:5000/suggestedQuestions/accept-or-deny-pending-questions", {
@@ -84,13 +82,8 @@
                     this.fetchAllPendingQuestions();
                 })
                 .catch(error => console.log(error))
-
-
             },
-
-
         }
-
     }
 </script>
 
@@ -98,15 +91,15 @@
     ul{
         padding: 0;
     }
+
     hr{
         width: 60%;
         margin: auto;
     }
+
     #admin{
         color: #cd5a50;
 
     }
-
-
 
 </style>

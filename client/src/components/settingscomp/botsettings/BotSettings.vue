@@ -67,7 +67,7 @@
     }
 </script>
 
-<style scoped>
+<style scoped><style scoped>
     .botContainer{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -84,6 +84,7 @@
         grid-row: 1;
         grid-column: 3;
         font-size: 14px;
+
     }
     #selectedBots{
         grid-column: 1;
@@ -107,26 +108,25 @@
     @media only screen and (min-width: 900px) {
         .botContainer{
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             justify-items: center;
-
-
         }
+
         #selectedBotsText{
             grid-row: 1;
             grid-column: 1;
             font-size: 14px;
-            ;
             justify-self: start;
         }
+
         #availaBotsText{
             grid-row: 1;
-            grid-column: 3;
+            grid-column: 2 / span 3;
             font-size: 14px;
-            padding-right: 90px;
-
+            padding-left: 3.5em;
         }
+
         #selectedBots{
             grid-column: 1;
             grid-row: 2 / span 3;
@@ -134,23 +134,28 @@
             padding-left: 14px;
 
         }
-        #availableBots{
-            grid-column: 3;
-            grid-row: 2 / span 3;
-            padding-right: 73px;
 
+        #availableBots{
+            grid-column: 2 / span 3;
+            grid-row: 2 / span 3;
+            padding-left: 2.8em;
         }
+
         #addButton{
-            grid-column: 2;
+            grid-column: 1 / span 2;
             grid-row: 2;
             justify-self: center;
-
+            padding-left: 4.5em;
         }
+
         #removeButton{
-            grid-column: 2;
+            grid-column: 1 / span 2;
             grid-row: 3;
             justify-self: center;
+            padding-left: 4.5em;
         }
     }
+
+</style>
 
 </style>

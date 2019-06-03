@@ -17,20 +17,17 @@ const state =  {
 const getters = {
 
     flipCardsOngoing: state => {
-
         return state.flipCards;
 
     },
 
 
     getPlayerIndexes: state => {
-
         return state.indexes;
 
     },
 
     getAnimationTime: state => {
-
         return state.animationTime;
 
     }
@@ -42,7 +39,6 @@ const getters = {
 const mutations = {
 
     flipCards: state => {
-
         state.flipCards = true;
 
         if (state.indexes.length === 0) {
@@ -50,7 +46,6 @@ const mutations = {
             let arrayLength = store.getters.getPlayers.length;
 
             for (let index = 0; index < arrayLength; index++) {
-
                 state.indexes.push(index);
 
             }
@@ -58,7 +53,6 @@ const mutations = {
         }
 
         setTimeout(function() {
-
             state.indexes.push(state.indexes.shift());
 
             state.flipCards = false;
@@ -69,7 +63,6 @@ const mutations = {
 
 
     initPlayerCards: state => {
-
         state.indexes = []
 
     },

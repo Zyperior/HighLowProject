@@ -26,6 +26,7 @@
               activeBot: 0
           }
         },
+
         methods: {
             isChosenBot(index){
                 return index == this.activeBot;
@@ -37,6 +38,7 @@
                 this.activeBot++;
             }
         },
+
         computed: {
             hasNext(){
               return this.activeBot < this.bots.length-1;
