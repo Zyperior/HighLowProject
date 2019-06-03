@@ -53,14 +53,6 @@ const router = new Router({
       name: 'register',
       component: () => import('./components/login/Register.vue')
     },
-
-
-
-    {
-      path: '/auth-test',
-      name: 'authtest',
-      component: () => import('./components/login/AuthenticationTest.vue')
-    },
     {
       path: '/profile/:username',
       name: 'user-profile',
