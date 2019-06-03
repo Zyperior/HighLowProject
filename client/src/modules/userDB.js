@@ -29,7 +29,7 @@ module.exports = {
                 {totalguesses: userDataArray[1], points: userDataArray[2], correctguesses: userDataArray[3]}
             ).then(res => {
                 commit('setUserCookieData', res.data);
-            }).catch(err => console.log("Failed to set user-cookie"));
+            }).catch(err => "Failed to set user cookie");
         },
 
         //Fetches a user from the DB based on username

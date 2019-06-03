@@ -18,7 +18,6 @@ export default {
     },
     actions: {
         cloneBot(state, bot){
-            console.log("inside clonebot")
             return {
                 name: bot.name,
                 score: 0,
