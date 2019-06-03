@@ -33,6 +33,8 @@
 
 <style>
 
+  @import './assets/css/style.css';
+
   *{
     margin: 0;
     padding: 0;
@@ -54,8 +56,6 @@
     background-color: var(--backGroundColor);
     box-sizing: border-box;
   }
-
-
 
 
   #app {
@@ -89,4 +89,5 @@
   /*    width: 20%;*/
   /*  }*/
   /*}*/
+
 </style>

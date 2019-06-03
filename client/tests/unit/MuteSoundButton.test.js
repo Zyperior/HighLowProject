@@ -34,6 +34,7 @@ describe('MuteSoundButton.vue', () => {
         });
 
         // Trigger the event
+        console.log(wrapper);
         wrapper.find('button').trigger('click');
         // Check that the mutation have been called with the correct signature
         expect(mockStore.commit).toHaveBeenCalledWith('muteSound');

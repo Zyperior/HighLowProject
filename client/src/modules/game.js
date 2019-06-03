@@ -285,7 +285,6 @@ export default {
                     }, 3500)
 
                 } else {
-
                     if(!state.muteSound){
                         // noinspection JSIgnoredPromiseFromCall
                         new Audio('/soundfx/testAudio.wav').play();

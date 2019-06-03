@@ -67,6 +67,7 @@
     }
 
     export default {
+        name: 'Game',
         components: {
             ChatMessage,
             Timer,

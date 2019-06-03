@@ -26,7 +26,6 @@ export default {
                 correctAnswer: 0,
                 isUser: false,
                 answer: "",
-                soundFx: bot.soundFx,
                 phrases: bot.phrases,
                 imgSrc: bot.imgSrc,
                 guess: bot.guess
