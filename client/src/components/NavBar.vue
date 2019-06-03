@@ -1,37 +1,21 @@
 <template>
     <div>
-
-
         <div id="navigation-bar">
-
             <div id="left-container">
                 <input id="search-field" v-model="username" placeholder="Search for user">
                 <img id="glass-icon" src="/soundfx/Magnifying_glass_icon.svg" @click="searchForUser(username)" />
             </div>
-
-
-
-
-
             <div id="right-container">
                 <mute-sound-button id="sound-icon"/>
-
                 <button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/login')">Login</button>
-                <!--<button v-show="!displayExclusivePages.loggedInUser" @click="$router.push('/register')">Register</button>-->
                 <button v-show="displayExclusivePages.loggedInUser" @click="logout">Logout</button>
-
-
                 <img @click="showMenu" id="menu-icon" src="../../public/menu.png">
-                <!--<div>-->
-                    <!--&lt;!&ndash;<a class="menu-icon" href="javascript:void(0);" @click="showMenu"><i class="fa fa-bars"></i></a>&ndash;&gt;-->
-                <!--</div>-->
             </div>
 
         </div>
 
 
         <div id="links" v-if="activate === true">
-<!--            <div @click="showMenu"> </div>-->
             <div @click="showMenu"><router-link to="/">Play</router-link></div>
             <div @click="showMenu"><router-link to="/rules">Rules</router-link></div>
             <div @click="showMenu"><router-link to="/about">About</router-link></div>
@@ -47,15 +31,7 @@
             <div @click="showMenu" v-show="displayExclusivePages.loggedInAdmin">
                 <router-link to="/admin">Admin page</router-link>
             </div>
-
-
         </div>
-
-
-
-
-
-
     </div>
 </template>
 
@@ -108,18 +84,12 @@
 
 <style scoped>
 
-
-
-
     #navigation-bar{
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-
         height: 3em;
         background: #393939;
-
-
     }
 
     #left-container, #right-container{
@@ -163,8 +133,6 @@
         outline: none;
     }
 
-
-
     #links{
         background: gray;
         opacity: 0.9;
@@ -175,6 +143,13 @@
         text-align: left;
         z-index: 1;
     }
+
+    @media screen and (min-width: 692px) {
+        #links{
+            right: 25%;
+        }
+    }
+
     #links > div{
         padding: 0.3em;
     }
@@ -186,7 +161,6 @@
     #links > div:hover{
         background: #555555;
     }
-
 
     #sound-icon{
         margin-top: 3px;

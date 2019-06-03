@@ -6,7 +6,7 @@
                  :message="messages[index]"
                  :key="index"
                  class="message-container">
-                <img :src="message.img">
+                <img class="chat-profile-image" :src="message.img">
                 <div>
                     <div class="messenger-name">{{message.name}}</div>
                     <div class="message">{{message.text}}</div>
@@ -68,6 +68,12 @@
 
     }
 
+    @media screen and (min-width: 768px) {
+        .message-area {
+
+        }
+    }
+
     .message-container {
         background: rgba(0,0,0,.6);
         border-radius: 20px;
@@ -80,7 +86,7 @@
         padding-top: 5px;
     }
 
-    img{
+    .chat-profile-image {
         max-width: 80%;
         align-self: center;
         border-radius: 100%;
