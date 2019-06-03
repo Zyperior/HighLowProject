@@ -7,6 +7,12 @@ const uuid = require('uuid')
 
 const db = require('../../postgresDB/PGdb.js')
 
+/**
+ * Register a new user.
+ * Checks that no fields are null in the request body and then looks in the database to check if a user with the
+ * given username already exists. If it doesn't, it inserts a new user with the sent information as well as encrypts
+ * the password.
+ */
 router.post("/auth/register", (req, res) => {
 
     if(!req.body.username || !req.body.password || !req.body.email){
@@ -34,7 +40,12 @@ router.post("/auth/register", (req, res) => {
 });
 
 
-
+/**
+ * Login a user.
+ * Checks that no fields are null and then looks in the database to see if a user with the given username exists,
+ * if it does bcrypt compares the two passwords. If the passwords matches a jwt token is created and sent to the client
+ * which lets the client identify themselves in further requests
+ */
 router.post("/auth/login",  (req, res) => {
 
     if(!req.body.username || !req.body.password){
@@ -75,6 +86,9 @@ router.post("/auth/login",  (req, res) => {
     }
 });
 
+/**
+ * Finds and returns a user with the given username
+ */
 router.get('/:username', (req, res) => {
     db.query(`SELECT username, 
               totalguesses, points, 
@@ -91,6 +105,10 @@ router.get('/:username', (req, res) => {
     })
 })
 
+/**
+ * When the game completes the stats of the playing user needs to update. This methods updates the points of the
+ * selected user.
+ */
 router.put('/:username', (req, res) => {
     db.query(`UPDATE users SET
                totalguesses = totalguesses + $2,
@@ -108,6 +126,10 @@ router.put('/:username', (req, res) => {
         }).catch(err => res.status(500).send("Something went wrong"));
 })
 
+/**
+ * Returns the user that have the leader board rank of ":nr". The method  select the username and points from the database,
+ * order the result and can then return the selected user.
+ */
 router.get('/top/:nr', (req, res) => {
     db.query('SELECT username, points FROM users ORDER BY points DESC LIMIT $1', [req.params.nr])
         .then(foundUsers => {
