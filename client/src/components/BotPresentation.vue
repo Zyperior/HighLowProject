@@ -41,7 +41,7 @@
             }
         },
         computed: {
-            percentage() {
+            percentage() {  //Correct answer percentage, how many correct guesses split with total number of guesses
                 if (this.botInfo.guessCounter > 0) {
                     return Math.floor((this.botInfo.correctAnswers / this.botInfo.guessCounter) * 100);
                 }
@@ -50,7 +50,7 @@
             }
         },
 
-            methods: {
+            methods: { //Gets Bot-statistics from DB
                 async getBot(){
                     this.botInfo = await this.$store.dispatch('botStats/getBotStats', this.bot.name)
                 }
@@ -60,7 +60,7 @@
         },
         watch: {
             bot(){
-                this.getBot();
+                this.getBot();            //If prop 'bot' changes, get that bot from the DB
             }
         }
 
