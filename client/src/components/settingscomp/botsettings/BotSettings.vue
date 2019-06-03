@@ -1,12 +1,13 @@
 <template>
    <div class="botContainer">
        <p id="selectedBotsText">Selected bots</p>
-       <p id="availaBotsText">Available bots</p>
+       <p id="availableBotsText">Available bots</p>
        <selected-bots id="selectedBots" @setSelectedBotIndex="setSelectedBotIndex" />
-       <add-remove-button id="addButton" directive="add" @addAvailableToPlaying="addAvailableToPlaying" />
-       <add-remove-button id="removeButton" directive="remove" @addPlayingToAvailable="addPlayingToAvailable"/>
+       <div id="buttons">
+           <add-remove-button id="addButton" directive="add" @addAvailableToPlaying="addAvailableToPlaying" />
+           <add-remove-button id="removeButton" directive="remove" @addPlayingToAvailable="addPlayingToAvailable"/>
+       </div>
        <available-bots id="availableBots" @changeAvailableBotIndex="setAvailableBotIndex" />
-
    </div>
 </template>
 
@@ -67,11 +68,11 @@
     }
 </script>
 
-<style scoped><style scoped>
+<style scoped>
     .botContainer{
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
+        grid-template-columns: repeat(3, auto);
+        grid-template-rows: repeat(2, auto);
         justify-items: center;
 
     }
@@ -80,7 +81,7 @@
         grid-column: 1;
         font-size: 14px;
     }
-    #availaBotsText{
+    #availableBotsText{
         grid-row: 1;
         grid-column: 3;
         font-size: 14px;
@@ -88,74 +89,61 @@
     }
     #selectedBots{
         grid-column: 1;
-        grid-row: 2 / span 3;
+        grid-row: 2;
     }
     #availableBots{
         grid-column: 3;
-        grid-row: 2 / span 3;
+        grid-row: 2;
 
     }
-    #addButton{
+    #buttons{
+        display: grid;
+        grid-template-rows: auto auto;
+        align-items: center;
         grid-column: 2;
         grid-row: 2;
+    }
+    #addButton{
+        grid-row: 1;
         justify-self: center;
     }
     #removeButton{
-        grid-column: 2;
-        grid-row: 3;
+        grid-row: 2;
         justify-self: center;
     }
     @media only screen and (min-width: 900px) {
+
         .botContainer{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            justify-items: center;
+            justify-self: center;
+
         }
 
         #selectedBotsText{
-            grid-row: 1;
-            grid-column: 1;
-            font-size: 14px;
             justify-self: start;
         }
 
-        #availaBotsText{
-            grid-row: 1;
-            grid-column: 2 / span 3;
-            font-size: 14px;
+        #availableBotsText{
             padding-left: 3.5em;
         }
 
         #selectedBots{
-            grid-column: 1;
-            grid-row: 2 / span 3;
             justify-self: start;
             padding-left: 14px;
 
         }
 
         #availableBots{
-            grid-column: 2 / span 3;
-            grid-row: 2 / span 3;
             padding-left: 2.8em;
         }
 
         #addButton{
-            grid-column: 1 / span 2;
-            grid-row: 2;
-            justify-self: center;
             padding-left: 4.5em;
         }
 
         #removeButton{
-            grid-column: 1 / span 2;
-            grid-row: 3;
-            justify-self: center;
             padding-left: 4.5em;
         }
     }
 
 </style>
 
-</style>
