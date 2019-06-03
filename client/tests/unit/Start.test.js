@@ -25,5 +25,9 @@ describe('Start.vue', () => {
     wrapper.find('button').trigger('click')
     expect(actions.loadGame).toHaveBeenCalled()
   })
+  it('renders the correct html', () => {
+    const wrapper = shallowMount(Start, { stubs: ['router-link'] })
+    expect(wrapper.html()).toContain('<img id="logo" src="../assets/IpfadodLogo.svg">')
+  })
 })
 

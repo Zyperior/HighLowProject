@@ -16,9 +16,7 @@ export default {
     },
 
     actions : {
-
         chat(state, answer) {
-
             let players = store.getters.getPlayers;
             let isBadGuess = store.getters.isBadGuess;
             let activePlayer = store.getters.getActivePlayer;
@@ -46,21 +44,17 @@ export default {
                     audio.play();
                 }
                 if (isBadGuess && answer !== -1) {
-
                     store.commit('addMessage', {name: speaker.name, text: speaker.phrases.badGuess, img: speaker.imgSrc});
 
                 } else if (answer === correctAnswer && questionCounter === questions.length) {
                     if(speaker === activePlayer) {
-
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotWinGame, img: speaker.imgSrc});
 
                     } else {
-
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherWinGame, img: speaker.imgSrc});
                     }
 
                 } else if (lastGuess === correctAnswer) {
-
                     let speakerIndex = Math.floor(Math.random() * players.length);
                     let speaker = players[speakerIndex];
 
@@ -70,11 +64,9 @@ export default {
                     }
 
                     if(speaker === activePlayer) {
-                    
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.thisBotCorrect, img: speaker.imgSrc});
 
                     } else  {
-
                         store.commit('addMessage', {name: speaker.name, text: speaker.phrases.otherCorrect, img: speaker.imgSrc});
                     }
 

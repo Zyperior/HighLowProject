@@ -23,9 +23,6 @@
 </template>
 
 <script>
-    import axios from "axios"
-
-
     export default {
         name: "Register",
         data(){
@@ -34,11 +31,11 @@
                 passwordField: "",
                 repeatPasswordField: "",
                 emailField: "",
-
                 errorMessage: ""
             }
         },
         methods: {
+            //If input is valid, commit username, email and password to DB. Push router to login-page
             register(){
                 this.errorMessage = "";
                 if(this.validateInput()){
@@ -55,6 +52,7 @@
                         })
                 }
             },
+            //Validate user input. All fields must be entered, passwords must match
             validateInput(){
 
                 if(!this.usernameField || !this.passwordField || !this.repeatPasswordField || !this.emailField){
