@@ -7,6 +7,14 @@ const mongoose = require("mongoose");
 const PendingQuestion = require("../model/PendingQuestion");
 const Question = require("../model/question")
 
+
+/**
+ * Let logged in users suggest and send in a question.
+ * The method authenticates the user to see if the person accessing this endpoint is logged in by reading the jwt token
+ * and if the user is authenticated it checks that the user don't have any currently pending question because a user
+ * can only have one sent in question at once until it's approved to prevent spamming. If everything is alright a new
+ * pending question object is created and sent to the pending question collection in the mongo database.
+ */
 router.post("/", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         //This code runs if the authentication in passport.js was successful
@@ -38,7 +46,10 @@ router.post("/", (req, res, next) => {
     })(req, res, next);
 });
 
-
+/**
+ * Fetch all pending questions from the database.
+ * Begin with checking if the user is an admin by reading the jwt token. If everything is okay, return all pending questions
+ */
 router.get("/", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         if(user !== false && user.role === "ADMIN"){
@@ -55,7 +66,11 @@ router.get("/", (req, res, next) => {
     })(req, res, next);
 });
 
-
+/**
+ * Add pending questions to the used questions or remove them.
+ * Check if the user doing the request is an admin by reading the jwt token, if the user is it takes the list of
+ * questions and checks which to save and which to delete based on the send in admin choices.
+ */
 router.post("/accept-or-deny-pending-questions", (req, res, next) => {
     passport.authenticate("jwt", {session: false}, (error, user) => {
         if(user !== false && user.role === "ADMIN"){
