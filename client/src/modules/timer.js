@@ -1,10 +1,14 @@
 
+// The time limit to guess is set to 20 seconds = 20000 ms
+
 const state =  {
     time: 20000,
     interval: 0,
     timeLimit: 20000,
     isTimerZero: false
 };
+
+// The getter 'getTimeLeft' shows the time left with one decimal.
 
 
 const getters = {
@@ -16,6 +20,9 @@ const getters = {
     },
 
 };
+
+
+// The mutation 'startTimer' counts down the time in steps of 100 ms.
 
 const mutations = {
 
@@ -38,9 +45,12 @@ const mutations = {
 
     },
 
+    // The countdown is stopped by use of 'clearInterval'.
+
     stopTimer: state => {
         clearInterval(state.interval);
     }
+
 };
 
 export default{
