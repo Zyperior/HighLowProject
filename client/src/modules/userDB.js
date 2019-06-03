@@ -1,9 +1,12 @@
 const axios = require('axios');
 
+
+//Connection to user-database. Adds/gets/logins a user
+
 module.exports = {
     namespaced: true,
     state: {
-        isLoggedIn: false
+        isLoggedIn: false             //If a cookie exists with a user, isLoggedIn = true
     },
     getters: {
         getIsLoggedIn(state){
