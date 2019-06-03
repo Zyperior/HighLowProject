@@ -1,9 +1,12 @@
 const axios = require('axios');
 
+
+//Connection to user-database. Adds/gets/logins a user
+
 module.exports = {
     namespaced: true,
     state: {
-        isLoggedIn: false
+        isLoggedIn: false             //If a cookie exists with a user, isLoggedIn = true
     },
     getters: {
         getIsLoggedIn(state){
@@ -29,7 +32,7 @@ module.exports = {
                 {totalguesses: userDataArray[1], points: userDataArray[2], correctguesses: userDataArray[3]}
             ).then(res => {
                 commit('setUserCookieData', res.data);
-            }).catch(err => console.log("Failed to set user-cookie"));
+            }).catch(err => "Failed to set user cookie");
         },
 
         //Fetches a user from the DB based on username

@@ -1,23 +1,24 @@
+import Store from '../store'
+
 const bot1 = {
     name: 'Olle',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        return new Promise((resolve)=>{
+
+            resolve(lowestGuess + 1);
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-        return interval.lowestGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 1;
-    },
-    unfair: false,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Lowest guess + 1",
+    behavior: "Adds 1 to lowest possible guess",
     phrases: {
         guessing: [
             "Is it my turn?",
@@ -28,6 +29,14 @@ const bot1 = {
         thisBotCorrect: "Wait.. was that it?",
         otherWinGame: "Congratulations!",
         thisBotWinGame: "What happened?"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -41,32 +50,44 @@ const bot1 = {
         type: 'Confused',
         blurb: "A very confused man. Why is he even here?"
     }
-}
+};
 
 const bot2 = {
     name: 'Kerstin',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+        let isInInterval = Store.getters.isInInterval;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
-    },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 10) {
-            return interval.lowestGuess + Math.floor(intervalSize * 0.5);
+
+        if (highestGuess === ''){
+            highestGuess = 0;
         }
-        return Math.floor(Math.random() * (intervalSize - 1)) + interval.lowestGuess + 1;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                let intervalSize = highestGuess - lowestGuess;
+                if (intervalSize > 10) {
+                    resolve(lowestGuess + Math.floor(intervalSize * 0.5));
+                }
+                resolve(Math.floor(Math.random() * (intervalSize - 1)) + lowestGuess + 1);
+
+
+            } else {
+                resolve(lowestGuess + 250);
+            }
+
+        });
+
     },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 250;
-    },
-    unfair: false,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: true,
-    behavior: "Guesses half-way between lowest and highest, but guesses randomly if >10% for correct guess",
+    behavior: "Guesses half-way if <10% chance, then guesses randomly",
     phrases: {
         guessing: [
             "Let's see how this goes.",
@@ -77,6 +98,14 @@ const bot2 = {
         thisBotCorrect: "Lark!",
         otherWinGame: "Well done!",
         thisBotWinGame: "Oh, dearie me, that was fun!"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -90,28 +119,42 @@ const bot2 = {
         type: "Retired ol' woman",
         blurb: "Sweet old lady that wishes you well"
     }
-}
+};
 
 const bot3 = {
     name: 'The La Bossen',
-    guess: function(interval){
-        let bossLow = interval.correctAnswer * 0.9;
-        let bossHigh = interval.correctAnswer * 1.1;
+    guess(){
 
-        if(bossLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
-            bossLow = interval.lowestGuess;
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
-        if(bossHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
-            bossHigh = interval.highestGuess;
+
+        if (highestGuess === ''){
+            highestGuess = 0;
         }
-        return Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1);
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+        let bossLow = correctAnswer * 0.9;
+        let bossHigh = correctAnswer * 1.1;
+
+        return new Promise((resolve)=>{
+
+            if(bossLow < lowestGuess && Number.isInteger(lowestGuess)) {
+                bossLow = lowestGuess;
+            }
+            if(bossHigh > highestGuess && highestGuess !== 0 && Number.isInteger(highestGuess)) {
+                bossHigh = highestGuess;
+            }
+            resolve(Math.floor(Math.random() * (bossHigh - 1 - bossLow) + bossLow + 1));
+
+        });
 
     },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses correctAnswer +- 10%, unless highest/lowest are closer",
+    behavior: "Guesses between +- 10% of the correct answer",
     phrases: {
         guessing: [
             "I’m gonna make him an offer he can’t refuse.",
@@ -122,6 +165,14 @@ const bot3 = {
         thisBotCorrect: "Nothing personal, it’s just business.",
         otherWinGame: "You wanna play rough? Okay. Say hello to my little friend!",
         thisBotWinGame: "Veni, vidi, vici."
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -135,28 +186,38 @@ const bot3 = {
         type: 'Boss',
         blurb: 'Mafia boss with style, has contacts all over Italy'
     }
-}
+};
 
 const bot4 = {
     name: 'Bo',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve(Math.floor(Math.random() * (highestGuess - lowestGuess - 1) + lowestGuess + 1));
+            } else {
+                resolve((lowestGuess + 1) * 2);
+            }
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-        return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-       return (interval.lowestGuess + 1) * 2;
-    },
-    unfair: false,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
-    behavior: "Guesses randomly between highest and lowest guess",
+    behavior: "Guesses randomly between highest possible and lowest possible guess",
     phrases: {
         guessing: [
             "Jå gissar.",
@@ -167,6 +228,14 @@ const bot4 = {
         thisBotCorrect: "E la inget mä detta!",
         otherWinGame: "Hallå eller. Änna bra gjort!",
         thisBotWinGame: "Änna görkul detta!"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -180,19 +249,25 @@ const bot4 = {
         type: "Retired ol' man",
         blurb: "An old man that's just happy to be here"
     }
-}
+};
 
 const bot5 = {
     name: 'Botinski',
-    guess: function(interval){
-        if (Math.floor(Math.random() * 100 + 1) == 10) {
-            return interval.correctAnswer;
-        }else
-            return Math.floor(Math.random() * 5000 + 1);
+    guess(){
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+
+        return new Promise((resolve)=>{
+
+            if (Math.floor(Math.random() * 100 + 1) === 10) {
+                resolve(correctAnswer);
+            }else {
+                resolve(Math.floor(Math.random() * 5000 + 1));
+            }
+
+        });
+
     },
-    unfair: true,
-    difficulty: 'easy',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -205,7 +280,15 @@ const bot5 = {
         otherWinGame: "In Mother Russia, game wins you.",
         thisBotWinGame: "Radost.",
     },
-    behavior: 'Has a 1% chance of guessing correctly, otherwise guesses a random number between 1-5000',
+    behavior: 'Has a 1% chance of guessing correctly, otherwise random number',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -218,27 +301,37 @@ const bot5 = {
         type: 'Comrade',
         blurb: 'Slightly drunk but proud Soviet citizen'
     }
-}
+};
 
 const bot6 =  {
     name: 'Das Boot',
     doubler: Math.random() + 1,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let isInInterval = Store.getters.isInInterval;
+
+        return new Promise((resolve) => {
+
+            if(isInInterval) {
+                resolve(Math.round(((highestGuess - lowestGuess) * 0.1) + 0.3) + lowestGuess);
+            } else {
+                resolve(lowestGuess + 1981);
+            }
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-            return Math.round(((interval.highestGuess - interval.lowestGuess) * 0.1) + 0.3) + interval.lowestGuess;
-        },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 1981;
-    },
-    unfair: true,
-    difficulty: 'hard',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -251,7 +344,15 @@ const bot6 =  {
         otherWinGame: "You sunk my battle ship!",
         thisBotWinGame: "Out of your depth."
     },
-    behavior: 'The smaller the interval is the smaller its guesses are',
+    behavior: "Guesses a tenth of the possible interval",
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -264,40 +365,61 @@ const bot6 =  {
         type: 'Submarine',
         blurb: 'Is literally a submarine'
     }
-}
+};
 
 const bot7 = {
     name: 'Segelbot',
     lastGuess: 0,
-    doubler: 2,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
-    },
-    inIntervalGuess: function(interval) {
-        if(interval.lastGuess > interval.highestGuess || interval.lastGuess < interval.lowestGuess){
-            return 0;
+
+        if (highestGuess === ''){
+            highestGuess = 0;
         }
-        var intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize >= 1000)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.8);
-        else if(intervalSize >= 100)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.5);
-        else if(intervalSize >= 10)
-            return Math.floor(interval.lowestGuess + intervalSize * 0.2);
-        else
-            return interval.lowestGuess + 1;
+
+        let lastGuess = Store.getters.getLastGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+        let answer = 0;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                if(lastGuess > highestGuess || lastGuess < lowestGuess){
+                    resolve(answer);
+                }
+
+                if(intervalSize >= 1000){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.8);
+
+                } else if (intervalSize >= 100){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.5);
+
+                } else if (intervalSize >= 10){
+                    answer = Math.floor(lowestGuess + intervalSize * 0.2);
+
+                } else {
+                    answer = lowestGuess + 1;
+                }
+
+                resolve(answer);
+
+            } else {
+                resolve(lowestGuess + 486);
+            }
+
+        });
+
     },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 486;
-    },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: true,
+    behavior: "The smaller the interval, the smaller percentage it's guesses are",
     phrases: {
         guessing: [
             "Yarr!",
@@ -309,7 +431,14 @@ const bot7 = {
         otherWinGame: "Scupper that!",
         thisBotWinGame: "Shiver me timbers!"
     },
-    behavior: 'If interval > 1000, it guesses four fifths of that, if between 100 and 1000 it guesses half, if between 10 and 100 it guesses a fifth, else it guesses 1',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -322,28 +451,38 @@ const bot7 = {
         type: 'Pirate',
         blurb: 'A thief of the sea, living the high-life with a bottle of rum'
     }
-}
+};
 
 const bot8 = {
     name: 'Anna',
     lastGuess: 0,
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = Math.floor((highestGuess - lowestGuess) * 0.5);
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve(Math.floor((Math.random() * (intervalSize - 1)) + lowestGuess + 1));
+            } else {
+                resolve(lowestGuess + 2006);
+            }
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-        var intervalSize = Math.floor((interval.highestGuess - interval.lowestGuess) * 0.5);
-        return Math.floor((Math.random() * (intervalSize - 1)) + interval.lowestGuess + 1);
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 2006;
-    },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
     phrases: {
         guessing: [
@@ -356,7 +495,15 @@ const bot8 = {
         otherWinGame: "",
         thisBotWinGame: "No one can beat our bot"
     },
-    behavior: 'Looks down below for an answer, guesses randomly within the lower half of the interval',
+    behavior: 'Guesses randomly within the lower half of the interval',
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -369,29 +516,39 @@ const bot8 = {
         type: 'Moderator',
         blurb: 'A very, very beautiful girl that can ban you very, very hard'
     }
-}
+};
 
 const bot9 = {
     name: 'Abbot',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+                resolve((highestGuess - 1 ) - Math.floor(Math.random() * (intervalSize * 0.5)));
+            } else {
+                resolve(lowestGuess + 777);
+            }
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        return (interval.highestGuess - 1 ) - Math.floor(Math.random() * (intervalSize * 0.5));
-    },
-    guessAbove: function(interval) {
-        return interval.lowestGuess + 777;
-    },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Looks above for answers, answering in the top half of the interval",
+    behavior: "Answers within the top half of the interval",
     phrases: {
         guessing: [
             "Proverbs 10:4",
@@ -402,6 +559,14 @@ const bot9 = {
         otherCorrect: "Proverbs 3:27",
         otherWinGame: "Ezekiel 25:17",
         thisBotWinGame: "Exodus 20:17"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -415,22 +580,37 @@ const bot9 = {
         type: 'Preacher',
         blurb: 'A man of faith preaching to his flock'
     }
-}
+};
 
 const bot10 = {
     name: 'Inbotstjuven',
-    guess: function(interval){
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if(intervalSize > 0 && intervalSize <= 10) {
-            return Math.floor(Math.random() * (interval.highestGuess - interval.lowestGuess - 1) + interval.lowestGuess + 1);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
-        return 0;
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(intervalSize > 0 && intervalSize <= 10) {
+                resolve(Math.floor(Math.random() * (highestGuess - lowestGuess - 1) + lowestGuess + 1));
+            }
+            return 0;
+
+        });
+
     },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Bides his time and refuses to answer, unless > 20% chance to win",
+    behavior: "Refuses to answer, unless > 10% chance to win",
     phrases: {
         guessing: [
             "...",
@@ -442,6 +622,14 @@ const bot10 = {
         otherWinGame: "...",
         thisBotWinGame: "B&E!"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -449,37 +637,51 @@ const bot10 = {
     correctAnswer: 0,
     imgSrc: '/botImg/inbotstjuven.jpg',
     description: {
-        dislikes: 'Alarms, the Police',
-        likes: 'Unlocked car-doors, crowbars',
+        dislikes: 'Alarms, the Police, angry dogs',
+        likes: 'Unlocked car-doors, crowbars, balaclavas',
         type: 'Burglar',
         blurb: 'Hides in the shadows, waiting for the right opportunity to strike'
     }
-}
+};
 
 const bot11 = {
     name: 'CopyBot',
-    guess: function(interval){
-        if(interval.isInInterval()) {
-            return this.inIntervalGuess(interval);
-        } else {
-            return this.guessAbove(interval);
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let lastGuess = Store.getters.getLastGuess;
+        let isInInterval = Store.getters.isInInterval;
+        let intervalSize = highestGuess - lowestGuess;
+
+        return new Promise((resolve)=>{
+
+            if(isInInterval) {
+
+                if (intervalSize > 30) {
+                    resolve(lastGuess + 10);
+                } else {
+                    resolve(lastGuess + 1);
+                }
+
+            } else {
+                resolve(lowestGuess + 10);
+            }
+
+        });
+
     },
-    inIntervalGuess: function(interval) {
-        let intervalSize = interval.highestGuess - interval.lowestGuess;
-        if (intervalSize > 30) {
-            return interval.lastGuess + 10;
-        } else
-            return interval.lastGuess + 1;
-    },
-    guessAbove: function(interval) {
-        return 10 + interval.lowestGuess;
-    },
-    unfair: false,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
-    behavior: "Copies player's guess and adds 10 or 2 depending on how close to answer",
+    behavior: "Copies player's guess and adds 10 or 2 to it",
     phrases: {
         guessing: [
             "00111111",
@@ -490,6 +692,14 @@ const bot11 = {
         otherCorrect: "01010111 01010000",
         otherWinGame: "01010111 01010100 01000110",
         thisBotWinGame: "01001100 00110010 01010000"
+    },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
     },
     answer: "",
     guessCount: 0,
@@ -503,14 +713,23 @@ const bot11 = {
         type: 'Robot',
         blurb: "01001001 00100000 01100001 01101101 00100000 01110010 01101111 01100010 01101111 01110100"
     }
-}
+};
 
 const bot12 = {
     name: 'Dungeon Master',
-    guess: function(interval){
-        if(Math.floor(Math.random() * 20 + 1) == 20) {
-            return interval.correctAnswer;
-        } else return 0;
+    guess(){
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+
+        return new Promise((resolve)=>{
+
+            if(Math.floor(Math.random() * 20 + 1) === 20) {
+                resolve(correctAnswer);
+
+            } else resolve(-1);
+
+        });
+
     },
     unfair: true,
     difficulty: 'hard',
@@ -528,6 +747,14 @@ const bot12 = {
         otherWinGame: "+50 xp!",
         thisBotWinGame: "I put on my robe and wizard hat."
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -540,34 +767,48 @@ const bot12 = {
         type: 'Dice thrower',
         blurb: "Rolls his dice and lets faith decide"
     }
-}
+};
 
 
 const bot13 = {
     name: "Not a bot",
-    guess: function(interval){
+    guess(){
+
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
+        }
+
+        if (highestGuess === ''){
+            highestGuess = 0;
+        }
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
         let max = 0;
         let min = 0;
 
-        if(interval.highestGuess === 0 || interval.highestGuess > Math.ceil(interval.correctAnswer * 1.4)){
-            max = Math.ceil(interval.correctAnswer * (1.4));
-        } else {
-            max = interval.highestGuess;
-        }
+        return new Promise((resolve)=>{
 
-        if(interval.lowestGuess === 0 || interval.lowestGuess < Math.floor(interval.correctAnswer * 0.6)){
-            min = Math.floor(interval.correctAnswer * (0.6));
-        } else {
-            min = interval.lowestGuess;
-        }
+            if(highestGuess === 0 || highestGuess > Math.ceil(correctAnswer * 1.4)){
+                max = Math.ceil(correctAnswer * (1.4));
+            } else {
+                max = highestGuess;
+            }
 
-            return Math.floor(Math.random() * ((max - min) - 1)) + min + 1; //Min får inte vara större än max, tex om highest är 0 och lowest är 13
+            if(lowestGuess === 0 || lowestGuess < Math.floor(correctAnswer * 0.6)){
+                min = Math.floor(correctAnswer * (0.6));
+            } else {
+                min = lowestGuess;
+            }
 
+
+            resolve(Math.floor(Math.random() * ((max - min) - 1)) + min + 1);
+
+        });
 
     },
-    unfair: false,
-    difficulty: "medium",
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses suspiciously life like...",
     phrases: {
@@ -581,6 +822,14 @@ const bot13 = {
         otherWinGame: "Congrats",
         thisBotWinGame: "Horray!"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -593,25 +842,42 @@ const bot13 = {
         type: 'Human',
         blurb: 'A very normal human that is in no way a bot'
     }
-}
+};
 
 const bot14 = {
     name: 'BratBot',
-    guess: function(interval){
-        let bratLow = interval.correctAnswer * 0.75;
-        let bratHigh = interval.correctAnswer * 1.25;
+    guess(){
 
-        if(bratLow < interval.lowestGuess && Number.isInteger(interval.lowestGuess)) {
-            bratLow = interval.lowestGuess;
+        let lowestGuess = Store.getters.getLowGuess;
+        let highestGuess = Store.getters.getHighGuess;
+
+        if (lowestGuess === ''){
+            lowestGuess = 0;
         }
-        if(bratHigh > interval.highestGuess && interval.highestGuess != 0 && Number.isInteger(interval.highestGuess)) {
-            bratHigh = interval.highestGuess;
+
+        if (highestGuess === ''){
+            highestGuess = 0;
         }
-        return Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1);
+
+        let correctAnswer = Store.getters.getCorrectAnswer;
+        let bratLow = correctAnswer * 0.75;
+        let bratHigh = correctAnswer * 1.25;
+
+        return new Promise((resolve)=>{
+
+            if(bratLow < lowestGuess && Number.isInteger(lowestGuess)) {
+                bratLow = lowestGuess;
+            }
+
+            if(bratHigh > highestGuess && highestGuess !== 0 && Number.isInteger(highestGuess)) {
+                bratHigh = highestGuess;
+            }
+
+            resolve(Math.floor(Math.random() * (bratHigh - 1 - bratLow) + bratLow + 1));
+
+        });
+
     },
-    unfair: true,
-    difficulty: 'medium',
-    timing: 2,
     isPlaying: false,
     behavior: "Guesses within 25% of the correct answer. Cheats",
     phrases: {
@@ -625,6 +891,14 @@ const bot14 = {
         otherWinGame: "fml",
         thisBotWinGame: "lmao haxzorz"
     },
+    soundFx: {
+        guessingSfx: '/soundfx/botTest1.wav',
+        badGuessSfx: '/soundfx/botTest1.wav',
+        otherCorrectSfx: '/soundfx/botTest1.wav',
+        thisBotCorrectSfx: '/soundfx/botTest1.wav',
+        otherWinGameSfx:'/soundfx/botTest1.wav',
+        thisBotWinGameSfx: '/soundfx/botTest1.wav'
+    },
     answer: "",
     guessCount: 0,
     isHuman: false,
@@ -637,7 +911,7 @@ const bot14 = {
         type: 'Brat',
         blurb: "Like, whatever, you're not my mom!"
     }
-}
+};
 
 export default
  [bot1, bot2, bot3, bot4, bot5, bot6, bot7, bot8, bot9, bot10, bot11, bot12, bot13, bot14]

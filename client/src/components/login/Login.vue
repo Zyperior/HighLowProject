@@ -35,11 +35,11 @@
             return {
                 usernameField: "",
                 passwordField: "",
-
                 errorMessage: ""
             }
         },
         methods: {
+            //Commits username and password to DB, if user exists set cookie/token, else set error-message
             login(){
                 this.errorMessage = "";
 

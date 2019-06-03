@@ -27,7 +27,10 @@
 
         <general-stats class="generalStats stats"/>
         <hr>
-        <top-users></top-users>
+        <div class="statsTitle">
+            Top users:
+        </div>
+        <top-users/>
         <div>
             <hr>
         </div>

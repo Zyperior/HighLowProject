@@ -68,10 +68,7 @@ export default {
         getActivePlayer: state => { return state.players[state.playerTurn] },
         getPlayerTurn: state => { return state.playerTurn },
         getBotLoopTimeoutFunction: state => { return state.botLoopTimeoutFunction },
-        isBadGuess: state => { return (
-            (state.lastGuess < state.lowGuess && Number.isInteger(state.lowGuess)) ||
-            (state.lastGuess > state.highGuess && Number.isInteger(state.highGuess))
-        )},
+        isBadGuess: state => { return ((state.lastGuess < state.lowGuess && Number.isInteger(state.lowGuess)) || (state.lastGuess > state.highGuess && Number.isInteger(state.highGuess)))},
         isInInterval: state => { return ( state.highGuess > state.currentQuestion.answer) }
     },
     mutations : {
@@ -161,6 +158,7 @@ export default {
     },
     actions : {
 
+
         async loadGame({commit}) {
             commit('resetState');
 
@@ -184,6 +182,7 @@ export default {
                         commit("startGame");
                 })
             });
+
         },
 
         async loadPlayerSetup({commit}) {
@@ -196,14 +195,13 @@ export default {
                 store.getters.playingBots.forEach(bot => {
                     store.dispatch('cloneBot', bot)
                         .then(copy => players.push(copy));
-                });
+                })
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
                 if(window.$cookies.isKey('userData')){
                    username = window.$cookies.get('userData').username;
-                }
-
+                    }
                 const player = {
                     name: username,
                     score: 0,
@@ -213,7 +211,6 @@ export default {
                     isUser: store.getters['userDB/getIsLoggedIn'],
                     answer: ""
                 };
-
                 players.push(player);
 
                 // Create players from current settings and add to array
@@ -239,9 +236,11 @@ export default {
                         players[i] = players[rand];
                         players[rand] = temp;
                     }
+
                 }
 
                 resolve(players);
+
             });
         },
 
@@ -294,8 +293,12 @@ export default {
                     commit('incPlayerTurn');
                     commit("startTimer", {root: true});
                     store.commit("flipCards");
+
                 }
+
             });
+
+
         },
 
         checkAnswer({state, commit}, [answer, correctAnswer]){
@@ -303,16 +306,19 @@ export default {
             return new Promise( (resolve) => {
 
                 if(answer === correctAnswer){
+                    commit("setPlayerAnswer", answer);
                     commit('incPlayerCorrectAnswers');
                     commit('incPlayerScore');
                     commit('incPlayerGuessCount');
                     commit('incQuestionCounter');
                     commit('resetGuessCounter');
                     commit('resetLowestAndHighestAnswers');
+                    //commit("resetPlayerAnswers");
 
                     resolve(CORRECT_ANSWER)
                 }
                 if(answer < correctAnswer){
+
                     commit('setClosestLowAnswer', answer);
                     commit('incGuessCounter');
                     commit('incPlayerGuessCount');
@@ -323,6 +329,7 @@ export default {
                 }
 
                 if(answer > correctAnswer){
+
                     commit('setClosestHighAnswer', answer);
                     commit('incGuessCounter');
                     commit('incPlayerGuessCount');
@@ -331,31 +338,33 @@ export default {
 
                     resolve(INCORRECT_ANSWER);
                 }
+
+
             })
         },
 
-        //At the end of the game, stops the game and sends information to various databases and saves the statistics,
-        //routes the user to the results page
         endGame({state, commit}){
+
             // noinspection JSIgnoredPromiseFromCall
             store.dispatch('generalStats/postDBData', [state.questions.length, state.answerAttempts]);
 
             state.players.forEach(p => {
 
                 if(!(p.isHuman)) {
-                    // noinspection JSIgnoredPromiseFromCall
+
                     store.dispatch('botStats/updateBotStats',
                         [p.name, p.score, 1, p.guessCount, p.correctAnswer])
 
                 }else if(p.isUser){
-                    // noinspection JSIgnoredPromiseFromCall
                     store.dispatch('userDB/updateUser', [p.name, p.guessCount, p.score, p.correctAnswer])
                 }
+
             });
 
             commit('stopGame');
             router.push('/complete');
             commit('displayResults');
+
             commit('resetLastGuess');
             commit('resetQuestionCounter');
         }
