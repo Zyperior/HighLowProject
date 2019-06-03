@@ -198,7 +198,7 @@ export default {
                 store.getters.playingBots.forEach(bot => {
                     store.dispatch('cloneBot', bot)
                         .then(copy => players.push(copy));
-                })
+                });
 
                 // If user is logged in, make User main-player, otherwise make Guest main-player
                 let username = "Guest";
