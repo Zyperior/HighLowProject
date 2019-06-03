@@ -5,12 +5,26 @@
 
 ## Project setup
 ```
-npm install
+Project consists of two parts:
+
+Client:
+From project root
+- cd client
+- npm install
+
+Server:
+From project root
+- cd server
+- npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+From client folder:
+npm run serve (starts client)
+
+From server folder:
+npm run devstart (starts server api)
 ```
 
 ### Compiles and minifies for production
