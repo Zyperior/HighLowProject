@@ -140,6 +140,8 @@ export default {
 
         muteSound (state) { state.muteSound = !state.muteSound; },
 
+        setChattyBots (state) { state.chattyBots = getCurrentSettings().botCommentary },
+
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
         stopGame (state) { state.gameRunning = false; store.commit('stopTimer'); },
@@ -178,6 +180,7 @@ export default {
 
                 // Then set first question and start game
                 }).then( () => {
+                        commit('setChattyBots');
                         commit('setNextQuestion');
                         commit("startGame");
                 })
@@ -229,7 +232,6 @@ export default {
 
                 // Shuffle array
                 if(getCurrentSettings().shufflePlayers){
-
                     for(let i = players.length - 1; i >= 0; i--){
                         let rand = Math.floor(Math.random() * i);
                         let temp = players[i];
