@@ -35,18 +35,18 @@
             return {
                 usernameField: "",
                 passwordField: "",
-
                 errorMessage: ""
             }
         },
         methods: {
+            //Commits username and password to DB, if user exists set cookie/token, else set error-message
             login(){
                 this.errorMessage = "";
 
                 this.$store.dispatch('userDB/login', [this.usernameField, this.passwordField])
                 .then((response) => {
 
-                    this.$store.commit('userDB/setUserCookieData', response.user)
+                    this.$store.commit('userDB/setUserCookieData', response.user);
                     this.$store.commit('userDB/setIsLoggedIn', true);
 
                     localStorage.setItem("token", response.token);
@@ -59,7 +59,7 @@
 
                     this.$router.push("/profile/"+response.user.username);
                 })
-                .catch((error) => {
+                .catch(() => {
                     this.errorMessage = "Username and password do not match an existing user";
                 })
             }

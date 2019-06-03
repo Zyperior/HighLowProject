@@ -387,7 +387,7 @@ const bot7 = {
         let isInInterval = Store.getters.isInInterval;
         let intervalSize = highestGuess - lowestGuess;
         let answer = 0;
-        console.log(isInInterval);
+
         return new Promise((resolve)=>{
 
             if(isInInterval) {

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container">
     <div v-if="stats.totalGuesses > 0">
         <div>Games played:</div><div>{{stats.gamesPlayed}}</div>
         <div>Total questions:</div><div>{{stats.questionsAsked}}</div>
@@ -40,5 +40,9 @@
 <style scoped>
     p{
         padding: 0;
+    }
+    #container{
+        background-color: rgb(251,255,251);
+        border: solid rgb(205,226,203);
     }
 </style>

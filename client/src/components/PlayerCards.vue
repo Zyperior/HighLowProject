@@ -351,50 +351,50 @@
     @media (min-width: 768px) {
 
         #hidden {
-            width: 11.250000vw;
-            height: 5.625000vw;
-            font-size: 1.687500vw;
+            width: 16.875000vw;
+            height: 5.273438vw;
+            font-size: 1.582031vw;
             position: absolute;
-            top: 1.937500vw;
-            left: 4.875000vw;
-            box-shadow: 0.562500vw 1.125000vw 0.562500vw grey;
+            top: 1.816406vw;
+            left: 7.312500vw;
+            box-shadow: 0.843750vw 1.054688vw 0.843750vw grey;
             opacity: 0;
             z-index: -400;
         }
 
 
         #upper {
-            width: 15.000000vw;
-            height: 7.500000vw;
-            font-size: 2.250000vw;
+            width: 22.500000vw;
+            height: 7.031250vw;
+            font-size: 2.109375vw;
             position: absolute;
-            top: 1.000000vw;
-            left: 3.000000vw;
-            box-shadow: 0.750000vw 1.500000vw 0.750000vw grey;
+            top: 0.937500vw;
+            left: 4.500000vw;
+            box-shadow: 1.125000vw 1.406250vw 1.125000vw grey;
             z-index: 0;
         }
 
 
         #center {
-            width: 20.000000vw;
-            height: 10.000000vw;
-            font-size: 3.000000vw;
+            width: 30.000000vw;
+            height: 9.375000vw;
+            font-size: 2.812500vw;
             position: absolute;
-            top: 9.500000vw;
-            left: 0.500000vw;
-            box-shadow: 1.000000vw 2.000000vw 1.000000vw grey;
+            top: 8.906250vw;
+            left: 0.750000vw;
+            box-shadow: 1.500000vw 1.875000vw 1.500000vw grey;
             z-index: 400;
         }
 
 
         #lower {
-            width: 15.000000vw;
-            height: 7.500000vw;
-            font-size: 2.250000vw;
+            width: 22.500000vw;
+            height: 7.031250vw;
+            font-size: 2.109375vw;
             position: absolute;
-            top: 20.500000vw;
-            left: 3.000000vw;
-            box-shadow: 0.750000vw 1.500000vw 0.750000vw grey;
+            top: 19.218750vw;
+            left: 4.500000vw;
+            box-shadow: 1.125000vw 1.406250vw 1.125000vw grey;
             z-index: 0;
         }
 

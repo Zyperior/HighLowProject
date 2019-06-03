@@ -53,7 +53,6 @@ export default {
             state.generalStats = data;
         }
     }
-
 };
 
 

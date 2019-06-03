@@ -1,7 +1,6 @@
 <template>
     <div>
         <img alt="unmute" src="/soundfx/Mute_Icon.svg" v-if="mute"  @click="muteSound()"/>
-
         <img alt="mute" src="/soundfx/Speaker_Icon.svg" v-if="!mute"  @click="muteSound()"/>
     </div>
 </template>

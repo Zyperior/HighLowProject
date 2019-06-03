@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import axios from "axios"
+import store from './store.js'
 
 Vue.use(Router)
 
@@ -52,14 +52,6 @@ const router = new Router({
       path: '/register',
       name: 'register',
       component: () => import('./components/login/Register.vue')
-    },
-
-
-
-    {
-      path: '/auth-test',
-      name: 'authtest',
-      component: () => import('./components/login/AuthenticationTest.vue')
     },
     {
       path: '/profile/:username',

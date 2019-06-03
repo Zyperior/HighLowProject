@@ -285,7 +285,6 @@ export default {
                     }, 3500)
 
                 } else {
-
                     if(!state.muteSound){
                         // noinspection JSIgnoredPromiseFromCall
                         new Audio('/soundfx/testAudio.wav').play();
@@ -307,7 +306,7 @@ export default {
             return new Promise( (resolve) => {
 
                 if(answer === correctAnswer){
-
+                    commit("setPlayerAnswer", answer);
                     commit('incPlayerCorrectAnswers');
                     commit('incPlayerScore');
                     commit('incPlayerGuessCount');

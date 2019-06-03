@@ -5,6 +5,7 @@ export default {
     state: {
         bots
     },
+
     getters: {
         availableBots(state){
             return state.bots.filter(bot => !bot.isPlaying)   //Returns the bots not chosen by player
@@ -16,9 +17,9 @@ export default {
             return state.bots;
         }
     },
+
     actions: {
         cloneBot(state, bot){
-            console.log("inside clonebot")
             return {
                 name: bot.name,
                 score: 0,
@@ -27,7 +28,6 @@ export default {
                 correctAnswer: 0,
                 isUser: false,
                 answer: "",
-                soundFx: bot.soundFx,
                 phrases: bot.phrases,
                 imgSrc: bot.imgSrc,
                 guess: bot.guess
