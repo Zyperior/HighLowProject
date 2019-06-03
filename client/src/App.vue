@@ -45,18 +45,15 @@
     padding: 1em;
   }
 
-
   .view{
     margin-top: 15px;
   }
-
 
   body {
     /*margin: 0.5em;*/
     background-color: var(--backGroundColor);
     box-sizing: border-box;
   }
-
 
   #app {
     font-family: var(--fonts);

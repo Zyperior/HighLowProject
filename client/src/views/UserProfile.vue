@@ -6,7 +6,6 @@
         <div  v-else-if="!loading && !userNotFound">
             <Profile :user="user"></Profile>
         </div>
-
     </div>
     </div>
 </template>
@@ -24,12 +23,14 @@
                 loading: true
             }
         },
+
         props: {
             username: {
                 required: true,
                 type: String
             }
         },
+
         computed: {
             isUser() {
                 return this.$cookies.isKey('userData') && this.$cookies.get('userData').username === this.username;
@@ -38,6 +39,7 @@
                 return "User with username " + this.username + " not found";
             }
         },
+
             methods: {
                 getUser() {
                     if (!this.isUser) {
@@ -66,6 +68,7 @@
                     }
                 },
             },
+
         watch:{
             $route(to, from){
                 this.getUser();
@@ -76,6 +79,3 @@
         }
     }
 </script>
-<style>
-
-</style>

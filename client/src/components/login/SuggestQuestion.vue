@@ -56,6 +56,8 @@
             }
         },
         methods: {
+            //Allows a user to suggest a new question to be added to the game.
+            //If the user already has a question sent in that has yet to be approved they will get an error message
             suggestQuestion(){
                 this.successMessage = "";
                 this.errorMessage = "";

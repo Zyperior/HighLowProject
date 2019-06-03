@@ -135,6 +135,8 @@
 
             },
 
+            //Checks if it's the players turn, if not the bot will send it's guess after the card animation
+            //has been played out
             activePlayer : function(){
 
                 const game = this;
@@ -142,9 +144,9 @@
 
                 setTimeout(function () {
 
-                    if(game.isGameRunning)
-                            game.$refs.myTimer.startTimer();
-
+                    if(game.isGameRunning) {
+                        game.$refs.myTimer.startTimer();
+                    }
                     if (!game.activePlayer.isHuman) {
                             game.botGuess();
                     }
@@ -209,7 +211,8 @@
             },
 
             startVoiceRecording() {
-                //Starts recording if player turn and not currently recording, when recording stops submit if it's still the player turn.
+                //Starts recording if player turn and not currently recording,
+                //when recording stops submit if it's still the player turn.
                 if (this.activePlayer.isHuman) {
                     let game = this;
                     let voiceResult = 0;
@@ -263,7 +266,6 @@
     .activePlayer {
         background-color: red;
     }
-
 
     .buttonDisabled {
       opacity: 0.6;

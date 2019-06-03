@@ -1,8 +1,6 @@
 <template>
     <div class="about">
-
         <div class="title">About High/Low Project</div>
-        
         <div class="info">
             This is a school project for
             IT-Högskolan.
@@ -20,7 +18,6 @@
             <div><a href="https://github.com/DaniellaNoren" target="_blank">Daniella Norén</a></div>
             <div><a href="https://github.com/ChristoffersonFilip" target="_blank">Filip Christofferson</a></div>
             <div><a href="https://github.com/daniel-bjornberger" target="_blank">Daniel Björnberger</a></div>
-
         </div>
 
         <div class="statsTitle">
@@ -55,9 +52,6 @@
 </script>
 
 <style scoped>
-
-
-
     .about{
         display:grid;
         grid-template-columns: repeat(1, auto);
