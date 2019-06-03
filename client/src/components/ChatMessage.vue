@@ -36,14 +36,36 @@
 
 <style scoped>
 
-    .message-area {
-        position: absolute;
-        color: whitesmoke;
-        bottom: 0;
-        transition: height 0.2s;
-        align-self: center;
-        padding-left: 25%;
-        padding-right: 25%;
+    @media (max-width: 767px) {
+
+        .message-area {
+            position: absolute;
+            color: whitesmoke;
+            bottom: 0;
+            transition: height 0.2s;
+            align-self: center;
+            padding-left: 25%;
+            padding-right: 25%;
+            z-index: 500
+        }
+
+    }
+
+
+    @media (min-width: 768px) {
+
+        .message-area {
+            position: absolute;
+            color: whitesmoke;
+            bottom: 2vw;
+            left: 30vw;
+            transition: height 0.2s;
+            align-self: center;
+            padding-left: 25%;
+            padding-right: 25%;
+            z-index: 500
+        }
+
     }
 
     .message-container {
