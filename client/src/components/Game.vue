@@ -340,8 +340,8 @@
     @media (min-width: 768px) {
 
         #playerCardsDiv {
-            width: 21vw;
-            height: 32vw;
+            width: 31.5vw;
+            height: 30vw;
             margin: auto;
             text-align: center;
         }
