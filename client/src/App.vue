@@ -51,10 +51,24 @@
   }
 
 
-  body {
-    /*margin: 0.5em;*/
-    background-color: var(--backGroundColor);
-    box-sizing: border-box;
+  @media (max-width: 767px) {
+
+    body {
+      background-color: var(--backGroundColor);
+      box-sizing: border-box;
+    }
+
+  }
+
+  @media (min-width: 768px) {
+
+    body {
+      background-color: var(--backGroundColor);
+      box-sizing: border-box;
+      margin:    0 auto;
+      max-width: 50%;
+    }
+
   }
 
 
@@ -62,7 +76,6 @@
     font-family: var(--fonts);
     color: var(--defaultFontColor);
     text-align: center;
-    /*font-size: var(--defaultFontSizeMobile);*/
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -72,22 +85,6 @@
     color: var(--defaultFontColor);
     background-color: var(--buttonColor);
     padding: 1em 8em;
-    /*width: 80%;*/
-    /*font-size: var(--defaultFontSizeMobile);*/
-    /*padding: 1em;*/
-    /*margin: 1em 1em 0em 1em;*/
   }
-
-  /*@media (min-width: 768px) {*/
-
-  /*  #app {*/
-  /*    font-size: var(--defaultFontSize);*/
-  /*  }*/
-
-  /*  button {*/
-  /*    font-size: var(--defaultFontSize);*/
-  /*    width: 20%;*/
-  /*  }*/
-  /*}*/
 
 </style>
