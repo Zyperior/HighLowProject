@@ -140,6 +140,8 @@ export default {
 
         muteSound (state) { state.muteSound = !state.muteSound; },
 
+        setChattyBots (state) { state.chattyBots = getCurrentSettings().botCommentary },
+
         resetPlayersBeforeNewGame (state) { state.players = []; },
 
         stopGame (state) { state.gameRunning = false; store.commit('stopTimer'); },
@@ -177,6 +179,7 @@ export default {
 
                 // ..set the players array
                 commit('setPlayers', players);
+
                 // Load questions from DB with current settings, (see questionsDB-module)..
                 questionsDB.getQuestions(getCurrentSettings().questions)
 
@@ -187,6 +190,7 @@ export default {
 
                 // Then set first question and start game
                 }).then( () => {
+                        commit('setChattyBots');
                         commit('setNextQuestion');
                         commit("startGame");
                 })
