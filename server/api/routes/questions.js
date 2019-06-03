@@ -5,6 +5,9 @@ const router = express.Router();
 
 let Question = require("../model/question");
 
+/**
+ * Get all questions from the database
+ */
 router.get("/", (req, res) => {
     Question.find()
         .select("question answer difficulty category source")
@@ -14,6 +17,11 @@ router.get("/", (req, res) => {
 
 });
 
+/**
+ * Get questions from the database based on the parameters amount/difficulty/category.
+ * If for example the category animals is picked, it fetches all animal questions and then picks out randomly which
+ * ones to return.
+ */
 router.get("/:amount/:difficulty/:category", (req, res) => {
 
     const amount = parseInt(req.params.amount);
@@ -32,15 +40,12 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
         query = {difficulty: difficulty}
     }
 
-
-
     Question.find(query)
         //.limit(amount)
         .select("question answer difficulty category source")
         .exec()
         .then(foundquestions => {
 
-            //Randomize which questions that are returned each time
             let scrambledQuestions = [];
             let indexes = [];
 
@@ -50,7 +55,7 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
                     scrambledQuestions.push(foundquestions[questionIndex])
                     indexes.push(questionIndex);
                 }
-                //REMOVE THIS "IF" BELOW ONCE THERE ARE AT LEAST 5 QUESTIONS OF EACH DIFFICULTY IN EACH CATEGORY
+
                 if(foundquestions.length < amount && foundquestions.length === indexes.length){
                     break;
                 }
@@ -62,7 +67,9 @@ router.get("/:amount/:difficulty/:category", (req, res) => {
 
 });
 
-
+/**
+ * Saves a new question in the database
+ */
 router.post("/", (req, res) => {
     let question = new Question({
         _id: new mongoose.Types.ObjectId(),
@@ -80,7 +87,9 @@ router.post("/", (req, res) => {
 });
 
 
-
+/**
+ * Delete a question with the given id
+ */
 router.delete("/:id", (req, res) => {
     Question.remove({_id: req.params.id})
         .exec()
@@ -89,7 +98,10 @@ router.delete("/:id", (req, res) => {
 })
 
 
-
+/**
+ * Updates the question with the given id. It's enough to only have the parameters that should be updated in the
+ * request body and the ones left out will remain the same.
+ */
 router.put("/:id", (req, res) => {
 
     Question.findOneAndUpdate({_id:req.params.id}, req.body, {new:true})

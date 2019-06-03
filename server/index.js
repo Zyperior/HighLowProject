@@ -5,16 +5,12 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 
-
 const app = express();
 
 app.use(cors());
 
 
 app.use(bodyParser.json());
-// app.use(express.urlencoded({extended: true}));
-// app.use(bodyParser.urlencoded({extended: true}));
-
 
 require("./config/passport")(passport);
 
