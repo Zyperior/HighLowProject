@@ -128,7 +128,7 @@
     .bot-title p {
 
     }
-    @media(max-width: 415px) {
+    /*@media(max-width: 415px) {*/
         .container {
             grid-template-columns: 10em 1fr;
             grid-template-rows: 15em 3fr;
@@ -161,7 +161,7 @@
             width: 100%;
         }
 
-    }
+    /*}*/
 
 
 </style>
