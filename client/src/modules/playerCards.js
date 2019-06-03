@@ -36,6 +36,10 @@ const getters = {
 
 
 
+// The mutation 'flipCards' sets 'flipCards' to true, and initiates the array of indexes, if it hasn't been initiated before.
+// A timeout is set, equal to the animation time plus a little margin, the margin is to avoid jitter in the animation.
+// After the timeout, the first elemnet in the array 'indexes' is moved to the last position, and 'flipCards' is set to false.
+
 const mutations = {
 
     flipCards: state => {
