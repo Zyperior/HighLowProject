@@ -33,6 +33,9 @@
         ],
         
 
+        // The method 'showAnswer' shows the answer, but if the answer is below 0, it means that the player did not
+        // guess before the time ran out, and then 'PASS' is shown instead of the answer.
+
         methods: {
 
             showAnswer: function(answer) {
