@@ -2,6 +2,9 @@
 
     <div id="card-div" v-if="getPlayerIndexes.length > 0">
 
+        <!-- Depending on how many players there are, 4, 3 or 2 of the div's beneath are shown. -->
+        <!-- Also, classes are assigned to the div's, depending on the number of players and if a flip of the cards is ongoing. -->
+
         <div id="hidden" :class="{hiddenCard: flipCardsOngoing}" v-if="activePlayers.length > 3" :style="animationTime">
             <PlayerCard :player="activePlayers[getPlayerIndexes[2]]"/>
         </div>
